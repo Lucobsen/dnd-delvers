@@ -1,11 +1,15 @@
-import axios from "axios";
 import { DataItem, dnd5eApiUrl, DnDApiResponse } from "../api";
+import { useQuery } from "@tanstack/react-query";
 
-export const getAllRaces = async (): Promise<DataItem[]> => {
-  const result: DnDApiResponse = await axios
-    .get(`${dnd5eApiUrl}/races`)
-    .then((response) => response.data)
-    .catch((error) => console.error(error));
+export const useRaces = (): { races: DataItem[], isFetching: boolean } => {
+  const { data, isFetching } = useQuery<DnDApiResponse>(['races'], async () => {
+    const res = await fetch(`${dnd5eApiUrl}/races`);
+    return res.json();
+  });
 
-  return result.results;
+  if (!data && !isFetching) {
+    throw Error('Failed to fetch races!');
+  }
+
+  return { races: data?.results ?? [], isFetching } as const;
 };

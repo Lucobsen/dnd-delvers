@@ -1,22 +1,15 @@
-import axios from "axios";
-import { DataItem, dnd5eApiUrl, DnDApiResponse } from "../api";
+import { useQuery } from "@tanstack/react-query";
+import { DataItem, dnd5eApiUrl } from "../api";
 
-export const getAllMonsters = async (): Promise<DataItem[]> => {
-  const result: DnDApiResponse = await axios
-    .get(`${dnd5eApiUrl}/monsters`)
-    .then((response) => response.data)
-    .catch((error) => console.error(error));
+export const useMonsters = (): { monsters: DataItem[] } => {
+  const { data } = useQuery<DataItem[]>(['monsters'], async () => {
+    const res = await fetch(`${dnd5eApiUrl}/monsters`);
+    return res.json();
+  });
 
-  return result.results;
-};
+  if (!data) {
+    throw Error('Failed to fetch monsters!');
+  }
 
-export const getMonstersByChallengeRating = async (
-  cr: string
-): Promise<DataItem[]> => {
-  const result: DnDApiResponse = await axios
-    .get(`${dnd5eApiUrl}/monsters/?challenge_rating=${cr}`)
-    .then((response) => response.data)
-    .catch((error) => console.error(error));
-
-  return result.results;
+  return { monsters: data } as const;
 };
