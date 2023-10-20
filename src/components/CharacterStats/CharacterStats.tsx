@@ -20,7 +20,7 @@ export const CharacterStats = () => {
         const value = Number.parseInt(stats[score.id]);
 
         return (
-          <Grid item xs={4}>
+          <Grid item xs={4} key={score.id}>
             <TextField
               label={score.id.toUpperCase()}
               variant="outlined"
