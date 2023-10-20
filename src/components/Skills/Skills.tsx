@@ -1,31 +1,7 @@
-import {
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Radio,
-  Stack,
-} from "@mui/material";
+import { List, ListItem, Stack } from "@mui/material";
 import React, { useState } from "react";
 import { useSkillsQuery } from "../../services/skills/use-skills-query";
-
-const SkillButton = ({
-  skillName,
-  handleToggle,
-  checked,
-}: {
-  skillName: string;
-  checked: boolean;
-  handleToggle: () => void;
-}) => (
-  <ListItemButton onClick={handleToggle} dense disableRipple disableGutters>
-    <ListItemIcon sx={{ minWidth: "unset" }}>
-      <Radio edge="start" checked={checked} disableRipple size="small" />
-    </ListItemIcon>
-    <ListItemText primary={skillName} />
-  </ListItemButton>
-);
+import { SkillButton } from "./SkillButton";
 
 export const Skills = () => {
   const { skills, isFetching } = useSkillsQuery();
@@ -52,7 +28,13 @@ export const Skills = () => {
   };
 
   return (
-    <Stack direction="row" spacing={1} alignItems="center" mt={1} width="100%">
+    <Stack
+      direction="row"
+      spacing={1}
+      alignItems="flex-start"
+      mt={1}
+      width="100%"
+    >
       <List
         sx={{
           color: "#000",
