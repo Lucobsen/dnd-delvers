@@ -15,7 +15,7 @@ export const SkillButton = ({
   checked: boolean;
   handleToggle: () => void;
 }) => {
-  const [isProficient, setIsProficient] = useState(false);
+  const [isProficient, setIsProficient] = useState(checked);
 
   const onToggle = () => {
     setIsProficient(!isProficient);

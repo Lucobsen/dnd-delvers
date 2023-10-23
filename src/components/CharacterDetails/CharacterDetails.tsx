@@ -5,6 +5,11 @@ import { useClasses } from "../../services/classes/classes.service";
 import { DataItem } from "../../services/api";
 import { getProficiencyBonus, levels } from "../../models/levels.models";
 
+const getInitialValue = (key: string): string => {
+  const value = localStorage.getItem(key);
+  return value ? JSON.parse(value) : "";
+};
+
 const setHpValue = (newValue: string, currentValue: string) => {
   const parsedNewValue = Number.parseInt(newValue);
 
@@ -17,16 +22,20 @@ export const CharacterDetails = () => {
   const { races, isFetching: isFetchingRaces } = useRaces();
   const { classes, isFetching: isFetchingClasses } = useClasses();
 
-  const [selectedRace, setSelectedRace] = useState<DataItem | null>(null);
-  const [selectedClass, setSelectedClass] = useState<DataItem | null>(null);
-  const [selectedLevel, setSelectedLevel] = useState("1");
+  const [selectedRace, setSelectedRace] = useState(getInitialValue("race"));
+  const [selectedClass, setSelectedClass] = useState(getInitialValue("class"));
+  const [selectedLevel, setSelectedLevel] = useState(getInitialValue("level"));
 
-  const [characterName, setCharacterName] = useState("");
-  const [currentHp, setCurrentHp] = useState<string>("");
-  const [maxHp, setMaxHp] = useState<string>("");
-  const [characterRace, setCharacterRace] = useState("");
-  const [characterClass, setCharacterClass] = useState("");
-  const [characterLevel, setCharacterLevel] = useState("1");
+  const [characterName, setCharacterName] = useState(getInitialValue("name"));
+  const [currentHp, setCurrentHp] = useState(getInitialValue("currentHp"));
+  const [maxHp, setMaxHp] = useState(getInitialValue("maxHp"));
+  const [characterRace, setCharacterRace] = useState(getInitialValue("race"));
+  const [characterClass, setCharacterClass] = useState(
+    getInitialValue("class")
+  );
+  const [characterLevel, setCharacterLevel] = useState(
+    getInitialValue("level")
+  );
 
   return (
     <>
@@ -38,7 +47,11 @@ export const CharacterDetails = () => {
             label="Name"
             variant="outlined"
             placeholder="Enter Name"
-            onChange={(event) => setCharacterName(event.target.value)}
+            onChange={(event) => {
+              const name = event.target.value;
+              localStorage.setItem("name", JSON.stringify(name));
+              setCharacterName(name);
+            }}
           />
         </Grid>
 
@@ -48,7 +61,10 @@ export const CharacterDetails = () => {
             value={selectedLevel}
             onChange={(_, newValue) => newValue && setSelectedLevel(newValue)}
             inputValue={characterLevel}
-            onInputChange={(_, newValue) => setCharacterLevel(newValue)}
+            onInputChange={(_, newValue) => {
+              localStorage.setItem("level", JSON.stringify(newValue));
+              setCharacterLevel(newValue);
+            }}
             disablePortal
             options={levels}
             disableClearable
@@ -77,9 +93,11 @@ export const CharacterDetails = () => {
             label="Hp"
             type="number"
             variant="standard"
-            onChange={(event) =>
-              setCurrentHp(setHpValue(event.target.value, currentHp))
-            }
+            onChange={(event) => {
+              const newHpValue = setHpValue(event.target.value, currentHp);
+              localStorage.setItem("currentHp", JSON.stringify(newHpValue));
+              setCurrentHp(newHpValue);
+            }}
           />
           {"/br"}
           <TextField
@@ -88,9 +106,11 @@ export const CharacterDetails = () => {
             label="Max Hp"
             type="number"
             variant="standard"
-            onChange={(event) =>
-              setMaxHp(setHpValue(event.target.value, maxHp))
-            }
+            onChange={(event) => {
+              const newHpValue = setHpValue(event.target.value, maxHp);
+              localStorage.setItem("maxHp", JSON.stringify(newHpValue));
+              setMaxHp(newHpValue);
+            }}
           />
         </Grid>
       </Grid>
@@ -108,12 +128,16 @@ export const CharacterDetails = () => {
           <Autocomplete
             fullWidth
             value={selectedRace}
-            onChange={(_, newValue) => setSelectedRace(newValue)}
+            onChange={(_, newValue) =>
+              setSelectedRace(newValue ?? selectedRace)
+            }
             inputValue={characterRace}
-            onInputChange={(_, newValue) => setCharacterRace(newValue)}
+            onInputChange={(_, newValue) => {
+              localStorage.setItem("race", JSON.stringify(newValue));
+              setCharacterRace(newValue);
+            }}
             disablePortal
-            options={races}
-            getOptionLabel={(options) => options.name}
+            options={races.map((race) => race.name)}
             renderInput={(params) => (
               <TextField {...params} label="Race" placeholder="Select Race" />
             )}
@@ -126,12 +150,16 @@ export const CharacterDetails = () => {
           <Autocomplete
             fullWidth
             value={selectedClass}
-            onChange={(_, newValue) => setSelectedClass(newValue)}
+            onChange={(_, newValue) =>
+              setSelectedClass(newValue ?? selectedClass)
+            }
             inputValue={characterClass}
-            onInputChange={(_, newValue) => setCharacterClass(newValue)}
+            onInputChange={(_, newValue) => {
+              localStorage.setItem("class", JSON.stringify(newValue));
+              setCharacterClass(newValue);
+            }}
             disablePortal
-            options={classes}
-            getOptionLabel={(options) => options.name}
+            options={classes.map((classy) => classy.name)}
             renderInput={(params) => (
               <TextField
                 {...params}
