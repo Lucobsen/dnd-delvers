@@ -3,9 +3,17 @@ import React, { useState } from "react";
 import { useSkillsQuery } from "../../services/skills/use-skills-query";
 import { SkillButton } from "./SkillButton";
 
+const getInitialProficiencies = () => {
+  const skills = localStorage.getItem("skills");
+
+  return skills ? JSON.parse(skills) : [];
+};
+
 export const Skills = () => {
   const { skills, isFetching: isFetchingSkills } = useSkillsQuery();
-  const [proficientSkills, setProficientSkills] = useState<string[]>([]);
+  const [proficientSkills, setProficientSkills] = useState<string[]>(
+    getInitialProficiencies()
+  );
 
   const half = Math.ceil(skills.length / 2);
   const skillsListOne = skills.slice(0, half);
@@ -19,9 +27,12 @@ export const Skills = () => {
 
     if (index >= 0) {
       tempProficientSkills.splice(index, 1);
+      localStorage.setItem("skills", JSON.stringify(tempProficientSkills));
       setProficientSkills(tempProficientSkills);
     } else {
-      setProficientSkills([...proficientSkills, skillIndex]);
+      const proficiencies = [...proficientSkills, skillIndex];
+      localStorage.setItem("skills", JSON.stringify(proficiencies));
+      setProficientSkills(proficiencies);
     }
   };
 

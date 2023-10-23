@@ -1,14 +1,14 @@
 import { Container } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 import { CharacterDetails } from "../CharacterDetails/CharacterDetails";
-import { CharacterStats } from "../CharacterStats/CharacterStats";
 import { Skills } from "../Skills/Skills";
+import { HeroStats } from "../HeroStats/HeroStats";
 
 export const Hero = () => {
   return (
-    <Container sx={{ height: "90vh" }}>
+    <Container sx={{ height: "95vh" }}>
       <CharacterDetails />
-      <CharacterStats />
+      <HeroStats />
       <Skills />
     </Container>
   );

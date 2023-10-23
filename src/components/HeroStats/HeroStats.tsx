@@ -2,17 +2,25 @@ import { Grid, InputAdornment, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { AbilityScores } from "../../models/abilities.models";
 
+const getInitialStats = () => {
+  const stats = localStorage.getItem("stats");
+
+  return stats
+    ? JSON.parse(stats)
+    : {
+        str: "10",
+        dex: "10",
+        con: "10",
+        int: "10",
+        wis: "10",
+        char: "10",
+      };
+};
+
 type Stats = Record<string, string>;
 
-export const CharacterStats = () => {
-  const [stats, setStats] = useState<Stats>({
-    str: "10",
-    dex: "10",
-    con: "10",
-    int: "10",
-    wis: "10",
-    char: "10",
-  });
+export const HeroStats = () => {
+  const [stats, setStats] = useState<Stats>(getInitialStats());
 
   return (
     <Grid container spacing={1}>
@@ -25,12 +33,15 @@ export const CharacterStats = () => {
               label={score.id.toUpperCase()}
               variant="outlined"
               value={stats[score.id]}
-              onChange={(event) =>
-                setStats({
+              onChange={(event) => {
+                const newStats: Stats = {
                   ...stats,
                   [score.id]: event.target.value,
-                })
-              }
+                };
+
+                localStorage.setItem("stats", JSON.stringify(newStats));
+                setStats(newStats);
+              }}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
