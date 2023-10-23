@@ -1,4 +1,4 @@
-import { Autocomplete, Grid, Stack, TextField } from "@mui/material";
+import { Autocomplete, Grid, Skeleton, Stack, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { useRaces } from "../../services/races/races.services";
 import { useClasses } from "../../services/classes/classes.service";
@@ -17,8 +17,6 @@ export const CharacterDetails = () => {
   const [characterRace, setCharacterRace] = useState("");
   const [characterClass, setCharacterClass] = useState("");
   const [characterLevel, setCharacterLevel] = useState("1");
-
-  if (isFetchingRaces || isFetchingClasses) return null;
 
   return (
     <>
@@ -70,38 +68,46 @@ export const CharacterDetails = () => {
         spacing={1}
         pb={2}
       >
-        <Autocomplete
-          fullWidth
-          value={selectedRace}
-          onChange={(_, newValue) => setSelectedRace(newValue)}
-          inputValue={characterRace}
-          onInputChange={(_, newValue) => setCharacterRace(newValue)}
-          disablePortal
-          options={races}
-          getOptionLabel={(options) => options.name}
-          renderInput={(params) => (
-            <TextField {...params} label="Race" placeholder="Select Race" />
-          )}
-        />
+        {isFetchingRaces ? (
+          <Skeleton width="100%" height="56px" />
+        ) : (
+          <Autocomplete
+            fullWidth
+            value={selectedRace}
+            onChange={(_, newValue) => setSelectedRace(newValue)}
+            inputValue={characterRace}
+            onInputChange={(_, newValue) => setCharacterRace(newValue)}
+            disablePortal
+            options={races}
+            getOptionLabel={(options) => options.name}
+            renderInput={(params) => (
+              <TextField {...params} label="Race" placeholder="Select Race" />
+            )}
+          />
+        )}
 
-        <Autocomplete
-          fullWidth
-          value={selectedClass}
-          onChange={(_, newValue) => setSelectedClass(newValue)}
-          inputValue={characterClass}
-          onInputChange={(_, newValue) => setCharacterClass(newValue)}
-          disablePortal
-          options={classes}
-          getOptionLabel={(options) => options.name}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Class"
-              placeholder="Select Class"
-              onChange={(event) => setCharacterClass(event.target.value)}
-            />
-          )}
-        />
+        {isFetchingClasses ? (
+          <Skeleton width="100%" height="56px" />
+        ) : (
+          <Autocomplete
+            fullWidth
+            value={selectedClass}
+            onChange={(_, newValue) => setSelectedClass(newValue)}
+            inputValue={characterClass}
+            onInputChange={(_, newValue) => setCharacterClass(newValue)}
+            disablePortal
+            options={classes}
+            getOptionLabel={(options) => options.name}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Class"
+                placeholder="Select Class"
+                onChange={(event) => setCharacterClass(event.target.value)}
+              />
+            )}
+          />
+        )}
       </Stack>
     </>
   );
