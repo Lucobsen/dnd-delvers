@@ -5,6 +5,26 @@ import { useClasses } from "../../services/classes/classes.service";
 import { DataItem } from "../../services/api";
 import { getProficiencyBonus, levels } from "../../models/levels.models";
 
+type HP = {
+  current: number;
+  max: number;
+};
+
+const getHpValue = (value: string, currentValue: number) => {
+  const numberValue = Number.parseInt(value);
+
+  if (
+    numberValue === undefined ||
+    numberValue === null ||
+    Number.isNaN(numberValue)
+  )
+    return 0;
+
+  if (numberValue > 999) return currentValue;
+
+  return numberValue;
+};
+
 export const CharacterDetails = () => {
   const { races, isFetching: isFetchingRaces } = useRaces();
   const { classes, isFetching: isFetchingClasses } = useClasses();
@@ -14,14 +34,27 @@ export const CharacterDetails = () => {
   const [selectedLevel, setSelectedLevel] = useState("1");
 
   const [characterName, setCharacterName] = useState("");
+  const [heroHp, setHeroHp] = useState<HP>({
+    current: 0,
+    max: 0,
+  });
   const [characterRace, setCharacterRace] = useState("");
   const [characterClass, setCharacterClass] = useState("");
   const [characterLevel, setCharacterLevel] = useState("1");
 
+  const hpChanged = (value: string) => {
+    const parsedString = value.split("/");
+
+    setHeroHp({
+      current: getHpValue(parsedString[0], heroHp["current"]),
+      max: getHpValue(parsedString[1], heroHp["max"]),
+    });
+  };
+
   return (
     <>
       <Grid container spacing={1} pb={2}>
-        <Grid item xs={6}>
+        <Grid item xs={12}>
           <TextField
             fullWidth
             value={characterName}
@@ -57,6 +90,16 @@ export const CharacterDetails = () => {
               readOnly: true,
             }}
             variant="outlined"
+          />
+        </Grid>
+
+        <Grid item xs={6}>
+          <TextField
+            fullWidth
+            value={heroHp["current"] + "/" + heroHp["max"]}
+            label="HP/MaxHp"
+            variant="outlined"
+            onChange={(event) => hpChanged(event.target.value)}
           />
         </Grid>
       </Grid>
