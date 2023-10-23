@@ -1,6 +1,6 @@
 import "./App.css";
 import React from "react";
-import { CharacterSheet } from "./components/CharacterSheet/CharacterSheet";
+import { Hero } from "./components/Hero/Hero";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const queryClient = new QueryClient();
@@ -9,7 +9,7 @@ export const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <div className="App">
-        <CharacterSheet />
+        <Hero />
       </div>
     </QueryClientProvider>
   );

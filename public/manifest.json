@@ -1,6 +1,6 @@
 {
-  "short_name": "Character Sheet",
-  "name": "D&D Character Sheet",
+  "short_name": "herohoard",
+  "name": "Hero Hoard",
   "icons": [],
   "start_url": ".",
   "display": "standalone",
