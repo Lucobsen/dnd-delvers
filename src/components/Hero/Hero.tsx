@@ -1,5 +1,5 @@
 import { Container } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { CharacterDetails } from "../CharacterDetails/CharacterDetails";
 import { CharacterStats } from "../CharacterStats/CharacterStats";
 import { Skills } from "../Skills/Skills";
