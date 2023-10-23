@@ -5,24 +5,12 @@ import { useClasses } from "../../services/classes/classes.service";
 import { DataItem } from "../../services/api";
 import { getProficiencyBonus, levels } from "../../models/levels.models";
 
-type HP = {
-  current: number;
-  max: number;
-};
+const setHpValue = (newValue: string, currentValue: string) => {
+  const parsedNewValue = Number.parseInt(newValue);
 
-const getHpValue = (value: string, currentValue: number) => {
-  const numberValue = Number.parseInt(value);
+  if (parsedNewValue > 999) return currentValue;
 
-  if (
-    numberValue === undefined ||
-    numberValue === null ||
-    Number.isNaN(numberValue)
-  )
-    return 0;
-
-  if (numberValue > 999) return currentValue;
-
-  return numberValue;
+  return newValue;
 };
 
 export const CharacterDetails = () => {
@@ -34,33 +22,22 @@ export const CharacterDetails = () => {
   const [selectedLevel, setSelectedLevel] = useState("1");
 
   const [characterName, setCharacterName] = useState("");
-  const [heroHp, setHeroHp] = useState<HP>({
-    current: 0,
-    max: 0,
-  });
+  const [currentHp, setCurrentHp] = useState<string>("");
+  const [maxHp, setMaxHp] = useState<string>("");
   const [characterRace, setCharacterRace] = useState("");
   const [characterClass, setCharacterClass] = useState("");
   const [characterLevel, setCharacterLevel] = useState("1");
 
-  const hpChanged = (value: string) => {
-    const parsedString = value.split("/");
-
-    setHeroHp({
-      current: getHpValue(parsedString[0], heroHp["current"]),
-      max: getHpValue(parsedString[1], heroHp["max"]),
-    });
-  };
-
   return (
     <>
-      <Grid container spacing={1} pb={2}>
-        <Grid item xs={12}>
+      <Grid container spacing={1} pb={1}>
+        <Grid item xs={12} pb={0.5}>
           <TextField
             fullWidth
             value={characterName}
             label="Name"
-            placeholder="Enter Name"
             variant="outlined"
+            placeholder="Enter Name"
             onChange={(event) => setCharacterName(event.target.value)}
           />
         </Grid>
@@ -93,13 +70,27 @@ export const CharacterDetails = () => {
           />
         </Grid>
 
-        <Grid item xs={6}>
+        <Grid item xs={6} display="flex">
           <TextField
             fullWidth
-            value={heroHp["current"] + "/" + heroHp["max"]}
-            label="HP/MaxHp"
-            variant="outlined"
-            onChange={(event) => hpChanged(event.target.value)}
+            value={currentHp}
+            label="Hp"
+            type="number"
+            variant="standard"
+            onChange={(event) =>
+              setCurrentHp(setHpValue(event.target.value, currentHp))
+            }
+          />
+          {"/br"}
+          <TextField
+            fullWidth
+            value={maxHp}
+            label="Max Hp"
+            type="number"
+            variant="standard"
+            onChange={(event) =>
+              setMaxHp(setHpValue(event.target.value, maxHp))
+            }
           />
         </Grid>
       </Grid>
