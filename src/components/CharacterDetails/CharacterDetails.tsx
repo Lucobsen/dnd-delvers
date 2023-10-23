@@ -2,7 +2,6 @@ import { Autocomplete, Grid, Skeleton, Stack, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { useRaces } from "../../services/races/races.services";
 import { useClasses } from "../../services/classes/classes.service";
-import { DataItem } from "../../services/api";
 import { getProficiencyBonus, levels } from "../../models/levels.models";
 
 const getInitialValue = (key: string): string => {
@@ -24,7 +23,9 @@ export const CharacterDetails = () => {
 
   const [selectedRace, setSelectedRace] = useState(getInitialValue("race"));
   const [selectedClass, setSelectedClass] = useState(getInitialValue("class"));
-  const [selectedLevel, setSelectedLevel] = useState(getInitialValue("level"));
+  const [selectedLevel, setSelectedLevel] = useState(
+    getInitialValue("level") === "" ? "1" : getInitialValue("level")
+  );
 
   const [characterName, setCharacterName] = useState(getInitialValue("name"));
   const [currentHp, setCurrentHp] = useState(getInitialValue("currentHp"));
@@ -34,7 +35,7 @@ export const CharacterDetails = () => {
     getInitialValue("class")
   );
   const [characterLevel, setCharacterLevel] = useState(
-    getInitialValue("level")
+    getInitialValue("level") === "" ? "1" : getInitialValue("level")
   );
 
   return (
