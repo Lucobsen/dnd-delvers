@@ -28,6 +28,9 @@ export const CharacterDetails = () => {
   );
 
   const [characterName, setCharacterName] = useState(getInitialValue("name"));
+  const [ac, setAc] = useState(
+    getInitialValue("ac") === "" ? "10" : getInitialValue("ac")
+  );
   const [currentHp, setCurrentHp] = useState(getInitialValue("currentHp"));
   const [maxHp, setMaxHp] = useState(getInitialValue("maxHp"));
   const [characterRace, setCharacterRace] = useState(getInitialValue("race"));
@@ -41,7 +44,7 @@ export const CharacterDetails = () => {
   return (
     <>
       <Grid container spacing={1} pb={1}>
-        <Grid item xs={12} pb={0.5}>
+        <Grid item xs={9} pb={0.5}>
           <TextField
             fullWidth
             value={characterName}
@@ -52,6 +55,21 @@ export const CharacterDetails = () => {
               const name = event.target.value;
               localStorage.setItem("name", JSON.stringify(name));
               setCharacterName(name);
+            }}
+          />
+        </Grid>
+
+        <Grid item xs={3} pb={0.5}>
+          <TextField
+            fullWidth
+            value={ac}
+            label="AC"
+            type="number"
+            variant="outlined"
+            onChange={(event) => {
+              const acValue = event.target.value;
+              localStorage.setItem("ac", JSON.stringify(acValue));
+              setAc(acValue);
             }}
           />
         </Grid>
@@ -87,7 +105,7 @@ export const CharacterDetails = () => {
           />
         </Grid>
 
-        <Grid item xs={6} display="flex">
+        <Grid item xs={3}>
           <TextField
             fullWidth
             value={currentHp}
@@ -100,7 +118,9 @@ export const CharacterDetails = () => {
               setCurrentHp(newHpValue);
             }}
           />
-          {"/br"}
+        </Grid>
+
+        <Grid item xs={3}>
           <TextField
             fullWidth
             value={maxHp}
