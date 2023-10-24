@@ -1,6 +1,6 @@
 {
-  "name": "dnd-delvers",
-  "version": "0.1.0",
+  "name": "herohoard",
+  "version": "0.2.0",
   "private": true,
   "author": "Luke Jacobsen",
   "dependencies": {

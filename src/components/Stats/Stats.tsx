@@ -19,7 +19,7 @@ const getInitialStats = () => {
 
 type Stats = Record<string, string>;
 
-export const HeroStats = () => {
+export const Stats = () => {
   const [stats, setStats] = useState<Stats>(getInitialStats());
 
   return (

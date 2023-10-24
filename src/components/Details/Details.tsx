@@ -17,7 +17,7 @@ const setHpValue = (newValue: string, currentValue: string) => {
   return newValue;
 };
 
-export const CharacterDetails = () => {
+export const Details = () => {
   const { races, isFetching: isFetchingRaces } = useRaces();
   const { classes, isFetching: isFetchingClasses } = useClasses();
 
