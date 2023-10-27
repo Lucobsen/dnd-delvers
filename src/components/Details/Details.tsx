@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { useRaces } from "../../services/races/races.services";
 import { useClasses } from "../../services/classes/classes.service";
 import { getProficiencyBonus, levels } from "../../models/levels.models";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { selectLevel, updateLevel } from "../../store/slices/HeroSlice";
 
 const getInitialValue = (key: string): string => {
   const value = localStorage.getItem(key);
@@ -18,6 +20,9 @@ const setHpValue = (newValue: string, currentValue: string) => {
 };
 
 export const Details = () => {
+  const level = useAppSelector((state) => state.hero.level);
+  const dispatch = useAppDispatch();
+
   const { races, isFetching: isFetchingRaces } = useRaces();
   const { classes, isFetching: isFetchingClasses } = useClasses();
 
@@ -37,9 +42,11 @@ export const Details = () => {
   const [characterClass, setCharacterClass] = useState(
     getInitialValue("class")
   );
-  const [characterLevel, setCharacterLevel] = useState(
-    getInitialValue("level") === "" ? "1" : getInitialValue("level")
-  );
+
+  const onLevelChange = (newValue: string) => {
+    localStorage.setItem("level", JSON.stringify(newValue));
+    dispatch(updateLevel(newValue));
+  };
 
   return (
     <>
@@ -79,11 +86,8 @@ export const Details = () => {
             fullWidth
             value={selectedLevel}
             onChange={(_, newValue) => newValue && setSelectedLevel(newValue)}
-            inputValue={characterLevel}
-            onInputChange={(_, newValue) => {
-              localStorage.setItem("level", JSON.stringify(newValue));
-              setCharacterLevel(newValue);
-            }}
+            inputValue={level}
+            onInputChange={(_, newValue) => onLevelChange(newValue)}
             disablePortal
             options={levels}
             disableClearable
@@ -96,7 +100,7 @@ export const Details = () => {
         <Grid item xs={3}>
           <TextField
             fullWidth
-            value={getProficiencyBonus(characterLevel)}
+            value={getProficiencyBonus(level)}
             label="Prof. Bonus"
             InputProps={{
               readOnly: true,
