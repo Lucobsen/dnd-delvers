@@ -1,30 +1,26 @@
 import { Grid, InputAdornment, TextField } from "@mui/material";
-import React, { useState } from "react";
-import { AbilityScores } from "../../models/abilities.models";
+import React from "react";
+import { abilityScores, getModifier } from "../../models/abilities.models";
+import { useAppSelector, useAppDispatch } from "../../hooks/hooks";
+import { Stats, updateStats } from "../../store/slices/HeroSlice";
 
-const getInitialStats = () => {
-  const stats = localStorage.getItem("stats");
+export const HeroStats = () => {
+  const { stats } = useAppSelector((state) => state.hero);
+  const dispatch = useAppDispatch();
 
-  return stats
-    ? JSON.parse(stats)
-    : {
-        str: "10",
-        dex: "10",
-        con: "10",
-        int: "10",
-        wis: "10",
-        char: "10",
-      };
-};
+  const onStatsChange = (statId: string, value: string) => {
+    const newStats: Stats = {
+      ...stats,
+      [statId]: value,
+    };
 
-type Stats = Record<string, string>;
-
-export const Stats = () => {
-  const [stats, setStats] = useState<Stats>(getInitialStats());
+    localStorage.setItem("stats", JSON.stringify(newStats));
+    dispatch(updateStats(newStats));
+  };
 
   return (
     <Grid container spacing={1}>
-      {AbilityScores.map((score) => {
+      {abilityScores.map((score) => {
         const value = Number.parseInt(stats[score.id]);
 
         return (
@@ -33,25 +29,11 @@ export const Stats = () => {
               label={score.id.toUpperCase()}
               variant="outlined"
               value={stats[score.id]}
-              onChange={(event) => {
-                const newStats: Stats = {
-                  ...stats,
-                  [score.id]: event.target.value,
-                };
-
-                localStorage.setItem("stats", JSON.stringify(newStats));
-                setStats(newStats);
-              }}
+              onChange={(event) => onStatsChange(score.id, event.target.value)}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    {!Number.isNaN(value)
-                      ? `(${
-                          value >= 10
-                            ? Math.floor((value - 10) / 2)
-                            : Math.ceil((value - 10) / 2)
-                        })`
-                      : "(0)"}
+                    {`(${getModifier(value)})`}
                   </InputAdornment>
                 ),
               }}

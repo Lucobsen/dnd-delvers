@@ -6,15 +6,21 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 
+interface SkillButtonProps {
+  skillName: string;
+  checked: boolean;
+  handleToggle: () => void;
+  modifier: number;
+  bonus: number;
+}
+
 export const SkillButton = ({
   skillName,
   handleToggle,
   checked,
-}: {
-  skillName: string;
-  checked: boolean;
-  handleToggle: () => void;
-}) => {
+  bonus,
+  modifier,
+}: SkillButtonProps) => {
   const [isProficient, setIsProficient] = useState(checked);
 
   const onToggle = () => {
@@ -35,7 +41,7 @@ export const SkillButton = ({
       <ListItemText
         sx={{ display: "flex", justifyContent: "space-between" }}
         primary={skillName}
-        secondary={`(${isProficient ? "2" : "0"})`}
+        secondary={`(${isProficient ? bonus + modifier : modifier})`}
       />
     </ListItemButton>
   );
