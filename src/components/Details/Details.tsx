@@ -2,9 +2,9 @@ import { Autocomplete, Grid, Skeleton, Stack, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { useRaces } from "../../services/races/races.services";
 import { useClasses } from "../../services/classes/classes.service";
-import { getProficiencyBonus, levels } from "../../models/levels.models";
+import { levels } from "../../models/levels.models";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
-import { selectLevel, updateLevel } from "../../store/slices/HeroSlice";
+import { updateLevel } from "../../store/slices/HeroSlice";
 
 const getInitialValue = (key: string): string => {
   const value = localStorage.getItem(key);
@@ -20,7 +20,7 @@ const setHpValue = (newValue: string, currentValue: string) => {
 };
 
 export const Details = () => {
-  const level = useAppSelector((state) => state.hero.level);
+  const { level, proficiencyBonus } = useAppSelector((state) => state.hero);
   const dispatch = useAppDispatch();
 
   const { races, isFetching: isFetchingRaces } = useRaces();
@@ -50,7 +50,7 @@ export const Details = () => {
 
   return (
     <>
-      <Grid container spacing={1} pb={1}>
+      <Grid container spacing={1} pb={1.5}>
         <Grid item xs={9} pb={0.5}>
           <TextField
             fullWidth
@@ -100,7 +100,7 @@ export const Details = () => {
         <Grid item xs={3}>
           <TextField
             fullWidth
-            value={getProficiencyBonus(level)}
+            value={proficiencyBonus}
             label="Prof. Bonus"
             InputProps={{
               readOnly: true,

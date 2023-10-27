@@ -2,6 +2,7 @@ import { Box, CircularProgress, List, ListItem, Stack } from "@mui/material";
 import React, { useState } from "react";
 import { useSkillsQuery } from "../../services/skills/use-skills-query";
 import { SkillButton } from "./SkillButton";
+import { useAppSelector } from "../../hooks/hooks";
 
 const getInitialProficiencies = () => {
   const skills = localStorage.getItem("skills");
@@ -10,6 +11,8 @@ const getInitialProficiencies = () => {
 };
 
 export const Skills = () => {
+  const { proficiencyBonus } = useAppSelector((state) => state.hero);
+
   const { skills, isFetching: isFetchingSkills } = useSkillsQuery();
   const [proficientSkills, setProficientSkills] = useState<string[]>(
     getInitialProficiencies()
@@ -70,6 +73,7 @@ export const Skills = () => {
             {skillsListOne.map((skill) => (
               <ListItem key={skill.index} disablePadding>
                 <SkillButton
+                  bonus={Number.parseInt(proficiencyBonus) ?? 0}
                   skillName={skill.name}
                   checked={proficientSkills.includes(skill.index)}
                   handleToggle={() => onSkillChecked(skill.index)}
@@ -91,6 +95,7 @@ export const Skills = () => {
             {skillsListTwo.map((skill) => (
               <ListItem key={skill.index} disablePadding>
                 <SkillButton
+                  bonus={Number.parseInt(proficiencyBonus) ?? 0}
                   skillName={skill.name}
                   checked={proficientSkills.includes(skill.index)}
                   handleToggle={() => onSkillChecked(skill.index)}
