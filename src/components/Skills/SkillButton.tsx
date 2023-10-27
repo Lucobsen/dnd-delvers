@@ -10,6 +10,7 @@ interface SkillButtonProps {
   skillName: string;
   checked: boolean;
   handleToggle: () => void;
+  modifier: number;
   bonus: number;
 }
 
@@ -18,6 +19,7 @@ export const SkillButton = ({
   handleToggle,
   checked,
   bonus,
+  modifier,
 }: SkillButtonProps) => {
   const [isProficient, setIsProficient] = useState(checked);
 
@@ -39,7 +41,7 @@ export const SkillButton = ({
       <ListItemText
         sx={{ display: "flex", justifyContent: "space-between" }}
         primary={skillName}
-        secondary={`(${isProficient ? `${bonus}` : "0"})`}
+        secondary={`(${isProficient ? bonus + modifier : modifier})`}
       />
     </ListItemButton>
   );

@@ -1,3 +1,4 @@
+import { Skill, abilityScores } from "../../models/abilities.models";
 import { DataItem, DnDApiResponse, dnd5eApiUrl } from "../api";
 import { useQuery } from "@tanstack/react-query";
 
@@ -22,4 +23,24 @@ export const useSkillsQuery = (): {
   }
 
   return { skills: data?.results ?? [], isFetching } as const;
+};
+
+const getSkillStat = (skillId: string) => {
+  const scores = Object.values(abilityScores);
+
+  const skillStat = scores.find((score) => score.skills?.includes(skillId));
+
+  return skillStat?.id ?? "";
+};
+
+export const useSkills = () => {
+  const { skills: skillData, isFetching } = useSkillsQuery();
+
+  const mappedSkills: Skill[] = skillData.map((data) => ({
+    name: data.name,
+    id: data.index,
+    stat: getSkillStat(data.index),
+  }));
+
+  return { skills: mappedSkills, isFetching } as const;
 };

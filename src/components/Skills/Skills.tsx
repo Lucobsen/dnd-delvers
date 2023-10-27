@@ -1,8 +1,9 @@
 import { Box, CircularProgress, List, ListItem, Stack } from "@mui/material";
 import React, { useState } from "react";
-import { useSkillsQuery } from "../../services/skills/use-skills-query";
+import { useSkills } from "../../services/skills/use-skills-query";
 import { SkillButton } from "./SkillButton";
 import { useAppSelector } from "../../hooks/hooks";
+import { getModifier } from "../../models/abilities.models";
 
 const getInitialProficiencies = () => {
   const skills = localStorage.getItem("skills");
@@ -11,9 +12,9 @@ const getInitialProficiencies = () => {
 };
 
 export const Skills = () => {
-  const { proficiencyBonus } = useAppSelector((state) => state.hero);
+  const { skills, isFetching } = useSkills();
 
-  const { skills, isFetching: isFetchingSkills } = useSkillsQuery();
+  const { proficiencyBonus, stats } = useAppSelector((state) => state.hero);
   const [proficientSkills, setProficientSkills] = useState<string[]>(
     getInitialProficiencies()
   );
@@ -47,7 +48,7 @@ export const Skills = () => {
       mt={1}
       width="100%"
     >
-      {isFetchingSkills ? (
+      {isFetching ? (
         <Box
           sx={{
             display: "flex",
@@ -71,12 +72,13 @@ export const Skills = () => {
             disablePadding
           >
             {skillsListOne.map((skill) => (
-              <ListItem key={skill.index} disablePadding>
+              <ListItem key={skill.id} disablePadding>
                 <SkillButton
+                  modifier={getModifier(Number.parseInt(stats[skill.stat]))}
                   bonus={Number.parseInt(proficiencyBonus) ?? 0}
                   skillName={skill.name}
-                  checked={proficientSkills.includes(skill.index)}
-                  handleToggle={() => onSkillChecked(skill.index)}
+                  checked={proficientSkills.includes(skill.id)}
+                  handleToggle={() => onSkillChecked(skill.id)}
                 />
               </ListItem>
             ))}
@@ -93,12 +95,13 @@ export const Skills = () => {
             disablePadding
           >
             {skillsListTwo.map((skill) => (
-              <ListItem key={skill.index} disablePadding>
+              <ListItem key={skill.id} disablePadding>
                 <SkillButton
+                  modifier={getModifier(Number.parseInt(stats[skill.stat]))}
                   bonus={Number.parseInt(proficiencyBonus) ?? 0}
                   skillName={skill.name}
-                  checked={proficientSkills.includes(skill.index)}
-                  handleToggle={() => onSkillChecked(skill.index)}
+                  checked={proficientSkills.includes(skill.id)}
+                  handleToggle={() => onSkillChecked(skill.id)}
                 />
               </ListItem>
             ))}
