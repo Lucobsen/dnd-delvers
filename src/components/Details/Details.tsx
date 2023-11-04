@@ -1,10 +1,16 @@
-import { Autocomplete, Grid, Skeleton, Stack, TextField } from "@mui/material";
+import { Autocomplete, Grid, Stack, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { useRaces } from "../../services/races/races.services";
 import { useClasses } from "../../services/classes/classes.service";
 import { levels } from "../../models/levels.models";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
-import { updateClass, updateLevel } from "../../store/slices/HeroSlice";
+import {
+  updateClass,
+  updateLevel,
+  updateRace,
+} from "../../store/slices/HeroSlice";
+import { SelectComponent } from "../shared/SelectComponent";
+import { getInitialStorageValue } from "../../utils/get-initial-storage-value";
 
 const getInitialValue = (key: string): string => {
   const value = localStorage.getItem(key);
@@ -20,7 +26,7 @@ const setHpValue = (newValue: string, currentValue: string) => {
 };
 
 export const Details = () => {
-  const { level, proficiencyBonus, classId } = useAppSelector(
+  const { level, proficiencyBonus, classId, race } = useAppSelector(
     (state) => state.hero
   );
   const dispatch = useAppDispatch();
@@ -28,8 +34,6 @@ export const Details = () => {
   const { races, isFetching: isFetchingRaces } = useRaces();
   const { classes, isFetching: isFetchingClasses } = useClasses();
 
-  const [selectedRace, setSelectedRace] = useState(getInitialValue("race"));
-  const [selectedClass, setSelectedClass] = useState(getInitialValue("class"));
   const [selectedLevel, setSelectedLevel] = useState(
     getInitialValue("level") === "" ? "1" : getInitialValue("level")
   );
@@ -40,7 +44,6 @@ export const Details = () => {
   );
   const [currentHp, setCurrentHp] = useState(getInitialValue("currentHp"));
   const [maxHp, setMaxHp] = useState(getInitialValue("maxHp"));
-  const [characterRace, setCharacterRace] = useState(getInitialValue("race"));
 
   const onLevelChange = (newValue: string) => {
     localStorage.setItem("level", JSON.stringify(newValue));
@@ -50,6 +53,11 @@ export const Details = () => {
   const onClassChange = (newValue: string) => {
     localStorage.setItem("class", JSON.stringify(newValue));
     dispatch(updateClass(newValue));
+  };
+
+  const onRaceChange = (newValue: string) => {
+    localStorage.setItem("race", JSON.stringify(newValue));
+    dispatch(updateRace(newValue));
   };
 
   return (
@@ -151,44 +159,21 @@ export const Details = () => {
         spacing={1}
         pb={2}
       >
-        {isFetchingRaces ? (
-          <Skeleton width="100%" height="56px" />
-        ) : (
-          <Autocomplete
-            fullWidth
-            value={selectedRace}
-            onChange={(_, newValue) =>
-              setSelectedRace(newValue ?? selectedRace)
-            }
-            inputValue={characterRace}
-            onInputChange={(_, newValue) => {
-              localStorage.setItem("race", JSON.stringify(newValue));
-              setCharacterRace(newValue);
-            }}
-            disablePortal
-            options={races.map((race) => race.name)}
-            renderInput={(params) => (
-              <TextField {...params} label="Race" placeholder="Select Race" />
-            )}
-          />
-        )}
+        <SelectComponent
+          isFetching={isFetchingRaces}
+          label="Race"
+          options={races.map((race) => race.name)}
+          onValueChange={onRaceChange}
+          value={getInitialStorageValue("race") ?? race}
+        />
 
-        {isFetchingClasses ? (
-          <Skeleton width="100%" height="56px" />
-        ) : (
-          <Autocomplete
-            fullWidth
-            value={selectedClass}
-            onChange={(_, newValue) => newValue && setSelectedClass(newValue)}
-            inputValue={classId}
-            onInputChange={(_, newValue) => onClassChange(newValue)}
-            disablePortal
-            options={classes.map((classy) => classy.name)}
-            renderInput={(params) => (
-              <TextField {...params} label="Class" placeholder="Select Class" />
-            )}
-          />
-        )}
+        <SelectComponent
+          isFetching={isFetchingClasses}
+          label="Class"
+          options={classes.map((classy) => classy.name)}
+          onValueChange={onClassChange}
+          value={getInitialStorageValue("class") ?? classId}
+        />
       </Stack>
     </>
   );
