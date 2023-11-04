@@ -1,12 +1,15 @@
-import { Grid, InputAdornment, TextField } from "@mui/material";
+import { Grid } from "@mui/material";
 import React from "react";
-import { abilityScores, getModifier } from "../../models/abilities.models";
+import { abilityScores } from "../../models/abilities.models";
 import { useAppSelector, useAppDispatch } from "../../hooks/hooks";
 import { Stats, updateStats } from "../../store/slices/HeroSlice";
+import { StatItem } from "./StatItem";
+import { useClassSavingThrows } from "../../services/classes/classes.service";
 
 export const HeroStats = () => {
-  const { stats } = useAppSelector((state) => state.hero);
+  const { stats, classId } = useAppSelector((state) => state.hero);
   const dispatch = useAppDispatch();
+  const { savingThrows } = useClassSavingThrows(classId);
 
   const onStatsChange = (statId: string, value: string) => {
     const newStats: Stats = {
@@ -24,21 +27,13 @@ export const HeroStats = () => {
         const value = Number.parseInt(stats[score.id]);
 
         return (
-          <Grid item xs={4} key={score.id}>
-            <TextField
-              label={score.id.toUpperCase()}
-              variant="outlined"
-              value={stats[score.id]}
-              onChange={(event) => onStatsChange(score.id, event.target.value)}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    {`(${getModifier(value)})`}
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </Grid>
+          <StatItem
+            isSaveProficient={savingThrows.includes(score.id)}
+            key={score.id}
+            statValue={Number.isNaN(value) ? 0 : value}
+            statId={score.id}
+            onStatsChange={onStatsChange}
+          />
         );
       })}
     </Grid>

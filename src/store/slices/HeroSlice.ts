@@ -13,7 +13,7 @@ const getInitialStats = () => {
         con: "10",
         int: "10",
         wis: "10",
-        char: "10",
+        cha: "10",
       };
 };
 
@@ -23,6 +23,7 @@ interface HeroState {
   level: string;
   proficiencyBonus: string;
   stats: Stats;
+  classId?: string;
 }
 
 const initialState: HeroState = {
@@ -42,10 +43,13 @@ export const heroSlice = createSlice({
     updateStats: (state, action: PayloadAction<Stats>) => {
       state.stats = action.payload;
     },
+    updateClass: (state, action: PayloadAction<string>) => {
+      state.classId = action.payload;
+    },
   },
 });
 
-export const { updateLevel, updateStats } = heroSlice.actions;
+export const { updateLevel, updateStats, updateClass } = heroSlice.actions;
 export const selectHero = (state: RootState) => state.hero;
 
 export default heroSlice.reducer;

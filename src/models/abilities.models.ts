@@ -42,7 +42,7 @@ export const abilityScores: AbilityScore[] = [
     ],
   },
   {
-    id: "char",
+    id: "cha",
     name: "Charisma",
     skills: ["deception", "intimidation", "performance", "persuasion"],
   },
