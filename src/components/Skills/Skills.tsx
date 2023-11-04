@@ -19,10 +19,6 @@ export const Skills = () => {
     getInitialProficiencies()
   );
 
-  const half = Math.ceil(skills.length / 2);
-  const skillsListOne = skills.slice(0, half);
-  const skillsListTwo = skills.slice(half);
-
   const onSkillChecked = (skillIndex: string) => {
     const tempProficientSkills = [...proficientSkills];
     const index = tempProficientSkills.findIndex(
@@ -60,53 +56,28 @@ export const Skills = () => {
           <CircularProgress />
         </Box>
       ) : (
-        <>
-          <List
-            sx={{
-              color: "#000",
-              border: "solid 1px rgba(0, 0, 0, 0.25)",
-              px: 1,
-              borderRadius: 1,
-              width: "50%",
-            }}
-            disablePadding
-          >
-            {skillsListOne.map((skill) => (
-              <ListItem key={skill.id} disablePadding>
-                <SkillButton
-                  modifier={getModifier(Number.parseInt(stats[skill.stat]))}
-                  bonus={Number.parseInt(proficiencyBonus) ?? 0}
-                  skillName={skill.name}
-                  checked={proficientSkills.includes(skill.id)}
-                  handleToggle={() => onSkillChecked(skill.id)}
-                />
-              </ListItem>
-            ))}
-          </List>
-          <List
-            sx={{
-              color: "#000",
-              border: "solid 1px rgba(0, 0, 0, 0.25)",
-              px: 1,
-              borderRadius: 1,
-              mt: 1,
-              width: "50%",
-            }}
-            disablePadding
-          >
-            {skillsListTwo.map((skill) => (
-              <ListItem key={skill.id} disablePadding>
-                <SkillButton
-                  modifier={getModifier(Number.parseInt(stats[skill.stat]))}
-                  bonus={Number.parseInt(proficiencyBonus) ?? 0}
-                  skillName={skill.name}
-                  checked={proficientSkills.includes(skill.id)}
-                  handleToggle={() => onSkillChecked(skill.id)}
-                />
-              </ListItem>
-            ))}
-          </List>
-        </>
+        <List
+          sx={{
+            color: "#000",
+            border: "solid 1px rgba(0, 0, 0, 0.25)",
+            px: 1,
+            borderRadius: 1,
+            width: "100%",
+          }}
+          disablePadding
+        >
+          {skills.map((skill) => (
+            <ListItem key={skill.id} disablePadding>
+              <SkillButton
+                modifier={getModifier(Number.parseInt(stats[skill.stat]))}
+                bonus={Number.parseInt(proficiencyBonus) ?? 0}
+                skillName={skill.name}
+                checked={proficientSkills.includes(skill.id)}
+                handleToggle={() => onSkillChecked(skill.id)}
+              />
+            </ListItem>
+          ))}
+        </List>
       )}
     </Stack>
   );
