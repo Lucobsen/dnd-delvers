@@ -104,7 +104,7 @@ export const Details = () => {
         </Grid>
 
         <Grid item xs={3}>
-          <TextBox value={proficiencyBonus} label="Prof. Bonus" readOnly />
+          <TextBox value={proficiencyBonus} label="Prof." readOnly />
         </Grid>
 
         <Grid item xs={3}>

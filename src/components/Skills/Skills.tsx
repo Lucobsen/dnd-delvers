@@ -1,7 +1,18 @@
-import { Box, CircularProgress, List, ListItem, Stack } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Paper,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 import React, { useState } from "react";
 import { useSkills } from "../../services/skills/use-skills-query";
-import { SkillButton } from "./SkillButton";
+import { SkillInfo } from "./SkillInfo";
 import { useAppSelector } from "../../hooks/hooks";
 import { getModifier } from "../../models/abilities.models";
 
@@ -56,28 +67,39 @@ export const Skills = () => {
           <CircularProgress />
         </Box>
       ) : (
-        <List
+        <TableContainer
+          component={Paper}
           sx={{
-            color: "#000",
             border: "solid 1px rgba(0, 0, 0, 0.25)",
-            px: 1,
             borderRadius: 1,
-            width: "100%",
+            minWidth: "100%",
           }}
-          disablePadding
         >
-          {skills.map((skill) => (
-            <ListItem key={skill.id} disablePadding>
-              <SkillButton
-                modifier={getModifier(Number.parseInt(stats[skill.stat]))}
-                bonus={Number.parseInt(proficiencyBonus) ?? 0}
-                skillName={skill.name}
-                checked={proficientSkills.includes(skill.id)}
-                handleToggle={() => onSkillChecked(skill.id)}
-              />
-            </ListItem>
-          ))}
-        </List>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell align="center">Prof.</TableCell>
+                <TableCell>Mod.</TableCell>
+                <TableCell>Skill</TableCell>
+                <TableCell align="center">Bonus</TableCell>
+              </TableRow>
+            </TableHead>
+
+            <TableBody>
+              {skills.map((skill) => (
+                <SkillInfo
+                  stat={skill.stat}
+                  key={skill.id}
+                  modifier={getModifier(Number.parseInt(stats[skill.stat]))}
+                  bonus={Number.parseInt(proficiencyBonus) ?? 0}
+                  skillName={skill.name}
+                  checked={proficientSkills.includes(skill.id)}
+                  handleToggle={() => onSkillChecked(skill.id)}
+                />
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       )}
     </Stack>
   );
