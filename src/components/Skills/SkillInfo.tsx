@@ -31,7 +31,7 @@ export const SkillInfo = ({
 
   return (
     <TableRow>
-      <StyledCell align="center">
+      <StyledCell align="center" padding="checkbox">
         <Radio
           edge="start"
           checked={checked}
@@ -44,7 +44,7 @@ export const SkillInfo = ({
         <Typography fontSize="small">{stat.toUpperCase()}</Typography>
       </StyledCell>
       <StyledCell>
-        <Typography>{skillName}</Typography>
+        <Typography fontSize="small">{skillName}</Typography>
       </StyledCell>
       <StyledCell align="center">
         <Typography>{`(${

@@ -72,7 +72,7 @@ export const Skills = () => {
           sx={{
             border: "solid 1px rgba(0, 0, 0, 0.25)",
             borderRadius: 1,
-            minWidth: "100%",
+            width: "100%",
           }}
         >
           <Table size="small">
