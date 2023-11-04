@@ -4,7 +4,7 @@ import { useRaces } from "../../services/races/races.services";
 import { useClasses } from "../../services/classes/classes.service";
 import { levels } from "../../models/levels.models";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
-import { updateLevel } from "../../store/slices/HeroSlice";
+import { updateClass, updateLevel } from "../../store/slices/HeroSlice";
 
 const getInitialValue = (key: string): string => {
   const value = localStorage.getItem(key);
@@ -20,7 +20,9 @@ const setHpValue = (newValue: string, currentValue: string) => {
 };
 
 export const Details = () => {
-  const { level, proficiencyBonus } = useAppSelector((state) => state.hero);
+  const { level, proficiencyBonus, classId } = useAppSelector(
+    (state) => state.hero
+  );
   const dispatch = useAppDispatch();
 
   const { races, isFetching: isFetchingRaces } = useRaces();
@@ -39,13 +41,15 @@ export const Details = () => {
   const [currentHp, setCurrentHp] = useState(getInitialValue("currentHp"));
   const [maxHp, setMaxHp] = useState(getInitialValue("maxHp"));
   const [characterRace, setCharacterRace] = useState(getInitialValue("race"));
-  const [characterClass, setCharacterClass] = useState(
-    getInitialValue("class")
-  );
 
   const onLevelChange = (newValue: string) => {
     localStorage.setItem("level", JSON.stringify(newValue));
     dispatch(updateLevel(newValue));
+  };
+
+  const onClassChange = (newValue: string) => {
+    localStorage.setItem("class", JSON.stringify(newValue));
+    dispatch(updateClass(newValue));
   };
 
   return (
@@ -175,23 +179,13 @@ export const Details = () => {
           <Autocomplete
             fullWidth
             value={selectedClass}
-            onChange={(_, newValue) =>
-              setSelectedClass(newValue ?? selectedClass)
-            }
-            inputValue={characterClass}
-            onInputChange={(_, newValue) => {
-              localStorage.setItem("class", JSON.stringify(newValue));
-              setCharacterClass(newValue);
-            }}
+            onChange={(_, newValue) => newValue && setSelectedClass(newValue)}
+            inputValue={classId}
+            onInputChange={(_, newValue) => onClassChange(newValue)}
             disablePortal
             options={classes.map((classy) => classy.name)}
             renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Class"
-                placeholder="Select Class"
-                onChange={(event) => setCharacterClass(event.target.value)}
-              />
+              <TextField {...params} label="Class" placeholder="Select Class" />
             )}
           />
         )}
