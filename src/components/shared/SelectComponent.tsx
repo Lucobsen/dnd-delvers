@@ -8,7 +8,7 @@ import {
 import React from "react";
 
 interface SelectComponentProps {
-  isFetching: boolean;
+  isFetching?: boolean;
   onValueChange: (newValue: string) => void;
   options: string[];
   label: string;
@@ -16,7 +16,7 @@ interface SelectComponentProps {
 }
 
 export const SelectComponent = ({
-  isFetching,
+  isFetching = false,
   onValueChange,
   options,
   label,

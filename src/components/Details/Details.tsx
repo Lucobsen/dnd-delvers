@@ -1,4 +1,4 @@
-import { Autocomplete, Grid, Stack, TextField } from "@mui/material";
+import { Grid, Stack } from "@mui/material";
 import React, { useState } from "react";
 import { useRaces } from "../../services/races/races.services";
 import { useClasses } from "../../services/classes/classes.service";
@@ -11,11 +11,7 @@ import {
 } from "../../store/slices/HeroSlice";
 import { SelectComponent } from "../shared/SelectComponent";
 import { getInitialStorageValue } from "../../utils/get-initial-storage-value";
-
-const getInitialValue = (key: string): string => {
-  const value = localStorage.getItem(key);
-  return value ? JSON.parse(value) : "";
-};
+import { TextBox } from "../shared/TextBox";
 
 const setHpValue = (newValue: string, currentValue: string) => {
   const parsedNewValue = Number.parseInt(newValue);
@@ -34,25 +30,42 @@ export const Details = () => {
   const { races, isFetching: isFetchingRaces } = useRaces();
   const { classes, isFetching: isFetchingClasses } = useClasses();
 
-  const [selectedLevel, setSelectedLevel] = useState(
-    getInitialValue("level") === "" ? "1" : getInitialValue("level")
+  const [characterName, setCharacterName] = useState(
+    getInitialStorageValue("name")
   );
-
-  const [characterName, setCharacterName] = useState(getInitialValue("name"));
   const [ac, setAc] = useState(
-    getInitialValue("ac") === "" ? "10" : getInitialValue("ac")
+    getInitialStorageValue("ac") === "" ? "10" : getInitialStorageValue("ac")
   );
-  const [currentHp, setCurrentHp] = useState(getInitialValue("currentHp"));
-  const [maxHp, setMaxHp] = useState(getInitialValue("maxHp"));
+  const [currentHp, setCurrentHp] = useState(
+    getInitialStorageValue("currentHp")
+  );
+  const [maxHp, setMaxHp] = useState(getInitialStorageValue("maxHp"));
+
+  const onNameChange = (newValue: string) => {
+    localStorage.setItem("name", JSON.stringify(newValue));
+    setCharacterName(newValue);
+  };
+
+  const onAcChange = (newValue: string) => {
+    localStorage.setItem("ac", JSON.stringify(newValue));
+    setAc(newValue);
+  };
 
   const onLevelChange = (newValue: string) => {
     localStorage.setItem("level", JSON.stringify(newValue));
     dispatch(updateLevel(newValue));
   };
 
-  const onClassChange = (newValue: string) => {
-    localStorage.setItem("class", JSON.stringify(newValue));
-    dispatch(updateClass(newValue));
+  const onHpChange = (newValue: string) => {
+    const newHpValue = setHpValue(newValue, currentHp);
+    localStorage.setItem("currentHp", JSON.stringify(newHpValue));
+    setCurrentHp(newHpValue);
+  };
+
+  const onMaxHpChange = (newValue: string) => {
+    const newHpValue = setHpValue(newValue, maxHp);
+    localStorage.setItem("maxHp", JSON.stringify(newHpValue));
+    setMaxHp(newHpValue);
   };
 
   const onRaceChange = (newValue: string) => {
@@ -60,94 +73,57 @@ export const Details = () => {
     dispatch(updateRace(newValue));
   };
 
+  const onClassChange = (newValue: string) => {
+    localStorage.setItem("class", JSON.stringify(newValue));
+    dispatch(updateClass(newValue));
+  };
+
   return (
     <>
       <Grid container spacing={1} pb={1.5}>
         <Grid item xs={9} pb={0.5}>
-          <TextField
-            fullWidth
+          <TextBox
             value={characterName}
             label="Name"
-            variant="outlined"
             placeholder="Enter Name"
-            onChange={(event) => {
-              const name = event.target.value;
-              localStorage.setItem("name", JSON.stringify(name));
-              setCharacterName(name);
-            }}
+            onChange={onNameChange}
           />
         </Grid>
 
         <Grid item xs={3} pb={0.5}>
-          <TextField
-            fullWidth
-            value={ac}
-            label="AC"
-            type="number"
-            variant="outlined"
-            onChange={(event) => {
-              const acValue = event.target.value;
-              localStorage.setItem("ac", JSON.stringify(acValue));
-              setAc(acValue);
-            }}
-          />
+          <TextBox value={ac} label="AC" isNumber onChange={onAcChange} />
         </Grid>
 
         <Grid item xs={3}>
-          <Autocomplete
-            fullWidth
-            value={selectedLevel}
-            onChange={(_, newValue) => newValue && setSelectedLevel(newValue)}
-            inputValue={level}
-            onInputChange={(_, newValue) => onLevelChange(newValue)}
-            disablePortal
+          <SelectComponent
+            onValueChange={onLevelChange}
             options={levels}
-            disableClearable
-            renderInput={(params) => (
-              <TextField {...params} label="Level" placeholder="Select Level" />
-            )}
+            label="Level"
+            value={level}
           />
         </Grid>
 
         <Grid item xs={3}>
-          <TextField
-            fullWidth
-            value={proficiencyBonus}
-            label="Prof. Bonus"
-            InputProps={{
-              readOnly: true,
-            }}
-            variant="outlined"
-          />
+          <TextBox value={proficiencyBonus} label="Prof. Bonus" readOnly />
         </Grid>
 
         <Grid item xs={3}>
-          <TextField
-            fullWidth
+          <TextBox
             value={currentHp}
-            label="Hp"
-            type="number"
+            label="HP"
+            isNumber
             variant="standard"
-            onChange={(event) => {
-              const newHpValue = setHpValue(event.target.value, currentHp);
-              localStorage.setItem("currentHp", JSON.stringify(newHpValue));
-              setCurrentHp(newHpValue);
-            }}
+            onChange={onHpChange}
           />
         </Grid>
 
         <Grid item xs={3}>
-          <TextField
-            fullWidth
+          <TextBox
             value={maxHp}
-            label="Max Hp"
-            type="number"
+            label="Max HP"
+            isNumber
             variant="standard"
-            onChange={(event) => {
-              const newHpValue = setHpValue(event.target.value, maxHp);
-              localStorage.setItem("maxHp", JSON.stringify(newHpValue));
-              setMaxHp(newHpValue);
-            }}
+            onChange={onMaxHpChange}
           />
         </Grid>
       </Grid>

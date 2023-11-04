@@ -1,6 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import { getProficiencyBonus } from "../../models/levels.models";
+import { getInitialStorageValue } from "../../utils/get-initial-storage-value";
 
 const getInitialStats = () => {
   const stats = localStorage.getItem("stats");
@@ -28,7 +29,10 @@ interface HeroState {
 }
 
 const initialState: HeroState = {
-  level: "1",
+  level:
+    getInitialStorageValue("level") === ""
+      ? "1"
+      : getInitialStorageValue("level"),
   proficiencyBonus: "+2",
   stats: getInitialStats(),
 };
