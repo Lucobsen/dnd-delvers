@@ -1,4 +1,11 @@
-import { Radio, TableRow, TableCell, Typography, styled } from "@mui/material";
+import {
+  Radio,
+  TableRow,
+  TableCell,
+  Typography,
+  styled,
+  Stack,
+} from "@mui/material";
 import React, { useState } from "react";
 
 const StyledCell = styled(TableCell)(() => ({
@@ -30,26 +37,22 @@ export const SkillInfo = ({
   };
 
   return (
-    <TableRow>
-      <StyledCell align="center" padding="checkbox">
-        <Radio
-          edge="start"
-          checked={checked}
-          disableRipple
-          size="small"
-          onClick={onToggle}
-        />
+    <TableRow onClick={onToggle}>
+      <StyledCell padding="checkbox">
+        <Radio checked={checked} disableRipple size="small" />
       </StyledCell>
       <StyledCell>
-        <Typography fontSize="small">{stat.toUpperCase()}</Typography>
-      </StyledCell>
-      <StyledCell>
-        <Typography fontSize="small">{skillName}</Typography>
-      </StyledCell>
-      <StyledCell align="center">
         <Typography>{`(${
           isProficient ? bonus + modifier : modifier
         })`}</Typography>
+      </StyledCell>
+      <StyledCell>
+        <Stack direction="row" spacing={1} alignItems="center">
+          <Typography fontSize="small">{skillName}</Typography>
+          <Typography fontSize={12} color="grey">
+            ({stat.toUpperCase()})
+          </Typography>
+        </Stack>
       </StyledCell>
     </TableRow>
   );
