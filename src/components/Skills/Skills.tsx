@@ -50,7 +50,7 @@ export const Skills = ({ open, onClose }: SkillsProps) => {
   };
 
   return (
-    <Dialog onClose={onClose} open={open}>
+    <Dialog onClose={onClose} open={open} fullWidth>
       <Stack
         direction="row"
         spacing={1}

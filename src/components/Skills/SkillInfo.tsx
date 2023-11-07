@@ -10,6 +10,7 @@ import React, { useState } from "react";
 
 const StyledCell = styled(TableCell)(() => ({
   border: "none",
+  maxWidth: "10px", // TODO: this is quite hacky. Could do something with Grid?
 }));
 
 interface SkillInfoProps {
@@ -41,7 +42,7 @@ export const SkillInfo = ({
       <StyledCell padding="checkbox">
         <Radio checked={checked} disableRipple size="small" />
       </StyledCell>
-      <StyledCell>
+      <StyledCell padding="checkbox">
         <Typography>{`(${
           isProficient ? bonus + modifier : modifier
         })`}</Typography>
