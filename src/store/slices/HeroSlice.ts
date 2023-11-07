@@ -3,6 +3,12 @@ import { RootState } from "../store";
 import { getProficiencyBonus } from "../../models/levels.models";
 import { getInitialStorageValue } from "../../utils/get-initial-storage-value";
 
+const getInitialFeats = () => {
+  const feats = localStorage.getItem("feats");
+
+  return feats ? JSON.parse(feats) : null;
+};
+
 const getInitialStats = () => {
   const stats = localStorage.getItem("stats");
 
@@ -26,6 +32,7 @@ interface HeroState {
   stats: Stats;
   classId?: string;
   race?: string;
+  feats?: string;
 }
 
 const initialState: HeroState = {
@@ -35,6 +42,7 @@ const initialState: HeroState = {
       : getInitialStorageValue("level"),
   proficiencyBonus: "+2",
   stats: getInitialStats(),
+  feats: getInitialFeats(),
 };
 
 export const heroSlice = createSlice({
@@ -54,11 +62,19 @@ export const heroSlice = createSlice({
     updateRace: (state, action: PayloadAction<string>) => {
       state.race = action.payload;
     },
+    updateFeats: (state, action: PayloadAction<string>) => {
+      state.feats = action.payload;
+    },
   },
 });
 
-export const { updateLevel, updateStats, updateClass, updateRace } =
-  heroSlice.actions;
+export const {
+  updateLevel,
+  updateStats,
+  updateClass,
+  updateRace,
+  updateFeats,
+} = heroSlice.actions;
 
 export const selectHero = (state: RootState) => state.hero;
 
