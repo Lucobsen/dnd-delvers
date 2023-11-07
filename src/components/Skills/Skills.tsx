@@ -78,10 +78,9 @@ export const Skills = () => {
           <Table size="small">
             <TableHead>
               <TableRow>
-                <TableCell align="center">Prof.</TableCell>
-                <TableCell>Mod.</TableCell>
+                <TableCell>Prof.</TableCell>
+                <TableCell>Bonus</TableCell>
                 <TableCell>Skill</TableCell>
-                <TableCell align="center">Bonus</TableCell>
               </TableRow>
             </TableHead>
 
