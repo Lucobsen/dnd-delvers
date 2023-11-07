@@ -37,14 +37,9 @@ export const SkillInfo = ({
   };
 
   return (
-    <TableRow>
+    <TableRow onClick={onToggle}>
       <StyledCell padding="checkbox">
-        <Radio
-          checked={checked}
-          disableRipple
-          size="small"
-          onClick={onToggle}
-        />
+        <Radio checked={checked} disableRipple size="small" />
       </StyledCell>
       <StyledCell>
         <Typography>{`(${

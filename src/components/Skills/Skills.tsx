@@ -1,14 +1,12 @@
 import {
   Box,
   CircularProgress,
+  Dialog,
   Paper,
   Stack,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
-  TableHead,
-  TableRow,
 } from "@mui/material";
 import React, { useState } from "react";
 import { useSkills } from "../../services/skills/use-skills-query";
@@ -22,9 +20,13 @@ const getInitialProficiencies = () => {
   return skills ? JSON.parse(skills) : [];
 };
 
-export const Skills = () => {
-  const { skills, isFetching } = useSkills();
+interface SkillsProps {
+  open: boolean;
+  onClose: () => void;
+}
 
+export const Skills = ({ open, onClose }: SkillsProps) => {
+  const { skills, isFetching } = useSkills();
   const { proficiencyBonus, stats } = useAppSelector((state) => state.hero);
   const [proficientSkills, setProficientSkills] = useState<string[]>(
     getInitialProficiencies()
@@ -48,58 +50,45 @@ export const Skills = () => {
   };
 
   return (
-    <Stack
-      direction="row"
-      spacing={1}
-      alignItems="flex-start"
-      mt={1}
-      width="100%"
-    >
-      {isFetching ? (
-        <Box
-          sx={{
-            display: "flex",
-            m: "auto",
-            height: "50vh",
-            alignItems: "center",
-          }}
-        >
-          <CircularProgress />
-        </Box>
-      ) : (
-        <TableContainer
-          component={Paper}
-          sx={{
-            border: "solid 1px rgba(0, 0, 0, 0.25)",
-            borderRadius: 1,
-            width: "100%",
-          }}
-        >
-          <Table size="small">
-            <TableHead>
-              <TableRow>
-                <TableCell>Prof.</TableCell>
-                <TableCell>Bonus</TableCell>
-                <TableCell>Skill</TableCell>
-              </TableRow>
-            </TableHead>
-
-            <TableBody>
-              {skills.map((skill) => (
-                <SkillInfo
-                  stat={skill.stat}
-                  key={skill.id}
-                  modifier={getModifier(Number.parseInt(stats[skill.stat]))}
-                  bonus={Number.parseInt(proficiencyBonus) ?? 0}
-                  skillName={skill.name}
-                  checked={proficientSkills.includes(skill.id)}
-                  handleToggle={() => onSkillChecked(skill.id)}
-                />
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      )}
-    </Stack>
+    <Dialog onClose={onClose} open={open}>
+      <Stack
+        direction="row"
+        spacing={1}
+        alignItems="flex-start"
+        mt={1}
+        width="100%"
+      >
+        {isFetching ? (
+          <Box
+            sx={{
+              display: "flex",
+              m: "auto",
+              height: "50vh",
+              alignItems: "center",
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        ) : (
+          <TableContainer component={Paper}>
+            <Table size="small">
+              <TableBody>
+                {skills.map((skill) => (
+                  <SkillInfo
+                    stat={skill.stat}
+                    key={skill.id}
+                    modifier={getModifier(Number.parseInt(stats[skill.stat]))}
+                    bonus={Number.parseInt(proficiencyBonus) ?? 0}
+                    skillName={skill.name}
+                    checked={proficientSkills.includes(skill.id)}
+                    handleToggle={() => onSkillChecked(skill.id)}
+                  />
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
+      </Stack>
+    </Dialog>
   );
 };

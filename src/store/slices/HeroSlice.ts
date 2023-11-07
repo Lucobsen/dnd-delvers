@@ -59,6 +59,7 @@ export const heroSlice = createSlice({
 
 export const { updateLevel, updateStats, updateClass, updateRace } =
   heroSlice.actions;
+
 export const selectHero = (state: RootState) => state.hero;
 
 export default heroSlice.reducer;
