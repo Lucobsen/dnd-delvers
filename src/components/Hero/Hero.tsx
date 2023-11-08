@@ -1,4 +1,4 @@
-import { Button, Container } from "@mui/material";
+import { Button, Container, Grid } from "@mui/material";
 import React, { useState } from "react";
 import { Details } from "../Details/Details";
 import { HeroStats } from "../Stats/Stats";
@@ -15,23 +15,29 @@ export const Hero = () => {
 
       <HeroStats />
 
-      <Button
-        fullWidth
-        variant="outlined"
-        onClick={() => setOpenSkills(true)}
-        sx={{ mt: 2 }}
-      >
-        Skills
-      </Button>
+      <Grid container mt={1} spacing={1}>
+        <Grid item xs={4}>
+          <Button
+            sx={{ padding: "5px 10px" }}
+            fullWidth
+            variant="outlined"
+            onClick={() => setOpenSkills(true)}
+          >
+            Skills
+          </Button>
+        </Grid>
 
-      <Button
-        fullWidth
-        variant="outlined"
-        onClick={() => setOpenFeats(true)}
-        sx={{ mt: 1 }}
-      >
-        Features & Traits
-      </Button>
+        <Grid item xs={8}>
+          <Button
+            sx={{ padding: "5px 10px" }}
+            fullWidth
+            variant="outlined"
+            onClick={() => setOpenFeats(true)}
+          >
+            Features & Traits
+          </Button>
+        </Grid>
+      </Grid>
 
       <Skills open={openSkills} onClose={() => setOpenSkills(false)} />
       <Feats open={openFeats} onClose={() => setOpenFeats(false)} />
