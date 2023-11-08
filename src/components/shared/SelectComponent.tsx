@@ -30,16 +30,16 @@ export const SelectComponent = ({
         <FormControl fullWidth sx={{ textAlign: "left" }}>
           <InputLabel>{label}</InputLabel>
           <Select
+            SelectDisplayProps={{
+              style: { paddingRight: "14px", textOverflow: "unset" },
+            }}
+            IconComponent={() => null}
             value={value}
             label={label}
             onChange={(event) => onValueChange(event.target.value)}
           >
             {options.map((option) => (
-              <MenuItem
-                sx={{ alignItems: "flex-start" }}
-                key={option}
-                value={option}
-              >
+              <MenuItem key={option} value={option}>
                 {option}
               </MenuItem>
             ))}

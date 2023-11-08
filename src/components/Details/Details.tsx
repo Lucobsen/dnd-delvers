@@ -94,7 +94,7 @@ export const Details = () => {
           <TextBox value={ac} label="AC" isNumber onChange={onAcChange} />
         </Grid>
 
-        <Grid item xs={3}>
+        <Grid item xs={3.5}>
           <SelectComponent
             onValueChange={onLevelChange}
             options={levels}
@@ -103,7 +103,7 @@ export const Details = () => {
           />
         </Grid>
 
-        <Grid item xs={3}>
+        <Grid item xs={2.5}>
           <TextBox value={proficiencyBonus} label="Prof." readOnly />
         </Grid>
 
