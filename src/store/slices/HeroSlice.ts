@@ -3,10 +3,10 @@ import { RootState } from "../store";
 import { getProficiencyBonus } from "../../models/levels.models";
 import { getInitialStorageValue } from "../../utils/get-initial-storage-value";
 
-const getInitialFeats = () => {
-  const feats = localStorage.getItem("feats");
+const getInitialString = (key: string) => {
+  const value = localStorage.getItem(key);
 
-  return feats ? JSON.parse(feats) : null;
+  return value ? JSON.parse(value) : null;
 };
 
 const getInitialStats = () => {
@@ -42,7 +42,8 @@ const initialState: HeroState = {
       : getInitialStorageValue("level"),
   proficiencyBonus: "+2",
   stats: getInitialStats(),
-  feats: getInitialFeats(),
+  feats: getInitialString("feats"),
+  classId: getInitialString("class"),
 };
 
 export const heroSlice = createSlice({
