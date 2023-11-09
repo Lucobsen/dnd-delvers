@@ -12,6 +12,7 @@ import {
 import { SelectComponent } from "../shared/SelectComponent";
 import { getInitialStorageValue } from "../../utils/get-initial-storage-value";
 import { TextBox } from "../shared/TextBox";
+import { DeathSaveModal } from "../../modals/DeathSaves.modal";
 
 const setHpValue = (newValue: string, currentValue: string) => {
   const parsedNewValue = Number.parseInt(newValue);
@@ -30,6 +31,7 @@ export const Details = () => {
   const { races, isFetching: isFetchingRaces } = useRaces();
   const { classes, isFetching: isFetchingClasses } = useClasses();
 
+  const [deathSaves, setDeathSaves] = useState(false);
   const [characterName, setCharacterName] = useState(
     getInitialStorageValue("name")
   );
@@ -57,7 +59,14 @@ export const Details = () => {
   };
 
   const onHpChange = (newValue: string) => {
-    const newHpValue = setHpValue(newValue, currentHp);
+    let newHpValue = "0";
+
+    if (newValue !== "0.0") {
+      newHpValue = setHpValue(newValue, currentHp);
+    } else {
+      setDeathSaves(true);
+    }
+
     localStorage.setItem("currentHp", JSON.stringify(newHpValue));
     setCurrentHp(newHpValue);
   };
@@ -151,6 +160,8 @@ export const Details = () => {
           value={getInitialStorageValue("class") ?? classId}
         />
       </Stack>
+
+      <DeathSaveModal open={deathSaves} onClose={() => setDeathSaves(false)} />
     </>
   );
 };
