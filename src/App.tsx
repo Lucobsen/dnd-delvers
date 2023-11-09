@@ -1,5 +1,5 @@
 import React from "react";
-import { Hero } from "./components/Hero/Hero";
+import { Hero } from "./pages/Hero";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Provider } from "react-redux";
 import { store } from "./store/store";

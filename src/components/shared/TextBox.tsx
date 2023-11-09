@@ -3,7 +3,7 @@ import React from "react";
 
 interface TextBoxProps {
   value: string;
-  label: string;
+  label?: string;
   isNumber?: boolean;
   variant?: "filled" | "standard" | "outlined" | undefined;
   onChange?: (newValue: string) => void;
