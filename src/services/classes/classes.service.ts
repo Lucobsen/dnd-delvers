@@ -1,5 +1,10 @@
 import { isNotNullOrUndefined } from "../../utils/is-not-null-or-undefined";
-import { DataItem, DnDApiResponse, dnd5eApiUrl } from "../api";
+import {
+  DataItem,
+  DnDApiResponse,
+  SpellCastingInfoResponse,
+  dnd5eApiUrl,
+} from "../api";
 import { useQuery } from "@tanstack/react-query";
 
 export const useClasses = (): { classes: DataItem[]; isFetching: boolean } => {
@@ -51,4 +56,32 @@ export const useClassSavingThrows = (
     .filter(isNotNullOrUndefined);
 
   return { savingThrows, isFetching } as const;
+};
+
+export const useClassSpellcastingInfo = (
+  classId: string | undefined
+): { spellcastingAbility: string | undefined; isFetching: boolean } => {
+  const { data, isFetching } = useQuery<SpellCastingInfoResponse>(
+    [`${classId}SpellCastingInfo`],
+    async () => {
+      const parameter = classId ? classId.toLowerCase() : undefined;
+      const res = await fetch(
+        `${dnd5eApiUrl}/classes/${parameter}/spellcasting`
+      );
+      return res.json();
+    },
+    {
+      refetchOnWindowFocus: false,
+      refetchInterval: false,
+    }
+  );
+
+  if (!data && !isFetching) {
+    throw Error("Failed to fetch spellcasting info!");
+  }
+
+  return {
+    spellcastingAbility: data?.spellcasting_ability?.index,
+    isFetching,
+  } as const;
 };

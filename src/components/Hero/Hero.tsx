@@ -4,6 +4,7 @@ import { Details } from "../Details/Details";
 import { HeroStats } from "../Stats/Stats";
 import { Skills } from "../Skills/Skills";
 import { Feats } from "../Feats/Feats";
+import { SpellStats } from "../Spells/SpellStats";
 
 export const Hero = () => {
   const [openSkills, setOpenSkills] = useState(false);
@@ -14,6 +15,8 @@ export const Hero = () => {
       <Details />
 
       <HeroStats />
+
+      <SpellStats />
 
       <Grid container mt={1} spacing={1}>
         <Grid item xs={4}>
