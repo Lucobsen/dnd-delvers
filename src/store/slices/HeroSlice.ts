@@ -3,6 +3,15 @@ import { RootState } from "../store";
 import { getProficiencyBonus } from "../../models/levels.models";
 import { getInitialStorageValue } from "../../utils/get-initial-storage-value";
 
+const getInitialProfBonus = () => {
+  const level =
+    getInitialStorageValue("level") === ""
+      ? "1"
+      : getInitialStorageValue("level");
+
+  return getProficiencyBonus(level);
+};
+
 const getInitialString = (key: string) => {
   const value = localStorage.getItem(key);
 
@@ -40,7 +49,7 @@ const initialState: HeroState = {
     getInitialStorageValue("level") === ""
       ? "1"
       : getInitialStorageValue("level"),
-  proficiencyBonus: "+2",
+  proficiencyBonus: getInitialProfBonus(),
   stats: getInitialStats(),
   feats: getInitialString("feats"),
   classId: getInitialString("class"),

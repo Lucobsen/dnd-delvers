@@ -9,4 +9,8 @@ export interface DataItem {
   url: string;
 }
 
+export interface SpellCastingInfoResponse {
+  spellcasting_ability: DataItem;
+}
+
 export const dnd5eApiUrl = "https://www.dnd5eapi.co/api";

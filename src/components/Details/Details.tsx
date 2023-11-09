@@ -12,7 +12,7 @@ import {
 import { SelectComponent } from "../shared/SelectComponent";
 import { getInitialStorageValue } from "../../utils/get-initial-storage-value";
 import { TextBox } from "../shared/TextBox";
-import { DeathSaveModal } from "../../modals/DeathSaves.modal";
+import { DeathSaveModal } from "../modals/DeathSaves.modal";
 
 const setHpValue = (newValue: string, currentValue: string) => {
   const parsedNewValue = Number.parseInt(newValue);
@@ -142,7 +142,6 @@ export const Details = () => {
         alignItems="center"
         justifyContent="space-evenly"
         spacing={1}
-        pb={2}
       >
         <SelectComponent
           isFetching={isFetchingRaces}
