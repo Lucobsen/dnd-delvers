@@ -13,14 +13,7 @@ import { SelectComponent } from "../shared/SelectComponent";
 import { getInitialStorageValue } from "../../utils/get-initial-storage-value";
 import { TextBox } from "../shared/TextBox";
 import { DeathSaveModal } from "../modals/DeathSaves.modal";
-
-const setHpValue = (newValue: string, currentValue: string) => {
-  const parsedNewValue = Number.parseInt(newValue);
-
-  if (parsedNewValue > 999) return currentValue;
-
-  return newValue;
-};
+import { HpLogic } from "./HpLogic";
 
 export const Details = () => {
   const { level, proficiencyBonus, classId, race } = useAppSelector(
@@ -38,10 +31,6 @@ export const Details = () => {
   const [ac, setAc] = useState(
     getInitialStorageValue("ac") === "" ? "10" : getInitialStorageValue("ac")
   );
-  const [currentHp, setCurrentHp] = useState(
-    getInitialStorageValue("currentHp")
-  );
-  const [maxHp, setMaxHp] = useState(getInitialStorageValue("maxHp"));
 
   const onNameChange = (newValue: string) => {
     localStorage.setItem("name", JSON.stringify(newValue));
@@ -56,25 +45,6 @@ export const Details = () => {
   const onLevelChange = (newValue: string) => {
     localStorage.setItem("level", JSON.stringify(newValue));
     dispatch(updateLevel(newValue));
-  };
-
-  const onHpChange = (newValue: string) => {
-    let newHpValue = "0";
-
-    if (newValue !== "0.0") {
-      newHpValue = setHpValue(newValue, currentHp);
-    } else {
-      setDeathSaves(true);
-    }
-
-    localStorage.setItem("currentHp", JSON.stringify(newHpValue));
-    setCurrentHp(newHpValue);
-  };
-
-  const onMaxHpChange = (newValue: string) => {
-    const newHpValue = setHpValue(newValue, maxHp);
-    localStorage.setItem("maxHp", JSON.stringify(newHpValue));
-    setMaxHp(newHpValue);
   };
 
   const onRaceChange = (newValue: string) => {
@@ -116,24 +86,8 @@ export const Details = () => {
           <TextBox value={proficiencyBonus} label="Prof." readOnly />
         </Grid>
 
-        <Grid item xs={3}>
-          <TextBox
-            value={currentHp}
-            label="HP"
-            isNumber
-            variant="standard"
-            onChange={onHpChange}
-          />
-        </Grid>
-
-        <Grid item xs={3}>
-          <TextBox
-            value={maxHp}
-            label="Max HP"
-            isNumber
-            variant="standard"
-            onChange={onMaxHpChange}
-          />
+        <Grid item xs={6}>
+          <HpLogic onDeathSaveChange={setDeathSaves} />
         </Grid>
       </Grid>
 
