@@ -21,11 +21,13 @@ export const TextBox = ({
   readOnly,
 }: TextBoxProps) => (
   <TextField
+    InputLabelProps={{ sx: { overflow: "visible" } }}
     fullWidth
     value={value}
     label={label}
     InputProps={{
       readOnly,
+      disableUnderline: true,
     }}
     placeholder={placeholder}
     type={isNumber ? "number" : "text"}
