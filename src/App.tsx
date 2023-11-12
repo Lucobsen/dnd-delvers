@@ -4,10 +4,11 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
 import { styled } from "@mui/material";
+import { NavBar } from "./components/Navbar/Navbar";
+import { Footer } from "./components/Footer/Footer";
 
 const AppWrapper = styled("div")`
   text-align: center;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -23,7 +24,9 @@ export const App = () => {
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
         <AppWrapper>
+          <NavBar />
           <Hero />
+          <Footer />
         </AppWrapper>
       </Provider>
     </QueryClientProvider>
