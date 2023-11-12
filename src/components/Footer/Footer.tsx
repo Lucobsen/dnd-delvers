@@ -11,7 +11,7 @@ export const Footer = () => {
 
   return (
     <AppBar position="fixed" color="primary" sx={{ top: "auto", bottom: 0 }}>
-      <Toolbar sx={{ justifyContent: "space-around", minHeight: 30 }}>
+      <Toolbar sx={{ justifyContent: "space-around", minHeight: 40 }}>
         <IconButton
           onClick={() => setOpenSkills(true)}
           color="inherit"
@@ -19,7 +19,7 @@ export const Footer = () => {
           title="skills"
           size="small"
         >
-          <AutoAwesomeIcon fontSize="small" />
+          <ListAltIcon fontSize="small" />
         </IconButton>
         <IconButton
           onClick={() => setOpenFeats(true)}
@@ -28,7 +28,7 @@ export const Footer = () => {
           aria-label="features and traits"
           title="features and traits"
         >
-          <ListAltIcon fontSize="small" />
+          <AutoAwesomeIcon fontSize="small" />
         </IconButton>
       </Toolbar>
 

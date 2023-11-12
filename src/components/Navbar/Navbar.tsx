@@ -6,9 +6,7 @@ export const NavBar = () => {
     <Box sx={{ flexGrow: 1 }} width="100%">
       <AppBar position="fixed">
         <Toolbar sx={{ justifyContent: "space-between", minHeight: 40 }}>
-          <Typography variant="h6" fontSize="small">
-            HeroHoard
-          </Typography>
+          <Typography variant="h6">HeroHoard</Typography>
         </Toolbar>
       </AppBar>
     </Box>
