@@ -31,8 +31,6 @@ export const SpellStats = () => {
   );
   const { spellcastingAbility } = useClassSpellcastingInfo(classId);
 
-  if (!spellcastingAbility) return null;
-
   return (
     <Box mb={1}>
       <Typography mb={1} color="rgb(25, 118, 210)">
@@ -41,7 +39,7 @@ export const SpellStats = () => {
       <Grid container spacing={1}>
         <Grid item xs={4}>
           <TextBox
-            value={spellcastingAbility.toUpperCase()}
+            value={spellcastingAbility?.toUpperCase() ?? "-"}
             label="Ability"
             readOnly
           />
@@ -49,7 +47,11 @@ export const SpellStats = () => {
 
         <Grid item xs={4}>
           <TextBox
-            value={getSpellSaveDc(proficiencyBonus, stats[spellcastingAbility])}
+            value={
+              spellcastingAbility
+                ? getSpellSaveDc(proficiencyBonus, stats[spellcastingAbility])
+                : "-"
+            }
             label="Save DC"
             readOnly
           />
@@ -57,10 +59,14 @@ export const SpellStats = () => {
 
         <Grid item xs={4}>
           <TextBox
-            value={getSpellAttackBonus(
-              proficiencyBonus,
-              stats[spellcastingAbility]
-            )}
+            value={
+              spellcastingAbility
+                ? getSpellAttackBonus(
+                    proficiencyBonus,
+                    stats[spellcastingAbility]
+                  )
+                : "-"
+            }
             label="Atk. Bonus"
             readOnly
           />
