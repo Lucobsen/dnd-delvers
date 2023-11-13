@@ -1,7 +1,17 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import { getProficiencyBonus } from "../../models/levels.models";
-import { getInitialStorageValue } from "../../utils/get-initial-storage-value";
+import {
+  getInitialStorageArray,
+  getInitialStorageValue,
+} from "../../utils/get-initial-storage-value";
+
+const getInitialSpells = (): Spells => {
+  return {
+    cantrips: getInitialStorageArray("cantrips"),
+    spells: getInitialStorageArray("spells"),
+  };
+};
 
 const getInitialProfBonus = () => {
   const level =
@@ -34,6 +44,10 @@ const getInitialStats = () => {
 };
 
 export type Stats = Record<string, string>;
+export type Spells = {
+  cantrips: string[];
+  spells: string[];
+};
 
 interface HeroState {
   level: string;
@@ -42,6 +56,7 @@ interface HeroState {
   classId?: string;
   race?: string;
   feats?: string;
+  spells: Spells;
 }
 
 const initialState: HeroState = {
@@ -53,6 +68,7 @@ const initialState: HeroState = {
   stats: getInitialStats(),
   feats: getInitialString("feats"),
   classId: getInitialString("class"),
+  spells: getInitialSpells(),
 };
 
 export const heroSlice = createSlice({
@@ -75,6 +91,9 @@ export const heroSlice = createSlice({
     updateFeats: (state, action: PayloadAction<string>) => {
       state.feats = action.payload;
     },
+    updateCantrips: (state, action: PayloadAction<string[]>) => {
+      state.spells.cantrips = action.payload;
+    },
   },
 });
 
@@ -84,6 +103,7 @@ export const {
   updateClass,
   updateRace,
   updateFeats,
+  updateCantrips,
 } = heroSlice.actions;
 
 export const selectHero = (state: RootState) => state.hero;
