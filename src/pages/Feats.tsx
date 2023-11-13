@@ -17,7 +17,7 @@ const Feats = () => {
       <Typography color="rgb(25, 118, 210)">Features & Traits</Typography>
       <TextareaAutosize
         placeholder="Record your features and traits here hero!"
-        minRows={30}
+        minRows={20}
         onChange={(event) => onFeatsChange(event.target.value)}
         defaultValue={feats}
         style={{ width: "100%" }}

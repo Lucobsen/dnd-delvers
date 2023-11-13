@@ -16,7 +16,7 @@ export const Footer = () => (
           title="details"
           size="small"
         >
-          <PersonIcon fontSize="small" />
+          <PersonIcon fontSize="small" sx={{ color: "white" }} />
         </IconButton>
       </NavLink>
 
@@ -27,7 +27,7 @@ export const Footer = () => (
           title="skills"
           size="small"
         >
-          <ListAltIcon fontSize="small" />
+          <ListAltIcon fontSize="small" sx={{ color: "white" }} />
         </IconButton>
       </NavLink>
 
@@ -38,7 +38,7 @@ export const Footer = () => (
           aria-label="features and traits"
           title="features and traits"
         >
-          <AutoAwesomeIcon fontSize="small" />
+          <AutoAwesomeIcon fontSize="small" sx={{ color: "white" }} />
         </IconButton>
       </NavLink>
 
@@ -49,7 +49,7 @@ export const Footer = () => (
           aria-label="spells"
           title="spells"
         >
-          <AutoFixHighIcon fontSize="small" />
+          <AutoFixHighIcon fontSize="small" sx={{ color: "white" }} />
         </IconButton>
       </NavLink>
     </Toolbar>
