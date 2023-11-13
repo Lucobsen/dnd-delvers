@@ -12,27 +12,23 @@ const columns: GridColDef[] = [
   },
   {
     field: "total",
-    headerName: "Total",
+    headerName: "Total Slots",
     editable: true,
     sortable: false,
     disableColumnMenu: true,
-    width: 60,
+    width: 100,
     hideSortIcons: true,
   },
   {
     field: "used",
-    headerName: "Used",
+    headerName: "Used Slots",
     editable: true,
     sortable: false,
     disableColumnMenu: true,
   },
 ];
 
-const rows = [
-  { id: 1, total: 4, used: 0 },
-  { id: 2, total: 4, used: 0 },
-  { id: 3, total: 4, used: 0 },
-];
+const rows = [{ id: 0 }];
 
 export const SpellList = () => {
   const [slots, setSlots] = useState(4);
