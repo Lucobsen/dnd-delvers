@@ -1,22 +1,27 @@
 import { AppBar, Toolbar, IconButton } from "@mui/material";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
-import React, { useState } from "react";
+import React from "react";
 import ListAltIcon from "@mui/icons-material/ListAlt";
-import { Skills } from "../Skills/Skills";
-import { Feats } from "../Feats/Feats";
 import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
-import { SpellList } from "../Spells/SpellList";
+import { NavLink } from "react-router-dom";
+import PersonIcon from "@mui/icons-material/Person";
 
-export const Footer = () => {
-  const [openSpells, setOpenSpells] = useState(false);
-  const [openSkills, setOpenSkills] = useState(false);
-  const [openFeats, setOpenFeats] = useState(false);
-
-  return (
-    <AppBar position="fixed" color="primary" sx={{ top: "auto", bottom: 0 }}>
-      <Toolbar sx={{ justifyContent: "space-around", minHeight: 40 }}>
+export const Footer = () => (
+  <AppBar position="fixed" color="primary" sx={{ top: "auto", bottom: 0 }}>
+    <Toolbar sx={{ justifyContent: "space-around", minHeight: 40 }}>
+      <NavLink to="/">
         <IconButton
-          onClick={() => setOpenSkills(true)}
+          color="inherit"
+          aria-label="details"
+          title="details"
+          size="small"
+        >
+          <PersonIcon fontSize="small" />
+        </IconButton>
+      </NavLink>
+
+      <NavLink to="/skills">
+        <IconButton
           color="inherit"
           aria-label="skills"
           title="skills"
@@ -24,8 +29,10 @@ export const Footer = () => {
         >
           <ListAltIcon fontSize="small" />
         </IconButton>
+      </NavLink>
+
+      <NavLink to="/feats">
         <IconButton
-          onClick={() => setOpenFeats(true)}
           size="small"
           color="inherit"
           aria-label="features and traits"
@@ -33,8 +40,10 @@ export const Footer = () => {
         >
           <AutoAwesomeIcon fontSize="small" />
         </IconButton>
+      </NavLink>
+
+      <NavLink to="/spells">
         <IconButton
-          onClick={() => setOpenSpells(true)}
           size="small"
           color="inherit"
           aria-label="spells"
@@ -42,11 +51,7 @@ export const Footer = () => {
         >
           <AutoFixHighIcon fontSize="small" />
         </IconButton>
-      </Toolbar>
-
-      <Skills open={openSkills} onClose={() => setOpenSkills(false)} />
-      <Feats open={openFeats} onClose={() => setOpenFeats(false)} />
-      <SpellList open={openSpells} onClose={() => setOpenSpells(false)} />
-    </AppBar>
-  );
-};
+      </NavLink>
+    </Toolbar>
+  </AppBar>
+);

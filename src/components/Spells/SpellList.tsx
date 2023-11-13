@@ -1,4 +1,4 @@
-import { Checkbox, Dialog, Typography } from "@mui/material";
+import { Checkbox } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import React, { useState } from "react";
 
@@ -34,12 +34,7 @@ const rows = [
   { id: 3, total: 4, used: 0 },
 ];
 
-interface SpellListProps {
-  open: boolean;
-  onClose: () => void;
-}
-
-export const SpellList = ({ open, onClose }: SpellListProps) => {
+export const SpellList = () => {
   const [slots, setSlots] = useState(4);
   let slotBoxes: JSX.Element[] = [];
 
@@ -48,13 +43,11 @@ export const SpellList = ({ open, onClose }: SpellListProps) => {
   }
 
   return (
-    <Dialog onClose={onClose} open={open} fullWidth>
-      <DataGrid
-        columns={columns}
-        rows={rows}
-        rowHeight={30}
-        hideFooterPagination
-      />
-    </Dialog>
+    <DataGrid
+      columns={columns}
+      rows={rows}
+      rowHeight={30}
+      hideFooterPagination
+    />
   );
 };

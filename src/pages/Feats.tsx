@@ -1,14 +1,9 @@
-import { Dialog, TextareaAutosize } from "@mui/material";
+import { Container, TextareaAutosize, Typography } from "@mui/material";
 import React from "react";
-import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
-import { updateFeats } from "../../store/slices/HeroSlice";
+import { useAppDispatch, useAppSelector } from "../hooks/hooks";
+import { updateFeats } from "../store/slices/HeroSlice";
 
-interface FeatsProps {
-  open: boolean;
-  onClose: () => void;
-}
-
-export const Feats = ({ open, onClose }: FeatsProps) => {
+const Feats = () => {
   const { feats } = useAppSelector((state) => state.hero);
   const dispatch = useAppDispatch();
 
@@ -18,13 +13,17 @@ export const Feats = ({ open, onClose }: FeatsProps) => {
   };
 
   return (
-    <Dialog onClose={onClose} open={open} fullWidth>
+    <Container sx={{ my: 6 }}>
+      <Typography color="rgb(25, 118, 210)">Features & Traits</Typography>
       <TextareaAutosize
         placeholder="Record your features and traits here hero!"
-        minRows={100}
+        minRows={30}
         onChange={(event) => onFeatsChange(event.target.value)}
         defaultValue={feats}
+        style={{ width: "100%" }}
       />
-    </Dialog>
+    </Container>
   );
 };
+
+export default Feats;
