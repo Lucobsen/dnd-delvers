@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import React from "react";
 import { TextBox } from "../shared/TextBox";
 import { useAppSelector } from "../../hooks/hooks";
@@ -29,13 +29,13 @@ export const SpellStats = () => {
   const { classId, proficiencyBonus, stats } = useAppSelector(
     (state) => state.hero
   );
-  const { spellcastingAbility, isFetching } = useClassSpellcastingInfo(classId);
+  const { spellcastingAbility } = useClassSpellcastingInfo(classId);
 
   if (!spellcastingAbility) return null;
 
   return (
-    <>
-      <Typography my={0.5} color="rgb(25, 118, 210)">
+    <Box mb={1}>
+      <Typography mb={1} color="rgb(25, 118, 210)">
         Spells
       </Typography>
       <Grid container spacing={1}>
@@ -66,6 +66,6 @@ export const SpellStats = () => {
           />
         </Grid>
       </Grid>
-    </>
+    </Box>
   );
 };
