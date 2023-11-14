@@ -1,8 +1,16 @@
-import { Typography } from "@mui/material";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import React from "react";
+import { Button, Typography } from "@mui/material";
+import {
+  DataGrid,
+  GridCellParams,
+  GridColDef,
+  GridValueGetterParams,
+} from "@mui/x-data-grid";
+import React, { useState } from "react";
+import { useAppSelector } from "../../hooks/hooks";
+import { SpellModal } from "./SpellModal";
+import { SpellInfo } from "../../store/slices/HeroSlice";
 
-const columns: GridColDef[] = [
+const columns: GridColDef<SpellInfo>[] = [
   {
     field: "id",
     headerName: "Level",
@@ -10,10 +18,13 @@ const columns: GridColDef[] = [
     width: 60,
     sortable: false,
     hideSortIcons: true,
+    type: "number",
     align: "center",
+    valueGetter: ({ row }) => row.id,
+    renderCell: ({ row }) => <Button>{row.id}</Button>,
   },
   {
-    field: "total",
+    field: "totalSlots",
     headerName: "Total Slots",
     editable: true,
     sortable: false,
@@ -21,31 +32,29 @@ const columns: GridColDef[] = [
     hideSortIcons: true,
     type: "number",
     align: "center",
+    valueGetter: ({ row, value }: GridValueGetterParams<SpellInfo, number>) =>
+      value ?? row.totalSlots,
   },
   {
-    field: "used",
+    field: "usedSlots",
     headerName: "Used Slots",
     editable: true,
     sortable: false,
     disableColumnMenu: true,
     type: "number",
     align: "center",
+    valueGetter: ({ row, value }: GridValueGetterParams<SpellInfo, number>) =>
+      value ?? row.usedSlots,
   },
 ];
 
-const rows = [
-  { id: 1 },
-  { id: 2 },
-  { id: 3 },
-  { id: 4 },
-  { id: 5 },
-  { id: 6 },
-  { id: 7 },
-  { id: 8 },
-  { id: 9 },
-];
-
 export const SpellList = () => {
+  const { spells } = useAppSelector((state) => state.hero.spells);
+  const [openSpellDialog, setOpenSpellDialog] = useState(false);
+  const [selectedSpellLevel, setSelectedSpellLevel] = useState<number | null>(
+    null
+  );
+
   return (
     <>
       <Typography variant="body2" color="rgb(25, 118, 210)">
@@ -53,10 +62,27 @@ export const SpellList = () => {
       </Typography>
       <DataGrid
         columns={columns}
-        rows={rows}
+        rows={spells}
         rowHeight={30}
-        hideFooterPagination
         hideFooter
+        onCellEditStop={({ value }: GridCellParams<SpellInfo, number>) =>
+          console.log("%cSpellList.tsx line:63 value", "color: #007acc;", value)
+        }
+        onCellClick={({ row, field }: GridCellParams<SpellInfo>) => {
+          if (field !== "id") return;
+
+          setSelectedSpellLevel(row.id);
+          setOpenSpellDialog(true);
+        }}
+      />
+
+      <SpellModal
+        selectedSpellLevel={selectedSpellLevel}
+        open={openSpellDialog}
+        onClose={() => {
+          setSelectedSpellLevel(null);
+          setOpenSpellDialog(false);
+        }}
       />
     </>
   );
