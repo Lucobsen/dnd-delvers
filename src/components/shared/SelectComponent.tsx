@@ -8,7 +8,7 @@ import {
 import React from "react";
 
 interface SelectComponentProps {
-  isFetching?: boolean;
+  isLoading?: boolean;
   onValueChange: (newValue: string) => void;
   options: string[];
   label: string;
@@ -16,7 +16,7 @@ interface SelectComponentProps {
 }
 
 export const SelectComponent = ({
-  isFetching = false,
+  isLoading = false,
   onValueChange,
   options,
   label,
@@ -24,7 +24,7 @@ export const SelectComponent = ({
 }: SelectComponentProps) => {
   return (
     <>
-      {isFetching ? (
+      {isLoading ? (
         <Skeleton width="100%" height="56px" />
       ) : (
         <FormControl fullWidth sx={{ textAlign: "left" }}>

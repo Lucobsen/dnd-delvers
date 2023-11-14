@@ -6,10 +6,28 @@ import {
   getInitialStorageValue,
 } from "../../utils/get-initial-storage-value";
 
+const getInitialSpellInfo = () => {
+  const defaultSpells: SpellInfo[] = [
+    { id: 1 },
+    { id: 2 },
+    { id: 3 },
+    { id: 4 },
+    { id: 5 },
+    { id: 6 },
+    { id: 7 },
+    { id: 8 },
+    { id: 9 },
+  ];
+
+  const storageSpellInfo = getInitialStorageArray<SpellInfo>("spells");
+
+  return storageSpellInfo.length === 0 ? defaultSpells : storageSpellInfo;
+};
+
 const getInitialSpells = (): Spells => {
   return {
-    cantrips: getInitialStorageArray("cantrips"),
-    spells: getInitialStorageArray("spells"),
+    cantrips: getInitialStorageArray<string>("cantrips"),
+    spells: getInitialSpellInfo(),
   };
 };
 
@@ -44,9 +62,17 @@ const getInitialStats = () => {
 };
 
 export type Stats = Record<string, string>;
+
+export type SpellInfo = {
+  id: number;
+  totalSlots?: number;
+  usedSlots?: number;
+  spells?: string[];
+};
+
 export type Spells = {
   cantrips: string[];
-  spells: string[];
+  spells: SpellInfo[];
 };
 
 interface HeroState {
@@ -94,6 +120,43 @@ export const heroSlice = createSlice({
     updateCantrips: (state, action: PayloadAction<string[]>) => {
       state.spells.cantrips = action.payload;
     },
+    updateSpellSlots: (
+      state,
+      action: PayloadAction<{
+        id: number;
+        type: "total" | "used";
+        slots: number;
+      }>
+    ) => {
+      const spellInfo = state.spells.spells;
+      const index = spellInfo.findIndex(
+        (info) => info.id === action.payload.id
+      );
+
+      if (index >= 0) {
+        if (action.payload.type === "total") {
+          state.spells.spells[index].totalSlots = action.payload.slots;
+        } else if (action.payload.type === "used") {
+          state.spells.spells[index].usedSlots = action.payload.slots;
+        }
+
+        localStorage.setItem("spells", JSON.stringify(state.spells.spells));
+      }
+    },
+    updateSpells: (
+      state,
+      action: PayloadAction<{ id: number; spells: string[] }>
+    ) => {
+      const spellInfo = state.spells.spells;
+      const index = spellInfo.findIndex(
+        (info) => info.id === action.payload.id
+      );
+
+      if (index >= 0) {
+        state.spells.spells[index].spells = action.payload.spells;
+        localStorage.setItem("spells", JSON.stringify(state.spells.spells));
+      }
+    },
   },
 });
 
@@ -101,9 +164,11 @@ export const {
   updateLevel,
   updateStats,
   updateClass,
+  updateSpells,
   updateRace,
   updateFeats,
   updateCantrips,
+  updateSpellSlots,
 } = heroSlice.actions;
 
 export const selectHero = (state: RootState) => state.hero;

@@ -4,9 +4,9 @@ import { useQuery } from "@tanstack/react-query";
 
 export const useSkillsQuery = (): {
   skills: DataItem[];
-  isFetching: boolean;
+  isLoading: boolean;
 } => {
-  const { data, isFetching } = useQuery<DnDApiResponse>(
+  const { data, isLoading } = useQuery<DnDApiResponse>(
     ["skills"],
     async () => {
       const res = await fetch(`${dnd5eApiUrl}/skills`);
@@ -18,11 +18,11 @@ export const useSkillsQuery = (): {
     }
   );
 
-  if (!data && !isFetching) {
+  if (!data && !isLoading) {
     throw Error("Failed to fetch skills!");
   }
 
-  return { skills: data?.results ?? [], isFetching } as const;
+  return { skills: data?.results ?? [], isLoading } as const;
 };
 
 const getSkillStat = (skillId: string) => {
@@ -34,7 +34,7 @@ const getSkillStat = (skillId: string) => {
 };
 
 export const useSkills = () => {
-  const { skills: skillData, isFetching } = useSkillsQuery();
+  const { skills: skillData, isLoading } = useSkillsQuery();
 
   const mappedSkills: Skill[] = skillData.map((data) => ({
     name: data.name,
@@ -42,5 +42,5 @@ export const useSkills = () => {
     stat: getSkillStat(data.index),
   }));
 
-  return { skills: mappedSkills, isFetching } as const;
+  return { skills: mappedSkills, isLoading } as const;
 };

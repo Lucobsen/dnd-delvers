@@ -7,8 +7,8 @@ import {
 } from "../api";
 import { useQuery } from "@tanstack/react-query";
 
-export const useClasses = (): { classes: DataItem[]; isFetching: boolean } => {
-  const { data, isFetching } = useQuery<DnDApiResponse>(
+export const useClasses = (): { classes: DataItem[]; isLoading: boolean } => {
+  const { data, isLoading } = useQuery<DnDApiResponse>(
     ["classes"],
     async () => {
       const res = await fetch(`${dnd5eApiUrl}/classes`);
@@ -20,17 +20,17 @@ export const useClasses = (): { classes: DataItem[]; isFetching: boolean } => {
     }
   );
 
-  if (!data && !isFetching) {
+  if (!data && !isLoading) {
     throw Error("Failed to fetch classes!");
   }
 
-  return { classes: data?.results ?? [], isFetching } as const;
+  return { classes: data?.results ?? [], isLoading } as const;
 };
 
 export const useClassSavingThrows = (
   classId: string | undefined
-): { savingThrows: string[]; isFetching: boolean } => {
-  const { data, isFetching } = useQuery<DnDApiResponse>(
+): { savingThrows: string[]; isLoading: boolean } => {
+  const { data, isLoading } = useQuery<DnDApiResponse>(
     [`${classId}SavingThrows`],
     async () => {
       const parameter = classId ? classId.toLowerCase() : undefined;
@@ -45,7 +45,7 @@ export const useClassSavingThrows = (
     }
   );
 
-  if (!data && !isFetching) {
+  if (!data && !isLoading) {
     throw Error("Failed to fetch classes!");
   }
 
@@ -55,13 +55,13 @@ export const useClassSavingThrows = (
     .map((save) => save.index.split("-").pop())
     .filter(isNotNullOrUndefined);
 
-  return { savingThrows, isFetching } as const;
+  return { savingThrows, isLoading } as const;
 };
 
 export const useClassSpellcastingInfo = (
   classId: string | undefined
-): { spellcastingAbility: string | undefined; isFetching: boolean } => {
-  const { data, isFetching } = useQuery<SpellCastingInfoResponse>(
+): { spellcastingAbility: string | undefined; isLoading: boolean } => {
+  const { data, isLoading } = useQuery<SpellCastingInfoResponse>(
     [`${classId}SpellCastingInfo`],
     async () => {
       const parameter = classId ? classId.toLowerCase() : undefined;
@@ -76,12 +76,12 @@ export const useClassSpellcastingInfo = (
     }
   );
 
-  if (!data && !isFetching) {
+  if (!data && !isLoading) {
     throw Error("Failed to fetch spellcasting info!");
   }
 
   return {
     spellcastingAbility: data?.spellcasting_ability?.index,
-    isFetching,
+    isLoading,
   } as const;
 };

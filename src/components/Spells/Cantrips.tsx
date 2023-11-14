@@ -47,7 +47,7 @@ export const Cantrips = () => {
 
   return (
     <Container component={Paper} sx={{ mb: 1 }}>
-      <List dense>
+      <List dense sx={{ pt: 0 }}>
         <ListSubheader
           sx={{ height: 30, color: "rgb(25, 118, 210)" }}
           disableGutters
@@ -56,6 +56,7 @@ export const Cantrips = () => {
         </ListSubheader>
         {spells.cantrips.map((cantrip, index) => (
           <ListItem
+            key={`${cantrip}-${index}`}
             dense
             disableGutters
             secondaryAction={
