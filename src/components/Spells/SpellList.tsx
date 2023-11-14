@@ -1,6 +1,6 @@
-import { Checkbox } from "@mui/material";
+import { Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import React, { useState } from "react";
+import React from "react";
 
 const columns: GridColDef[] = [
   {
@@ -8,7 +8,9 @@ const columns: GridColDef[] = [
     headerName: "Level",
     disableColumnMenu: true,
     width: 60,
+    sortable: false,
     hideSortIcons: true,
+    align: "center",
   },
   {
     field: "total",
@@ -16,8 +18,9 @@ const columns: GridColDef[] = [
     editable: true,
     sortable: false,
     disableColumnMenu: true,
-    width: 100,
     hideSortIcons: true,
+    type: "number",
+    align: "center",
   },
   {
     field: "used",
@@ -25,25 +28,36 @@ const columns: GridColDef[] = [
     editable: true,
     sortable: false,
     disableColumnMenu: true,
+    type: "number",
+    align: "center",
   },
 ];
 
-const rows = [{ id: 0 }];
+const rows = [
+  { id: 1 },
+  { id: 2 },
+  { id: 3 },
+  { id: 4 },
+  { id: 5 },
+  { id: 6 },
+  { id: 7 },
+  { id: 8 },
+  { id: 9 },
+];
 
 export const SpellList = () => {
-  const [slots, setSlots] = useState(4);
-  let slotBoxes: JSX.Element[] = [];
-
-  for (let i = 0; i < slots; i++) {
-    slotBoxes.push(<Checkbox key={`slot-${i}`} size="small" />);
-  }
-
   return (
-    <DataGrid
-      columns={columns}
-      rows={rows}
-      rowHeight={30}
-      hideFooterPagination
-    />
+    <>
+      <Typography variant="body2" color="rgb(25, 118, 210)">
+        Spell List
+      </Typography>
+      <DataGrid
+        columns={columns}
+        rows={rows}
+        rowHeight={30}
+        hideFooterPagination
+        hideFooter
+      />
+    </>
   );
 };

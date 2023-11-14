@@ -21,8 +21,8 @@ export const Details = () => {
   );
   const dispatch = useAppDispatch();
 
-  const { races, isFetching: isFetchingRaces } = useRaces();
-  const { classes, isFetching: isFetchingClasses } = useClasses();
+  const { races, isLoading: isLoadingRaces } = useRaces();
+  const { classes, isLoading: isLoadingClasses } = useClasses();
 
   const [deathSaves, setDeathSaves] = useState(false);
   const [characterName, setCharacterName] = useState(
@@ -98,7 +98,7 @@ export const Details = () => {
         spacing={1}
       >
         <SelectComponent
-          isFetching={isFetchingRaces}
+          isLoading={isLoadingRaces}
           label="Race"
           options={races.map((race) => race.name)}
           onValueChange={onRaceChange}
@@ -106,7 +106,7 @@ export const Details = () => {
         />
 
         <SelectComponent
-          isFetching={isFetchingClasses}
+          isLoading={isLoadingClasses}
           label="Class"
           options={classes.map((classy) => classy.name)}
           onValueChange={onClassChange}

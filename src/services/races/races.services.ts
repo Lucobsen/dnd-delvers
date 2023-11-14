@@ -1,8 +1,8 @@
 import { DataItem, dnd5eApiUrl, DnDApiResponse } from "../api";
 import { useQuery } from "@tanstack/react-query";
 
-export const useRaces = (): { races: DataItem[]; isFetching: boolean } => {
-  const { data, isFetching } = useQuery<DnDApiResponse>(
+export const useRaces = (): { races: DataItem[]; isLoading: boolean } => {
+  const { data, isLoading } = useQuery<DnDApiResponse>(
     ["races"],
     async () => {
       const res = await fetch(`${dnd5eApiUrl}/races`);
@@ -14,9 +14,9 @@ export const useRaces = (): { races: DataItem[]; isFetching: boolean } => {
     }
   );
 
-  if (!data && !isFetching) {
+  if (!data && !isLoading) {
     throw Error("Failed to fetch races!");
   }
 
-  return { races: data?.results ?? [], isFetching } as const;
+  return { races: data?.results ?? [], isLoading } as const;
 };

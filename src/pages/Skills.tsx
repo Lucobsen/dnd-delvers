@@ -20,7 +20,7 @@ const getInitialProficiencies = () => {
 };
 
 const Skills = () => {
-  const { skills, isFetching } = useSkills();
+  const { skills, isLoading } = useSkills();
   const { proficiencyBonus, stats } = useAppSelector((state) => state.hero);
   const [proficientSkills, setProficientSkills] = useState<string[]>(
     getInitialProficiencies()
@@ -45,7 +45,7 @@ const Skills = () => {
 
   return (
     <Container sx={{ my: 6 }}>
-      {isFetching ? (
+      {isLoading ? (
         <Box
           sx={{
             display: "flex",
