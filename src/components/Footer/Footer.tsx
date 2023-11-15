@@ -5,6 +5,7 @@ import ListAltIcon from "@mui/icons-material/ListAlt";
 import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
 import { NavLink } from "react-router-dom";
 import PersonIcon from "@mui/icons-material/Person";
+import InventoryIcon from "@mui/icons-material/Inventory";
 
 export const Footer = () => (
   <AppBar position="fixed" color="primary" sx={{ top: "auto", bottom: 0 }}>
@@ -28,6 +29,17 @@ export const Footer = () => (
           size="small"
         >
           <ListAltIcon fontSize="small" sx={{ color: "white" }} />
+        </IconButton>
+      </NavLink>
+
+      <NavLink to="/inventory">
+        <IconButton
+          color="inherit"
+          aria-label="inventory"
+          title="inventory"
+          size="small"
+        >
+          <InventoryIcon fontSize="small" sx={{ color: "white" }} />
         </IconButton>
       </NavLink>
 

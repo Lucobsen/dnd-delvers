@@ -9,6 +9,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 const HeroPage = lazy(() => import("./pages/Hero"));
 const SkillPage = lazy(() => import("./pages/Skills"));
+const InventoryPage = lazy(() => import("./pages/Inventory"));
 const FeatsPage = lazy(() => import("./pages/Feats"));
 const SpellsPage = lazy(() => import("./pages/Spells"));
 
@@ -34,6 +35,7 @@ export const App = () => {
             <Routes>
               <Route path="/" element={<HeroPage />} />
               <Route path="/skills" element={<SkillPage />} />
+              <Route path="/inventory" element={<InventoryPage />} />
               <Route path="/feats" element={<FeatsPage />} />
               <Route path="/spells" element={<SpellsPage />} />
             </Routes>
