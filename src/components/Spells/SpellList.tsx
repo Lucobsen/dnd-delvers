@@ -14,8 +14,10 @@ import {
 import React, { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { SpellModal } from "./SpellModal";
-import UseNumberInputCompact from "../shared/NumberInput";
 import { updateSpellSlots } from "../../store/slices/HeroSlice";
+import { StyledStepperButton } from "../shared/StepperButton";
+import ArrowDropUpRoundedIcon from "@mui/icons-material/ArrowDropUpRounded";
+import ArrowDropDownRoundedIcon from "@mui/icons-material/ArrowDropDownRounded";
 
 export const SpellList = () => {
   const { spells } = useAppSelector((state) => state.hero.spells);
@@ -63,10 +65,27 @@ export const SpellList = () => {
                   </Button>
                 </TableCell>
                 <TableCell>
-                  <UseNumberInputCompact
-                    onChange={(value) => handleSlotsChange(id, "total", value)}
-                    initialValue={totalSlots}
-                  />
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <StyledStepperButton
+                      disabled={totalSlots === 4}
+                      onClick={() => {
+                        handleSlotsChange(id, "total", ++totalSlots);
+                      }}
+                    >
+                      <ArrowDropUpRoundedIcon />
+                    </StyledStepperButton>
+
+                    <Typography fontSize="small">{totalSlots}</Typography>
+
+                    <StyledStepperButton
+                      disabled={totalSlots === 0}
+                      onClick={() => {
+                        handleSlotsChange(id, "total", --totalSlots);
+                      }}
+                    >
+                      <ArrowDropDownRoundedIcon />
+                    </StyledStepperButton>
+                  </Stack>
                 </TableCell>
                 <TableCell sx={{ width: 100 }}>
                   <Stack direction="row">

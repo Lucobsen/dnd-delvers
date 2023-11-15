@@ -8,7 +8,7 @@ import {
 
 const getInitialSpellInfo = () => {
   const defaultSpells: SpellInfo[] = [
-    { id: 1, totalSlots: 4, usedSlots: 0, spells: [] },
+    { id: 1, totalSlots: 0, usedSlots: 0, spells: [] },
     { id: 2, totalSlots: 0, usedSlots: 0, spells: [] },
     { id: 3, totalSlots: 0, usedSlots: 0, spells: [] },
     { id: 4, totalSlots: 0, usedSlots: 0, spells: [] },
