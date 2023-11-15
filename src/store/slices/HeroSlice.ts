@@ -8,15 +8,15 @@ import {
 
 const getInitialSpellInfo = () => {
   const defaultSpells: SpellInfo[] = [
-    { id: 1 },
-    { id: 2 },
-    { id: 3 },
-    { id: 4 },
-    { id: 5 },
-    { id: 6 },
-    { id: 7 },
-    { id: 8 },
-    { id: 9 },
+    { id: 1, totalSlots: 4, usedSlots: 0, spells: [] },
+    { id: 2, totalSlots: 0, usedSlots: 0, spells: [] },
+    { id: 3, totalSlots: 0, usedSlots: 0, spells: [] },
+    { id: 4, totalSlots: 0, usedSlots: 0, spells: [] },
+    { id: 5, totalSlots: 0, usedSlots: 0, spells: [] },
+    { id: 6, totalSlots: 0, usedSlots: 0, spells: [] },
+    { id: 7, totalSlots: 0, usedSlots: 0, spells: [] },
+    { id: 8, totalSlots: 0, usedSlots: 0, spells: [] },
+    { id: 9, totalSlots: 0, usedSlots: 0, spells: [] },
   ];
 
   const storageSpellInfo = getInitialStorageArray<SpellInfo>("spells");
@@ -65,9 +65,9 @@ export type Stats = Record<string, string>;
 
 export type SpellInfo = {
   id: number;
-  totalSlots?: number;
-  usedSlots?: number;
-  spells?: string[];
+  totalSlots: number;
+  usedSlots: number;
+  spells: string[];
 };
 
 export type Spells = {
@@ -136,6 +136,10 @@ export const heroSlice = createSlice({
       if (index >= 0) {
         if (action.payload.type === "total") {
           state.spells.spells[index].totalSlots = action.payload.slots;
+
+          if (action.payload.slots < state.spells.spells[index].usedSlots) {
+            state.spells.spells[index].usedSlots = action.payload.slots;
+          }
         } else if (action.payload.type === "used") {
           state.spells.spells[index].usedSlots = action.payload.slots;
         }
