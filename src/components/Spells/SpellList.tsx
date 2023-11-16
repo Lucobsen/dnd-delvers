@@ -37,11 +37,10 @@ export const SpellList = () => {
 
   return (
     <>
-      <Typography variant="body2" color="rgb(25, 118, 210)">
-        Spell List
-      </Typography>
-
       <TableContainer component={Paper}>
+        <Typography variant="body2" color="rgb(25, 118, 210)">
+          Spell List
+        </Typography>
         <Table padding="none" size="small">
           <TableHead>
             <TableRow>
