@@ -33,7 +33,7 @@ export const SpellStats = () => {
 
   return (
     <Box mb={1}>
-      <Typography mb={1} color="rgb(25, 118, 210)">
+      <Typography mb={1} color="rgb(25, 118, 210)" variant="h6" align="left">
         Spells
       </Typography>
       <Grid container spacing={1}>

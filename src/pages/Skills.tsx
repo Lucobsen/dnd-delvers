@@ -58,7 +58,9 @@ const Skills = () => {
         </Box>
       ) : (
         <Stack>
-          <Typography color="rgb(25, 118, 210)">Skills</Typography>
+          <Typography color="rgb(25, 118, 210)" variant="h6" align="left">
+            Skills
+          </Typography>
           <Table size="small">
             <TableBody>
               {skills.map((skill) => (

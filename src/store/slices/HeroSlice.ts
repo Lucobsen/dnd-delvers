@@ -61,6 +61,22 @@ const getInitialStats = () => {
       };
 };
 
+const getInitialCoin = () => {
+  const coin = localStorage.getItem("coin");
+
+  return coin
+    ? JSON.parse(coin)
+    : {
+        cp: "",
+        sp: "",
+        gp: "",
+        pp: "",
+      };
+};
+
+type Currency = "cp" | "sp" | "gp" | "pp";
+export type Coin = Record<Currency, string>;
+
 export type Stats = Record<string, string>;
 
 export type SpellInfo = {
@@ -83,6 +99,7 @@ interface HeroState {
   race?: string;
   feats?: string;
   spells: Spells;
+  coin: Coin;
 }
 
 const initialState: HeroState = {
@@ -95,6 +112,7 @@ const initialState: HeroState = {
   feats: getInitialString("feats"),
   classId: getInitialString("class"),
   spells: getInitialSpells(),
+  coin: getInitialCoin(),
 };
 
 export const heroSlice = createSlice({
@@ -119,6 +137,22 @@ export const heroSlice = createSlice({
     },
     updateCantrips: (state, action: PayloadAction<string[]>) => {
       state.spells.cantrips = action.payload;
+    },
+    updateCopperPieces: (state, action: PayloadAction<string>) => {
+      state.coin.cp = action.payload;
+      localStorage.setItem("coin", JSON.stringify(state.coin));
+    },
+    updateSilverPieces: (state, action: PayloadAction<string>) => {
+      state.coin.sp = action.payload;
+      localStorage.setItem("coin", JSON.stringify(state.coin));
+    },
+    updateGoldPieces: (state, action: PayloadAction<string>) => {
+      state.coin.gp = action.payload;
+      localStorage.setItem("coin", JSON.stringify(state.coin));
+    },
+    updatePlatinumPieces: (state, action: PayloadAction<string>) => {
+      state.coin.pp = action.payload;
+      localStorage.setItem("coin", JSON.stringify(state.coin));
     },
     updateSpellSlots: (
       state,
@@ -173,6 +207,10 @@ export const {
   updateFeats,
   updateCantrips,
   updateSpellSlots,
+  updateCopperPieces,
+  updateGoldPieces,
+  updatePlatinumPieces,
+  updateSilverPieces,
 } = heroSlice.actions;
 
 export const selectHero = (state: RootState) => state.hero;
