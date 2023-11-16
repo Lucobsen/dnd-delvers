@@ -14,7 +14,9 @@ const Feats = () => {
 
   return (
     <Container sx={{ my: 6 }}>
-      <Typography color="rgb(25, 118, 210)">Features & Traits</Typography>
+      <Typography color="rgb(25, 118, 210)" variant="h6" align="left">
+        Features & Traits
+      </Typography>
       <TextareaAutosize
         placeholder="Record your features and traits here hero!"
         minRows={20}
