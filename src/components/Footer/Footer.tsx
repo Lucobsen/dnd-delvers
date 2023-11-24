@@ -10,7 +10,7 @@ import InventoryIcon from "@mui/icons-material/Inventory";
 export const Footer = () => (
   <AppBar position="fixed" color="primary" sx={{ top: "auto", bottom: 0 }}>
     <Toolbar sx={{ justifyContent: "space-around", minHeight: 40 }}>
-      <NavLink to="/">
+      <NavLink to="/details">
         <IconButton
           color="inherit"
           aria-label="details"
