@@ -6,6 +6,27 @@ import {
   getInitialStorageValue,
 } from "../../utils/get-initial-storage-value";
 
+const getInitialWeapons = () => {
+  const defaultState = [
+    {
+      id: "1",
+    },
+    {
+      id: "2",
+    },
+    {
+      id: "3",
+    },
+    {
+      id: "4",
+    },
+  ];
+
+  const storageState = getInitialStorageArray<Weapon>("weapons");
+
+  return storageState.length === 0 ? defaultState : storageState;
+};
+
 const getInitialSpellInfo = () => {
   const defaultSpells: SpellInfo[] = [
     { id: 1, totalSlots: 0, usedSlots: 0, spells: [] },
@@ -74,6 +95,16 @@ const getInitialCoin = () => {
       };
 };
 
+export type Weapon = {
+  id: string;
+  name?: string;
+  attack?: string;
+  damage?: string;
+  range?: string;
+  ammo?: string;
+  used?: string;
+};
+
 type Currency = "cp" | "sp" | "gp" | "pp";
 export type Coin = Record<Currency, string>;
 
@@ -100,6 +131,7 @@ interface HeroState {
   feats?: string;
   spells: Spells;
   coin: Coin;
+  weapons: Weapon[];
 }
 
 const initialState: HeroState = {
@@ -113,6 +145,7 @@ const initialState: HeroState = {
   classId: getInitialString("class"),
   spells: getInitialSpells(),
   coin: getInitialCoin(),
+  weapons: getInitialWeapons(),
 };
 
 export const heroSlice = createSlice({
@@ -135,8 +168,13 @@ export const heroSlice = createSlice({
     updateFeats: (state, action: PayloadAction<string>) => {
       state.feats = action.payload;
     },
+    updateWeapons: (state, action: PayloadAction<Weapon[]>) => {
+      state.weapons = action.payload;
+      localStorage.setItem("weapons", JSON.stringify(state.weapons));
+    },
     updateCantrips: (state, action: PayloadAction<string[]>) => {
       state.spells.cantrips = action.payload;
+      localStorage.setItem("cantrips", JSON.stringify(action.payload));
     },
     updateCopperPieces: (state, action: PayloadAction<string>) => {
       state.coin.cp = action.payload;
@@ -202,6 +240,7 @@ export const {
   updateLevel,
   updateStats,
   updateClass,
+  updateWeapons,
   updateSpells,
   updateRace,
   updateFeats,
