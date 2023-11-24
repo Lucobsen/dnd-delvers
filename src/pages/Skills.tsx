@@ -7,24 +7,19 @@ import {
   TableBody,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 import { useSkills } from "../services/skills/use-skills-query";
 import { SkillInfo } from "../components/Skills/SkillInfo";
-import { useAppSelector } from "../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { getModifier } from "../models/abilities.models";
-
-const getInitialProficiencies = () => {
-  const skills = localStorage.getItem("skills");
-
-  return skills ? JSON.parse(skills) : [];
-};
+import { updateProficientSkills } from "../store/slices/HeroSlice";
 
 const Skills = () => {
   const { skills, isLoading } = useSkills();
-  const { proficiencyBonus, stats } = useAppSelector((state) => state.hero);
-  const [proficientSkills, setProficientSkills] = useState<string[]>(
-    getInitialProficiencies()
+  const { proficiencyBonus, stats, proficientSkills } = useAppSelector(
+    (state) => state.hero
   );
+  const dispatch = useAppDispatch();
 
   const onSkillChecked = (skillIndex: string) => {
     const tempProficientSkills = [...proficientSkills];
@@ -34,12 +29,10 @@ const Skills = () => {
 
     if (index >= 0) {
       tempProficientSkills.splice(index, 1);
-      localStorage.setItem("skills", JSON.stringify(tempProficientSkills));
-      setProficientSkills(tempProficientSkills);
+      dispatch(updateProficientSkills(tempProficientSkills));
     } else {
       const proficiencies = [...proficientSkills, skillIndex];
-      localStorage.setItem("skills", JSON.stringify(proficiencies));
-      setProficientSkills(proficiencies);
+      dispatch(updateProficientSkills(proficiencies));
     }
   };
 

@@ -1,99 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import { getProficiencyBonus } from "../../models/levels.models";
-import {
-  getInitialStorageArray,
-  getInitialStorageValue,
-} from "../../utils/get-initial-storage-value";
-
-const getInitialWeapons = () => {
-  const defaultState = [
-    {
-      id: "1",
-    },
-    {
-      id: "2",
-    },
-    {
-      id: "3",
-    },
-    {
-      id: "4",
-    },
-  ];
-
-  const storageState = getInitialStorageArray<Weapon>("weapons");
-
-  return storageState.length === 0 ? defaultState : storageState;
-};
-
-const getInitialSpellInfo = () => {
-  const defaultSpells: SpellInfo[] = [
-    { id: 1, totalSlots: 0, usedSlots: 0, spells: [] },
-    { id: 2, totalSlots: 0, usedSlots: 0, spells: [] },
-    { id: 3, totalSlots: 0, usedSlots: 0, spells: [] },
-    { id: 4, totalSlots: 0, usedSlots: 0, spells: [] },
-    { id: 5, totalSlots: 0, usedSlots: 0, spells: [] },
-    { id: 6, totalSlots: 0, usedSlots: 0, spells: [] },
-    { id: 7, totalSlots: 0, usedSlots: 0, spells: [] },
-    { id: 8, totalSlots: 0, usedSlots: 0, spells: [] },
-    { id: 9, totalSlots: 0, usedSlots: 0, spells: [] },
-  ];
-
-  const storageSpellInfo = getInitialStorageArray<SpellInfo>("spells");
-
-  return storageSpellInfo.length === 0 ? defaultSpells : storageSpellInfo;
-};
-
-const getInitialSpells = (): Spells => {
-  return {
-    cantrips: getInitialStorageArray<string>("cantrips"),
-    spells: getInitialSpellInfo(),
-  };
-};
-
-const getInitialProfBonus = () => {
-  const level =
-    getInitialStorageValue("level") === ""
-      ? "1"
-      : getInitialStorageValue("level");
-
-  return getProficiencyBonus(level);
-};
-
-const getInitialString = (key: string) => {
-  const value = localStorage.getItem(key);
-
-  return value ? JSON.parse(value) : null;
-};
-
-const getInitialStats = () => {
-  const stats = localStorage.getItem("stats");
-
-  return stats
-    ? JSON.parse(stats)
-    : {
-        str: "10",
-        dex: "10",
-        con: "10",
-        int: "10",
-        wis: "10",
-        cha: "10",
-      };
-};
-
-const getInitialCoin = () => {
-  const coin = localStorage.getItem("coin");
-
-  return coin
-    ? JSON.parse(coin)
-    : {
-        cp: "",
-        sp: "",
-        gp: "",
-        pp: "",
-      };
-};
 
 export type Weapon = {
   id: string;
@@ -121,8 +28,14 @@ export type Spells = {
 };
 
 interface HeroState {
+  name: string;
   level: string;
+  ac: string;
   proficiencyBonus: string;
+  hp: {
+    current: string;
+    max: string;
+  };
   stats: Stats;
   classId?: string;
   race?: string;
@@ -131,70 +44,147 @@ interface HeroState {
   coin: Coin;
   weapons: Weapon[];
   equipment: string[];
+  proficientSkills: string[];
 }
 
-const initialState: HeroState = {
-  level:
-    getInitialStorageValue("level") === ""
-      ? "1"
-      : getInitialStorageValue("level"),
-  proficiencyBonus: getInitialProfBonus(),
-  stats: getInitialStats(),
-  feats: getInitialString("feats"),
-  classId: getInitialString("class"),
-  spells: getInitialSpells(),
-  coin: getInitialCoin(),
-  weapons: getInitialWeapons(),
-  equipment: getInitialStorageArray<string>("equipment"),
+const defaultSpells: SpellInfo[] = [
+  { id: 1, totalSlots: 0, usedSlots: 0, spells: [] },
+  { id: 2, totalSlots: 0, usedSlots: 0, spells: [] },
+  { id: 3, totalSlots: 0, usedSlots: 0, spells: [] },
+  { id: 4, totalSlots: 0, usedSlots: 0, spells: [] },
+  { id: 5, totalSlots: 0, usedSlots: 0, spells: [] },
+  { id: 6, totalSlots: 0, usedSlots: 0, spells: [] },
+  { id: 7, totalSlots: 0, usedSlots: 0, spells: [] },
+  { id: 8, totalSlots: 0, usedSlots: 0, spells: [] },
+  { id: 9, totalSlots: 0, usedSlots: 0, spells: [] },
+];
+
+const defaultWeapons: Weapon[] = [
+  {
+    id: "1",
+  },
+  {
+    id: "2",
+  },
+  {
+    id: "3",
+  },
+  {
+    id: "4",
+  },
+];
+
+const defaultHero: HeroState = {
+  level: "1",
+  name: "",
+  ac: "10",
+  proficiencyBonus: "+2",
+  hp: {
+    current: "",
+    max: "",
+  },
+  stats: {
+    str: "10",
+    dex: "10",
+    con: "10",
+    int: "10",
+    wis: "10",
+    cha: "10",
+  },
+  spells: {
+    cantrips: [],
+    spells: defaultSpells,
+  },
+  coin: {
+    cp: "",
+    sp: "",
+    gp: "",
+    pp: "",
+  },
+  weapons: defaultWeapons,
+  equipment: [],
+  proficientSkills: [],
 };
+
+const getHero = (): HeroState => {
+  const storedValue = localStorage.getItem("hero");
+  return storedValue ? JSON.parse(storedValue) : defaultHero;
+};
+
+const initialState: HeroState = getHero();
 
 export const heroSlice = createSlice({
   name: "hero",
   initialState,
   reducers: {
+    updateName: (state, action: PayloadAction<string>) => {
+      state.name = action.payload;
+      localStorage.setItem("hero", JSON.stringify(state));
+    },
+    updateArmourClass: (state, action: PayloadAction<string>) => {
+      state.ac = action.payload;
+      localStorage.setItem("hero", JSON.stringify(state));
+    },
+    updateCurrentHp: (state, action: PayloadAction<string>) => {
+      state.hp.current = action.payload;
+      localStorage.setItem("hero", JSON.stringify(state));
+    },
+    updateMaxHp: (state, action: PayloadAction<string>) => {
+      state.hp.max = action.payload;
+      localStorage.setItem("hero", JSON.stringify(state));
+    },
     updateLevel: (state, action: PayloadAction<string>) => {
       state.level = action.payload;
       state.proficiencyBonus = getProficiencyBonus(action.payload);
+      localStorage.setItem("hero", JSON.stringify(state));
     },
     updateStats: (state, action: PayloadAction<Stats>) => {
       state.stats = action.payload;
+      localStorage.setItem("hero", JSON.stringify(state));
+    },
+    updateProficientSkills: (state, action: PayloadAction<string[]>) => {
+      state.proficientSkills = action.payload;
+      localStorage.setItem("hero", JSON.stringify(state));
     },
     updateClass: (state, action: PayloadAction<string>) => {
       state.classId = action.payload;
+      localStorage.setItem("hero", JSON.stringify(state));
     },
     updateRace: (state, action: PayloadAction<string>) => {
       state.race = action.payload;
+      localStorage.setItem("hero", JSON.stringify(state));
     },
     updateFeats: (state, action: PayloadAction<string>) => {
       state.feats = action.payload;
+      localStorage.setItem("hero", JSON.stringify(state));
     },
     updateWeapons: (state, action: PayloadAction<Weapon[]>) => {
       state.weapons = action.payload;
-      localStorage.setItem("weapons", JSON.stringify(state.weapons));
+      localStorage.setItem("hero", JSON.stringify(state));
     },
     updateCantrips: (state, action: PayloadAction<string[]>) => {
       state.spells.cantrips = action.payload;
-      localStorage.setItem("cantrips", JSON.stringify(state.spells.cantrips));
+      localStorage.setItem("hero", JSON.stringify(state));
     },
     updateCopperPieces: (state, action: PayloadAction<string>) => {
       state.coin.cp = action.payload;
-      localStorage.setItem("coin", JSON.stringify(state.coin));
+      localStorage.setItem("hero", JSON.stringify(state));
     },
     updateSilverPieces: (state, action: PayloadAction<string>) => {
       state.coin.sp = action.payload;
-      localStorage.setItem("coin", JSON.stringify(state.coin));
+      localStorage.setItem("hero", JSON.stringify(state));
     },
     updateGoldPieces: (state, action: PayloadAction<string>) => {
       state.coin.gp = action.payload;
-      localStorage.setItem("coin", JSON.stringify(state.coin));
+      localStorage.setItem("hero", JSON.stringify(state));
     },
     updatePlatinumPieces: (state, action: PayloadAction<string>) => {
       state.coin.pp = action.payload;
-      localStorage.setItem("coin", JSON.stringify(state.coin));
+      localStorage.setItem("hero", JSON.stringify(state));
     },
     updateEquipment: (state, action: PayloadAction<string[]>) => {
       state.equipment = action.payload;
-      localStorage.setItem("equipment", JSON.stringify(state.equipment));
+      localStorage.setItem("hero", JSON.stringify(state));
     },
     updateSpellSlots: (
       state,
@@ -220,7 +210,7 @@ export const heroSlice = createSlice({
           state.spells.spells[index].usedSlots = action.payload.slots;
         }
 
-        localStorage.setItem("spells", JSON.stringify(state.spells.spells));
+        localStorage.setItem("hero", JSON.stringify(state));
       }
     },
     updateSpells: (
@@ -234,18 +224,21 @@ export const heroSlice = createSlice({
 
       if (index >= 0) {
         state.spells.spells[index].spells = action.payload.spells;
-        localStorage.setItem("spells", JSON.stringify(state.spells.spells));
+        localStorage.setItem("hero", JSON.stringify(state));
       }
     },
   },
 });
 
 export const {
+  updateArmourClass,
+  updateName,
   updateEquipment,
   updateLevel,
   updateStats,
   updateClass,
   updateWeapons,
+  updateProficientSkills,
   updateSpells,
   updateRace,
   updateFeats,
@@ -255,6 +248,8 @@ export const {
   updateGoldPieces,
   updatePlatinumPieces,
   updateSilverPieces,
+  updateMaxHp,
+  updateCurrentHp,
 } = heroSlice.actions;
 
 export const selectHero = (state: RootState) => state.hero;
