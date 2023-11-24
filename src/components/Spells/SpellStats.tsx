@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import React from "react";
 import { TextBox } from "../shared/TextBox";
 import { useAppSelector } from "../../hooks/hooks";
@@ -33,9 +33,6 @@ export const SpellStats = () => {
 
   return (
     <Box mb={1}>
-      <Typography mb={1} color="rgb(25, 118, 210)" variant="h6" align="left">
-        Spells
-      </Typography>
       <Grid container spacing={1}>
         <Grid item xs={4}>
           <TextBox

@@ -10,7 +10,6 @@ import React, { useState } from "react";
 
 const StyledCell = styled(TableCell)(() => ({
   border: "none",
-  maxWidth: "10px", // TODO: this is quite hacky. Could do something with Grid?
 }));
 
 interface SkillInfoProps {
@@ -39,15 +38,17 @@ export const SkillInfo = ({
 
   return (
     <TableRow onClick={onToggle}>
-      <StyledCell padding="checkbox">
-        <Radio checked={checked} disableRipple size="small" />
+      <StyledCell padding="none" align="left" sx={{ width: 30 }}>
+        <Radio checked={checked} disableRipple size="small" sx={{ pl: 0 }} />
       </StyledCell>
-      <StyledCell padding="checkbox">
+
+      <StyledCell padding="none" align="left" sx={{ width: 20 }}>
         <Typography>{`(${
           isProficient ? bonus + modifier : modifier
         })`}</Typography>
       </StyledCell>
-      <StyledCell>
+
+      <StyledCell align="left">
         <Stack direction="row" spacing={1} alignItems="center">
           <Typography fontSize="small">{skillName}</Typography>
           <Typography fontSize={12} color="grey">

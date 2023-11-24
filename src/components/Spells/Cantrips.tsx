@@ -3,9 +3,9 @@ import {
   IconButton,
   List,
   ListItem,
-  ListSubheader,
   Paper,
   TextField,
+  Typography,
 } from "@mui/material";
 import React, { useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
@@ -22,8 +22,6 @@ export const Cantrips = () => {
   const handleDeleteCantrip = (index: number) => {
     const tempCantrips = [...spells.cantrips];
     tempCantrips.splice(index, 1);
-
-    localStorage.setItem("cantrips", JSON.stringify([...tempCantrips]));
     dispatch(updateCantrips([...tempCantrips]));
   };
 
@@ -33,27 +31,20 @@ export const Cantrips = () => {
   ) => {
     const tempCantrips = [...spells.cantrips];
     tempCantrips[index] = target.value;
-
-    localStorage.setItem("cantrips", JSON.stringify([...tempCantrips]));
     dispatch(updateCantrips([...tempCantrips]));
   };
 
   const handleAddCantrip = () => {
-    const updatedCantrips = [...spells.cantrips, newCantrip];
-    localStorage.setItem("cantrips", JSON.stringify(updatedCantrips));
-    dispatch(updateCantrips(updatedCantrips));
+    dispatch(updateCantrips([...spells.cantrips, newCantrip]));
     setNewCantrip("");
   };
 
   return (
     <Container component={Paper} sx={{ mb: 1 }}>
       <List dense sx={{ pt: 0 }}>
-        <ListSubheader
-          sx={{ height: 30, color: "rgb(25, 118, 210)" }}
-          disableGutters
-        >
+        <Typography variant="body2" color="rgb(25, 118, 210)">
           Cantrips
-        </ListSubheader>
+        </Typography>
         {spells.cantrips.map((cantrip, index) => (
           <ListItem
             key={`${cantrip}-${index}`}
