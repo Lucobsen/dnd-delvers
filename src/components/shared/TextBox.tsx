@@ -31,7 +31,7 @@ export const TextBox = ({
       readOnly,
       disableUnderline: true,
       style: {
-        fontSize: size === "small" ? 14 : "inherit",
+        fontSize: size === "small" ? 12 : "inherit",
       },
     }}
     placeholder={placeholder}

@@ -37,8 +37,8 @@ export const Weapons = () => {
   };
 
   return (
-    <Container disableGutters>
-      <Typography variant="body2" color="rgb(25, 118, 210)" sx={{ mt: 2 }}>
+    <Container disableGutters sx={{ my: 1 }}>
+      <Typography variant="body2" color="rgb(25, 118, 210)">
         Weapons
       </Typography>
 

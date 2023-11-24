@@ -130,6 +130,7 @@ interface HeroState {
   spells: Spells;
   coin: Coin;
   weapons: Weapon[];
+  equipment: string[];
 }
 
 const initialState: HeroState = {
@@ -144,6 +145,7 @@ const initialState: HeroState = {
   spells: getInitialSpells(),
   coin: getInitialCoin(),
   weapons: getInitialWeapons(),
+  equipment: getInitialStorageArray<string>("equipment"),
 };
 
 export const heroSlice = createSlice({
@@ -172,7 +174,7 @@ export const heroSlice = createSlice({
     },
     updateCantrips: (state, action: PayloadAction<string[]>) => {
       state.spells.cantrips = action.payload;
-      localStorage.setItem("cantrips", JSON.stringify(action.payload));
+      localStorage.setItem("cantrips", JSON.stringify(state.spells.cantrips));
     },
     updateCopperPieces: (state, action: PayloadAction<string>) => {
       state.coin.cp = action.payload;
@@ -189,6 +191,10 @@ export const heroSlice = createSlice({
     updatePlatinumPieces: (state, action: PayloadAction<string>) => {
       state.coin.pp = action.payload;
       localStorage.setItem("coin", JSON.stringify(state.coin));
+    },
+    updateEquipment: (state, action: PayloadAction<string[]>) => {
+      state.equipment = action.payload;
+      localStorage.setItem("equipment", JSON.stringify(state.equipment));
     },
     updateSpellSlots: (
       state,
@@ -235,6 +241,7 @@ export const heroSlice = createSlice({
 });
 
 export const {
+  updateEquipment,
   updateLevel,
   updateStats,
   updateClass,
