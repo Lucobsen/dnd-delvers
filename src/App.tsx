@@ -7,6 +7,7 @@ import { NavBar } from "./components/Navbar/Navbar";
 import { Footer } from "./components/Footer/Footer";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
+const HoardPage = lazy(() => import("./pages/Hoard"));
 const HeroPage = lazy(() => import("./pages/Hero"));
 const SkillPage = lazy(() => import("./pages/Skills"));
 const InventoryPage = lazy(() => import("./pages/Inventory"));
@@ -33,12 +34,12 @@ export const App = () => {
           <BrowserRouter future={{ v7_startTransition: true }}>
             <NavBar />
             <Routes>
-              <Route path="/" element={<Navigate to="/details" />} />
-              <Route path="/details" element={<HeroPage />} />
-              <Route path="/skills" element={<SkillPage />} />
-              <Route path="/inventory" element={<InventoryPage />} />
-              <Route path="/feats" element={<FeatsPage />} />
-              <Route path="/spells" element={<SpellsPage />} />
+              <Route path="/" element={<HoardPage />} />
+              <Route path="/:id/details" element={<HeroPage />} />
+              <Route path="/:id/skills" element={<SkillPage />} />
+              <Route path="/:id/inventory" element={<InventoryPage />} />
+              <Route path="/:id/feats" element={<FeatsPage />} />
+              <Route path="/:id/spells" element={<SpellsPage />} />
             </Routes>
             <Footer />
           </BrowserRouter>

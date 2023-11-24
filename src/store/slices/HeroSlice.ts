@@ -28,6 +28,7 @@ export type Spells = {
 };
 
 interface HeroState {
+  id: string;
   name: string;
   level: string;
   ac: string;
@@ -75,6 +76,7 @@ const defaultWeapons: Weapon[] = [
 ];
 
 const defaultHero: HeroState = {
+  id: crypto.randomUUID(),
   level: "1",
   name: "",
   ac: "10",
