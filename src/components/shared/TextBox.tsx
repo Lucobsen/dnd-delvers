@@ -9,6 +9,7 @@ interface TextBoxProps {
   onChange?: (newValue: string) => void;
   placeholder?: string;
   readOnly?: boolean;
+  size?: "small" | "medium" | "large";
 }
 
 export const TextBox = ({
@@ -19,6 +20,7 @@ export const TextBox = ({
   onChange,
   placeholder,
   readOnly,
+  size = "medium",
 }: TextBoxProps) => (
   <TextField
     InputLabelProps={{ sx: { overflow: "visible" } }}
@@ -28,6 +30,9 @@ export const TextBox = ({
     InputProps={{
       readOnly,
       disableUnderline: true,
+      style: {
+        fontSize: size === "small" ? 14 : "inherit",
+      },
     }}
     placeholder={placeholder}
     type={isNumber ? "number" : "text"}

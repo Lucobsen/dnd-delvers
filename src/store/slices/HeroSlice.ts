@@ -101,8 +101,6 @@ export type Weapon = {
   attack?: string;
   damage?: string;
   range?: string;
-  ammo?: string;
-  used?: string;
 };
 
 type Currency = "cp" | "sp" | "gp" | "pp";
