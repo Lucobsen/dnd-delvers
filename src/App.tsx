@@ -5,7 +5,7 @@ import { store } from "./store/store";
 import { styled } from "@mui/material";
 import { NavBar } from "./components/Navbar/Navbar";
 import { Footer } from "./components/Footer/Footer";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 const HeroPage = lazy(() => import("./pages/Hero"));
 const SkillPage = lazy(() => import("./pages/Skills"));
@@ -33,7 +33,8 @@ export const App = () => {
           <BrowserRouter future={{ v7_startTransition: true }}>
             <NavBar />
             <Routes>
-              <Route path="/" element={<HeroPage />} />
+              <Route path="/" element={<Navigate to="/details" />} />
+              <Route path="/details" element={<HeroPage />} />
               <Route path="/skills" element={<SkillPage />} />
               <Route path="/inventory" element={<InventoryPage />} />
               <Route path="/feats" element={<FeatsPage />} />
