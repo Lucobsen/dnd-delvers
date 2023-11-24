@@ -1,7 +1,8 @@
 import { Grid, LinearProgress } from "@mui/material";
-import React, { useState } from "react";
-import { getInitialStorageValue } from "../../utils/get-initial-storage-value";
+import React from "react";
 import { TextBox } from "../shared/TextBox";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { updateCurrentHp, updateMaxHp } from "../../store/slices/HeroSlice";
 
 const getBarColor = (hp: number) => {
   if (hp >= 50) return "success";
@@ -33,35 +34,31 @@ interface HpLogicProps {
 }
 
 export const HpLogic = ({ onDeathSaveChange }: HpLogicProps) => {
-  const [currentHp, setCurrentHp] = useState(
-    getInitialStorageValue("currentHp")
-  );
-  const [maxHp, setMaxHp] = useState(getInitialStorageValue("maxHp"));
+  const { hp } = useAppSelector((state) => state.hero);
+  const dispatch = useAppDispatch();
 
   const onHpChange = (newValue: string) => {
     let newHpValue = "0";
 
     if (newValue !== "0.0") {
-      newHpValue = setHpValue(newValue, currentHp);
+      newHpValue = setHpValue(newValue, hp.current);
     } else {
       onDeathSaveChange(true);
     }
 
-    localStorage.setItem("currentHp", JSON.stringify(newHpValue));
-    setCurrentHp(newHpValue);
+    dispatch(updateCurrentHp(newHpValue));
   };
 
   const onMaxHpChange = (newValue: string) => {
-    const newHpValue = setHpValue(newValue, maxHp);
-    localStorage.setItem("maxHp", JSON.stringify(newHpValue));
-    setMaxHp(newHpValue);
+    const newHpValue = setHpValue(newValue, hp.max);
+    dispatch(updateMaxHp(newHpValue));
   };
 
   return (
     <Grid container>
       <Grid item xs={6}>
         <TextBox
-          value={currentHp}
+          value={hp.current}
           label="HP"
           isNumber
           variant="standard"
@@ -71,7 +68,7 @@ export const HpLogic = ({ onDeathSaveChange }: HpLogicProps) => {
 
       <Grid item xs={6}>
         <TextBox
-          value={maxHp}
+          value={hp.max}
           label="Max HP"
           isNumber
           variant="standard"
@@ -81,9 +78,9 @@ export const HpLogic = ({ onDeathSaveChange }: HpLogicProps) => {
 
       <Grid item xs={12} mt={0.5}>
         <LinearProgress
-          color={getBarColor(getHpValue(currentHp, maxHp))}
+          color={getBarColor(getHpValue(hp.current, hp.max))}
           variant="determinate"
-          value={getHpValue(currentHp, maxHp)}
+          value={getHpValue(hp.current, hp.max)}
         />
       </Grid>
     </Grid>

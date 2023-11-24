@@ -17,7 +17,6 @@ export const HeroStats = () => {
       [statId]: value,
     };
 
-    localStorage.setItem("stats", JSON.stringify(newStats));
     dispatch(updateStats(newStats));
   };
 

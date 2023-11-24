@@ -7,11 +7,6 @@ const Feats = () => {
   const { feats } = useAppSelector((state) => state.hero);
   const dispatch = useAppDispatch();
 
-  const onFeatsChange = (newValue: string) => {
-    localStorage.setItem("feats", JSON.stringify(newValue));
-    dispatch(updateFeats(newValue));
-  };
-
   return (
     <Container sx={{ my: 6 }}>
       <Typography color="rgb(25, 118, 210)" variant="h6" align="left">
@@ -20,7 +15,7 @@ const Feats = () => {
       <TextareaAutosize
         placeholder="Record your features and traits here hero!"
         minRows={20}
-        onChange={(event) => onFeatsChange(event.target.value)}
+        onChange={({ target }) => dispatch(updateFeats(target.value))}
         defaultValue={feats}
         style={{ width: "100%" }}
       />
