@@ -42,16 +42,14 @@ export const Weapons = () => {
         Weapons
       </Typography>
 
-      <TableContainer component={Paper} sx={{ p: 1 }}>
+      <TableContainer component={Paper} sx={{ width: "unset", p: 1 }}>
         <Table size="small" padding="none">
           <TableHead>
             <TableRow>
               <StyledTableCell>Name</StyledTableCell>
-              <StyledTableCell>Attack</StyledTableCell>
-              <StyledTableCell>Damage</StyledTableCell>
-              <StyledTableCell>Range</StyledTableCell>
-              <StyledTableCell>Ammo</StyledTableCell>
-              <StyledTableCell>Used</StyledTableCell>
+              <StyledTableCell width={10}>Attack</StyledTableCell>
+              <StyledTableCell width={60}>Damage</StyledTableCell>
+              <StyledTableCell width={40}>Range</StyledTableCell>
             </TableRow>
           </TableHead>
 
@@ -60,6 +58,7 @@ export const Weapons = () => {
               <TableRow key={weapon.id}>
                 <StyledTableCell>
                   <TextBox
+                    size="small"
                     variant="standard"
                     value={weapon.name ?? ""}
                     onChange={(value) =>
@@ -70,6 +69,7 @@ export const Weapons = () => {
 
                 <StyledTableCell>
                   <TextBox
+                    size="small"
                     variant="standard"
                     value={weapon.attack ?? ""}
                     onChange={(value) =>
@@ -80,6 +80,7 @@ export const Weapons = () => {
 
                 <StyledTableCell>
                   <TextBox
+                    size="small"
                     variant="standard"
                     value={weapon.damage ?? ""}
                     onChange={(value) =>
@@ -90,30 +91,11 @@ export const Weapons = () => {
 
                 <StyledTableCell>
                   <TextBox
+                    size="small"
                     variant="standard"
                     value={weapon.range ?? ""}
                     onChange={(value) =>
                       handleUpdateWeapon({ ...weapon, range: value })
-                    }
-                  />
-                </StyledTableCell>
-
-                <StyledTableCell>
-                  <TextBox
-                    variant="standard"
-                    value={weapon.ammo ?? ""}
-                    onChange={(value) =>
-                      handleUpdateWeapon({ ...weapon, ammo: value })
-                    }
-                  />
-                </StyledTableCell>
-
-                <StyledTableCell>
-                  <TextBox
-                    variant="standard"
-                    value={weapon.used ?? ""}
-                    onChange={(value) =>
-                      handleUpdateWeapon({ ...weapon, used: value })
                     }
                   />
                 </StyledTableCell>
