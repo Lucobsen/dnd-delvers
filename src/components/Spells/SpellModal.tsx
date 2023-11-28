@@ -68,12 +68,9 @@ export const SpellModal = ({
     handleUpdateSpells(tempSpells);
   };
 
-  const handleUpdateSpell = (
-    { value }: { value: string },
-    spellIndex: number
-  ) => {
+  const handleUpdateSpell = ({ value }: { value: string }, index: number) => {
     const tempSpells = [...selectedSpells];
-    tempSpells[spellIndex] = value;
+    tempSpells[index] = value;
 
     handleUpdateSpells(tempSpells);
   };
