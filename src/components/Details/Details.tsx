@@ -2,7 +2,7 @@ import { Grid, Stack } from "@mui/material";
 import React, { useState } from "react";
 import { useRaces } from "../../services/races/races.services";
 import { useClasses } from "../../services/classes/classes.service";
-import { levels } from "../../models/levels.models";
+import { getProficiencyBonus, levels } from "../../models/levels.models";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { SelectComponent } from "../shared/SelectComponent";
 import { TextBox } from "../shared/TextBox";
@@ -44,7 +44,11 @@ export const Details = () => {
   };
 
   const handleUpdateLevel = (newLevel: string) => {
-    const updatedHero: Hero = { ...hero, level: newLevel };
+    const updatedHero: Hero = {
+      ...hero,
+      level: newLevel,
+      proficiencyBonus: getProficiencyBonus(newLevel),
+    };
     dispatch(updateHero(updatedHero));
   };
 
