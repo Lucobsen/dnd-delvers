@@ -1,19 +1,31 @@
 import { Button, Container, Stack } from "@mui/material";
 import React from "react";
-import { useAppSelector } from "../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { NavLink } from "react-router-dom";
+import { addHero } from "../store/slices/HeroHoardSlice";
+import { HeroButton } from "../components/HeroButton/HeroButton";
 
 const Hoard = () => {
-  const { id, name } = useAppSelector((state) => state.hero);
+  const hoard = useAppSelector((state) => state.heroHoard);
+  const dispatch = useAppDispatch();
 
+  const hoardList = Object.values(hoard);
   return (
     <Container sx={{ mt: 10 }}>
-      <Stack>
-        <NavLink to={`../${id}/details`}>
-          <Button variant="outlined">
-            {name === "" ? "Create New Hero" : name}
+      <Stack spacing={4}>
+        {hoardList.length > 0 &&
+          hoardList.map((hero) => <HeroButton hero={hero} key={hero.id} />)}
+
+        {hoardList.length < 3 && (
+          <Button
+            fullWidth
+            color="success"
+            variant="contained"
+            onClick={() => dispatch(addHero())}
+          >
+            Create Hero
           </Button>
-        </NavLink>
+        )}
       </Stack>
     </Container>
   );

@@ -11,7 +11,9 @@ import React, { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { updateSpells } from "../../store/slices/HeroSlice";
+import { Hero } from "../../models/hero.models";
+import { useParams } from "react-router-dom";
+import { updateHero } from "../../store/slices/HeroHoardSlice";
 
 interface SpellModalProps {
   open: boolean;
@@ -24,36 +26,81 @@ export const SpellModal = ({
   onClose,
   selectedSpellLevel,
 }: SpellModalProps) => {
-  const { spells } = useAppSelector((state) => state.hero.spells);
+  const { id } = useParams();
+  const hero = useAppSelector((state) =>
+    state.heroHoard.find(({ id: heroId }) => heroId === id)
+  );
   const dispatch = useAppDispatch();
-  const [newCantrip, setNewCantrip] = useState("");
 
-  if (selectedSpellLevel === null) return null;
+  const [newSpell, setNewSpell] = useState("");
 
-  const spellList =
-    spells.find(({ id }) => id === selectedSpellLevel)?.spells ?? [];
+  if (!hero || selectedSpellLevel === null) return null;
 
-  const handleDeleteCantrip = (index: number) => {
-    const tempSpells = [...spellList];
+  const { spellList } = hero.spells;
+
+  const selectedSpells =
+    spellList.find(({ id }) => id === selectedSpellLevel)?.spells ?? [];
+
+  const handleDeleteSpell = (index: number) => {
+    const tempSpells = [...selectedSpells];
     tempSpells.splice(index, 1);
 
-    dispatch(updateSpells({ id: selectedSpellLevel, spells: [...tempSpells] }));
+    const tempSpellList = [...spellList];
+    tempSpellList[index].spells = [...tempSpells];
+
+    const updatedHero: Hero = {
+      ...hero,
+      spells: {
+        ...hero.spells,
+        spellList: [...tempSpellList],
+      },
+    };
+    dispatch(updateHero(updatedHero));
   };
 
-  const handleUpdateCantrip = (
+  const handleUpdateSpell = (
     { target }: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     index: number
   ) => {
-    const tempSpells = [...spellList];
+    const tempSpells = [...selectedSpells];
     tempSpells[index] = target.value;
 
-    dispatch(updateSpells({ id: selectedSpellLevel, spells: [...tempSpells] }));
+    const tempSpellList = [...spellList];
+    tempSpellList[index].spells = [...tempSpells];
+
+    const updatedHero: Hero = {
+      ...hero,
+      spells: {
+        ...hero.spells,
+        spellList: [...tempSpellList],
+      },
+    };
+    dispatch(updateHero(updatedHero));
   };
 
-  const handleAddCantrip = () => {
-    const updatedCantrips = [...spellList, newCantrip];
-    dispatch(updateSpells({ id: selectedSpellLevel, spells: updatedCantrips }));
-    setNewCantrip("");
+  const handleAddSpell = () => {
+    const tempSpellList = [...spellList];
+    const tempSpells = [...selectedSpells];
+    tempSpells.push(newSpell);
+
+    const index = tempSpellList.findIndex(
+      (info) => info.id === selectedSpellLevel
+    );
+
+    if (index >= 0) {
+      tempSpellList[index].spells = [...tempSpells];
+
+      const updatedHero: Hero = {
+        ...hero,
+        spells: {
+          ...hero.spells,
+          spellList: [...tempSpellList],
+        },
+      };
+      dispatch(updateHero(updatedHero));
+
+      setNewSpell("");
+    }
   };
 
   return (
@@ -64,7 +111,7 @@ export const SpellModal = ({
             sx={{ height: 30, color: "rgb(25, 118, 210)" }}
             disableGutters
           >
-            {`${selectedSpellLevel} Level Spells`}
+            {`Level ${selectedSpellLevel} Spells`}
           </ListSubheader>
           {spellList.map((spell, index) => (
             <ListItem
@@ -75,7 +122,7 @@ export const SpellModal = ({
                 <IconButton
                   edge="end"
                   aria-label="delete"
-                  onClick={() => handleDeleteCantrip(index)}
+                  onClick={() => handleDeleteSpell(index)}
                 >
                   <DeleteIcon />
                 </IconButton>
@@ -85,11 +132,11 @@ export const SpellModal = ({
                 fullWidth
                 variant="standard"
                 value={spell}
-                placeholder="Add cantrip"
+                placeholder="Add spell"
                 onBlur={(event) => {
-                  if (event.target.value === "") handleDeleteCantrip(index);
+                  if (event.target.value === "") handleDeleteSpell(index);
                 }}
-                onChange={(event) => handleUpdateCantrip(event, index)}
+                onChange={(event) => handleUpdateSpell(event, index)}
               />
             </ListItem>
           ))}
@@ -98,10 +145,10 @@ export const SpellModal = ({
             disableGutters
             secondaryAction={
               <IconButton
-                disabled={newCantrip === ""}
+                disabled={newSpell === ""}
                 edge="end"
                 aria-label="add"
-                onClick={handleAddCantrip}
+                onClick={handleAddSpell}
               >
                 <AddIcon />
               </IconButton>
@@ -111,8 +158,8 @@ export const SpellModal = ({
               fullWidth
               variant="standard"
               placeholder={`Add spell`}
-              value={newCantrip}
-              onChange={(event) => setNewCantrip(event.target.value)}
+              value={newSpell}
+              onChange={(event) => setNewSpell(event.target.value)}
             />
           </ListItem>
         </List>

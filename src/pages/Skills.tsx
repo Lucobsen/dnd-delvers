@@ -12,14 +12,22 @@ import { useSkills } from "../services/skills/use-skills-query";
 import { SkillInfo } from "../components/Skills/SkillInfo";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { getModifier } from "../models/abilities.models";
-import { updateProficientSkills } from "../store/slices/HeroSlice";
+import { updateHero } from "../store/slices/HeroHoardSlice";
+import { useParams } from "react-router-dom";
+import { Hero } from "../models/hero.models";
 
 const Skills = () => {
-  const { skills, isLoading } = useSkills();
-  const { proficiencyBonus, stats, proficientSkills } = useAppSelector(
-    (state) => state.hero
+  const { id } = useParams();
+  const hero = useAppSelector((state) =>
+    state.heroHoard.find(({ id: heroId }) => heroId === id)
   );
   const dispatch = useAppDispatch();
+
+  const { skills, isLoading } = useSkills();
+
+  if (!hero) return null;
+
+  const { proficiencyBonus, stats, proficientSkills } = hero;
 
   const onSkillChecked = (skillIndex: string) => {
     const tempProficientSkills = [...proficientSkills];
@@ -29,10 +37,18 @@ const Skills = () => {
 
     if (index >= 0) {
       tempProficientSkills.splice(index, 1);
-      dispatch(updateProficientSkills(tempProficientSkills));
+
+      const updatedHero: Hero = {
+        ...hero,
+        proficientSkills: tempProficientSkills,
+      };
+      dispatch(updateHero(updatedHero));
     } else {
-      const proficiencies = [...proficientSkills, skillIndex];
-      dispatch(updateProficientSkills(proficiencies));
+      const updatedHero: Hero = {
+        ...hero,
+        proficientSkills: [...proficientSkills, skillIndex],
+      };
+      dispatch(updateHero(updatedHero));
     }
   };
 

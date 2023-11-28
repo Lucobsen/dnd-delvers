@@ -3,13 +3,15 @@ import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import React from "react";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import PersonIcon from "@mui/icons-material/Person";
 import InventoryIcon from "@mui/icons-material/Inventory";
-import { useAppSelector } from "../../hooks/hooks";
 
 export const Footer = () => {
-  const { id } = useAppSelector((state) => state.hero);
+  const { id } = useParams();
+
+  // TODO: fix ID issue
+  if (id === undefined) return null;
 
   return (
     <AppBar position="fixed" color="primary" sx={{ top: "auto", bottom: 0 }}>

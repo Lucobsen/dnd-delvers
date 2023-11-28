@@ -14,25 +14,54 @@ import {
 import React, { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { SpellModal } from "./SpellModal";
-import { updateSpellSlots } from "../../store/slices/HeroSlice";
+import { Hero } from "../../models/hero.models";
 import { StyledStepperButton } from "../shared/StepperButton";
 import ArrowDropUpRoundedIcon from "@mui/icons-material/ArrowDropUpRounded";
 import ArrowDropDownRoundedIcon from "@mui/icons-material/ArrowDropDownRounded";
+import { useParams } from "react-router-dom";
+import { updateHero } from "../../store/slices/HeroHoardSlice";
 
 export const SpellList = () => {
-  const { spells } = useAppSelector((state) => state.hero.spells);
+  const { id } = useParams();
+  const hero = useAppSelector((state) =>
+    state.heroHoard.find(({ id: heroId }) => heroId === id)
+  );
   const dispatch = useAppDispatch();
+
   const [openSpellDialog, setOpenSpellDialog] = useState(false);
   const [selectedSpellLevel, setSelectedSpellLevel] = useState<number | null>(
     null
   );
+
+  if (!hero) return null;
+
+  const { spells } = hero;
 
   const handleSlotsChange = (
     id: number,
     type: "total" | "used",
     slots: number | undefined
   ) => {
-    dispatch(updateSpellSlots({ id, type, slots: slots ?? 0 }));
+    const tempSpells = [...spells.spellList];
+    const index = tempSpells.findIndex((info) => info.id === id);
+
+    if (index >= 0 && slots !== undefined) {
+      if (type === "total") {
+        tempSpells[index].totalSlots = slots;
+
+        if (slots < tempSpells[index].usedSlots) {
+          tempSpells[index].usedSlots = slots;
+        }
+      } else if (type === "used") {
+        tempSpells[index].usedSlots = slots;
+      }
+    }
+
+    const updatedHero: Hero = {
+      ...hero,
+      spells: { ...hero.spells, spellList: tempSpells },
+    };
+    dispatch(updateHero(updatedHero));
   };
 
   return (
@@ -51,7 +80,7 @@ export const SpellList = () => {
           </TableHead>
 
           <TableBody>
-            {spells.map(({ id, totalSlots, usedSlots }) => (
+            {spells.spellList.map(({ id, totalSlots, usedSlots }) => (
               <TableRow key={id}>
                 <TableCell sx={{ width: 80 }}>
                   <Button

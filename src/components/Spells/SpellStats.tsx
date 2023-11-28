@@ -4,6 +4,7 @@ import { TextBox } from "../shared/TextBox";
 import { useAppSelector } from "../../hooks/hooks";
 import { useClassSpellcastingInfo } from "../../services/classes/classes.service";
 import { getModifier } from "../../models/abilities.models";
+import { useParams } from "react-router-dom";
 
 const getSpellSaveDc = (proficiencyBonus: string, modifier: string) => {
   const proficiencyBonusValue = Number.parseInt(proficiencyBonus);
@@ -26,10 +27,15 @@ const getSpellAttackBonus = (proficiencyBonus: string, modifier: string) => {
 };
 
 export const SpellStats = () => {
-  const { classId, proficiencyBonus, stats } = useAppSelector(
-    (state) => state.hero
+  const { id } = useParams();
+  const hero = useAppSelector((state) =>
+    state.heroHoard.find(({ id: heroId }) => heroId === id)
   );
-  const { spellcastingAbility } = useClassSpellcastingInfo(classId);
+  const { spellcastingAbility } = useClassSpellcastingInfo(hero?.classId);
+
+  if (!hero) return null;
+
+  const { proficiencyBonus, stats } = hero;
 
   return (
     <Box mb={1}>

@@ -5,7 +5,13 @@ import { store } from "./store/store";
 import { styled } from "@mui/material";
 import { NavBar } from "./components/Navbar/Navbar";
 import { Footer } from "./components/Footer/Footer";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+  useParams,
+} from "react-router-dom";
 
 const HoardPage = lazy(() => import("./pages/Hoard"));
 const HeroPage = lazy(() => import("./pages/Hero"));

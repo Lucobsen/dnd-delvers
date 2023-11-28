@@ -1,13 +1,10 @@
 import { Stack } from "@mui/material";
 import React from "react";
 import { useAppSelector, useAppDispatch } from "../../hooks/hooks";
-import {
-  updateCopperPieces,
-  updateSilverPieces,
-  updateGoldPieces,
-  updatePlatinumPieces,
-} from "../../store/slices/HeroSlice";
 import { TextBox } from "../shared/TextBox";
+import { useParams } from "react-router-dom";
+import { updateHero } from "../../store/slices/HeroHoardSlice";
+import { Hero } from "../../models/hero.models";
 
 const checkCoinAmount = (newValue: string, currentValue: string) => {
   const amount = Number.parseInt(newValue);
@@ -20,8 +17,35 @@ const checkCoinAmount = (newValue: string, currentValue: string) => {
 };
 
 export const Coins = () => {
-  const { coin } = useAppSelector((state) => state.hero);
+  const { id } = useParams();
+  const hero = useAppSelector((state) =>
+    state.heroHoard.find(({ id: heroId }) => heroId === id)
+  );
   const dispatch = useAppDispatch();
+
+  if (!hero) return null;
+
+  const { coin } = hero;
+
+  const handleUpdateCopper = (cp: string) => {
+    const updatedHero: Hero = { ...hero, coin: { ...coin, cp } };
+    dispatch(updateHero(updatedHero));
+  };
+
+  const handleUpdateSilver = (sp: string) => {
+    const updatedHero: Hero = { ...hero, coin: { ...coin, sp } };
+    dispatch(updateHero(updatedHero));
+  };
+
+  const handleUpdateGold = (gp: string) => {
+    const updatedHero: Hero = { ...hero, coin: { ...coin, gp } };
+    dispatch(updateHero(updatedHero));
+  };
+
+  const handleUpdatePlatinum = (pp: string) => {
+    const updatedHero: Hero = { ...hero, coin: { ...coin, pp } };
+    dispatch(updateHero(updatedHero));
+  };
 
   return (
     <Stack direction="row" spacing={1}>
@@ -30,7 +54,7 @@ export const Coins = () => {
         value={coin.cp}
         isNumber
         onChange={(value) =>
-          dispatch(updateCopperPieces(checkCoinAmount(value, coin.cp)))
+          handleUpdateCopper(checkCoinAmount(value, coin.cp))
         }
       />
       <TextBox
@@ -38,23 +62,21 @@ export const Coins = () => {
         value={coin.sp}
         isNumber
         onChange={(value) =>
-          dispatch(updateSilverPieces(checkCoinAmount(value, coin.sp)))
+          handleUpdateSilver(checkCoinAmount(value, coin.sp))
         }
       />
       <TextBox
         label="GP"
         value={coin.gp}
         isNumber
-        onChange={(value) =>
-          dispatch(updateGoldPieces(checkCoinAmount(value, coin.gp)))
-        }
+        onChange={(value) => handleUpdateGold(checkCoinAmount(value, coin.gp))}
       />
       <TextBox
         label="PP"
         value={coin.pp}
         isNumber
         onChange={(value) =>
-          dispatch(updatePlatinumPieces(checkCoinAmount(value, coin.pp)))
+          handleUpdatePlatinum(checkCoinAmount(value, coin.pp))
         }
       />
     </Stack>
