@@ -4,15 +4,9 @@ import { Provider } from "react-redux";
 import { store } from "./store/store";
 import { styled } from "@mui/material";
 import { NavBar } from "./components/Navbar/Navbar";
-import { Footer } from "./components/Footer/Footer";
-import {
-  BrowserRouter,
-  Navigate,
-  Route,
-  Routes,
-  useParams,
-} from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { HeroEditor } from "./pages/HeroEditor";
+import { Analytics } from "@vercel/analytics/react";
 
 const HoardPage = lazy(() => import("./pages/Hoard"));
 const HeroPage = lazy(() => import("./pages/Hero"));
@@ -51,6 +45,7 @@ export const App = () => {
               </Route>
             </Routes>
           </BrowserRouter>
+          <Analytics />
         </AppWrapper>
       </Provider>
     </QueryClientProvider>
