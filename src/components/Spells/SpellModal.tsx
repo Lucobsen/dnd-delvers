@@ -110,7 +110,7 @@ export const SpellModal = ({
           </ListSubheader>
           {selectedSpells.map((spell, index) => (
             <ListItem
-              key={`${spell}-${index}`}
+              key={index}
               dense
               disableGutters
               secondaryAction={
