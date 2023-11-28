@@ -41,58 +41,59 @@ export const SpellModal = ({
   const selectedSpells =
     spellInfo.find(({ id }) => id === selectedSpellLevel)?.spells ?? [];
 
+  const handleUpdateSpells = (newSpells: string[]) => {
+    const tempSpellInfo = [...spellInfo];
+    const infoIndex = tempSpellInfo.findIndex(
+      (info) => info.id === selectedSpellLevel
+    );
+
+    if (infoIndex >= 0) {
+      tempSpellInfo[infoIndex] = {
+        ...tempSpellInfo[infoIndex],
+        spells: [...newSpells],
+      };
+
+      const updatedHero: Hero = {
+        ...hero,
+        spellInfo: [...tempSpellInfo],
+      };
+      dispatch(updateHero(updatedHero));
+    }
+  };
+
   const handleDeleteSpell = (index: number) => {
     const tempSpells = [...selectedSpells];
     tempSpells.splice(index, 1);
 
-    const tempSpellList = [...spellInfo];
-    tempSpellList[index].spells = [...tempSpells];
-
-    const updatedHero: Hero = {
-      ...hero,
-      spellInfo: [...tempSpellList],
-    };
-    dispatch(updateHero(updatedHero));
+    handleUpdateSpells(tempSpells);
   };
 
   const handleUpdateSpell = (
-    { target }: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    index: number
+    { value }: { value: string },
+    spellIndex: number
   ) => {
     const tempSpells = [...selectedSpells];
-    tempSpells[index] = target.value;
+    tempSpells[spellIndex] = value;
 
-    const tempSpellList = [...spellInfo];
-    tempSpellList[index].spells = [...tempSpells];
-
-    const updatedHero: Hero = {
-      ...hero,
-      spellInfo: [...tempSpellList],
-    };
-    dispatch(updateHero(updatedHero));
+    handleUpdateSpells(tempSpells);
   };
 
   const handleAddSpell = () => {
-    const tempSpellList = [...spellInfo];
+    const tempSpellInfo = [...spellInfo];
 
-    const index = tempSpellList.findIndex(
+    const index = tempSpellInfo.findIndex(
       (info) => info.id === selectedSpellLevel
     );
 
     if (index >= 0) {
-      const lah = tempSpellList[index].spells.concat([
-        ...selectedSpells,
-        newSpell,
-      ]);
+      tempSpellInfo[index] = {
+        ...tempSpellInfo[index],
+        spells: [...selectedSpells, newSpell],
+      };
 
-      console.log(
-        "%cSpellModal.tsx line:91 tempSpellList",
-        "color: #007acc;",
-        tempSpellList
-      );
       const updatedHero: Hero = {
         ...hero,
-        spellInfo: [...tempSpellList],
+        spellInfo: [...tempSpellInfo],
       };
       dispatch(updateHero(updatedHero));
 
@@ -133,7 +134,7 @@ export const SpellModal = ({
                 onBlur={(event) => {
                   if (event.target.value === "") handleDeleteSpell(index);
                 }}
-                onChange={(event) => handleUpdateSpell(event, index)}
+                onChange={({ target }) => handleUpdateSpell(target, index)}
               />
             </ListItem>
           ))}
