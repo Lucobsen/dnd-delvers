@@ -46,6 +46,7 @@ export const Equipment = () => {
       onUpdate={handleUpdateEquipment}
       onAdd={handleAddEquipment}
       title="Equipment"
+      placeholder="Add equipment"
       items={equipment}
     />
   );
