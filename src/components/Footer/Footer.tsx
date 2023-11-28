@@ -10,13 +10,12 @@ import InventoryIcon from "@mui/icons-material/Inventory";
 export const Footer = () => {
   const { id } = useParams();
 
-  // TODO: fix ID issue
   if (id === undefined) return null;
 
   return (
     <AppBar position="fixed" color="primary" sx={{ top: "auto", bottom: 0 }}>
       <Toolbar sx={{ justifyContent: "space-around", minHeight: 40 }}>
-        <NavLink to={`${id}/details`}>
+        <NavLink to="details">
           <IconButton
             color="inherit"
             aria-label="details"
@@ -27,7 +26,7 @@ export const Footer = () => {
           </IconButton>
         </NavLink>
 
-        <NavLink to={`${id}/skills`}>
+        <NavLink to="skills">
           <IconButton
             color="inherit"
             aria-label="skills"
@@ -38,7 +37,7 @@ export const Footer = () => {
           </IconButton>
         </NavLink>
 
-        <NavLink to={`${id}/inventory`}>
+        <NavLink to="inventory">
           <IconButton
             color="inherit"
             aria-label="inventory"
@@ -49,7 +48,7 @@ export const Footer = () => {
           </IconButton>
         </NavLink>
 
-        <NavLink to={`${id}/feats`}>
+        <NavLink to="feats">
           <IconButton
             size="small"
             color="inherit"
@@ -60,7 +59,7 @@ export const Footer = () => {
           </IconButton>
         </NavLink>
 
-        <NavLink to={`${id}/spells`}>
+        <NavLink to="spells">
           <IconButton
             size="small"
             color="inherit"

@@ -12,6 +12,7 @@ import {
   Routes,
   useParams,
 } from "react-router-dom";
+import { HeroEditor } from "./pages/HeroEditor";
 
 const HoardPage = lazy(() => import("./pages/Hoard"));
 const HeroPage = lazy(() => import("./pages/Hero"));
@@ -41,13 +42,14 @@ export const App = () => {
             <NavBar />
             <Routes>
               <Route path="/" element={<HoardPage />} />
-              <Route path="/:id/details" element={<HeroPage />} />
-              <Route path="/:id/skills" element={<SkillPage />} />
-              <Route path="/:id/inventory" element={<InventoryPage />} />
-              <Route path="/:id/feats" element={<FeatsPage />} />
-              <Route path="/:id/spells" element={<SpellsPage />} />
+              <Route path="/:id" element={<HeroEditor />}>
+                <Route path="details" element={<HeroPage />} />
+                <Route path="skills" element={<SkillPage />} />
+                <Route path="inventory" element={<InventoryPage />} />
+                <Route path="feats" element={<FeatsPage />} />
+                <Route path="spells" element={<SpellsPage />} />
+              </Route>
             </Routes>
-            <Footer />
           </BrowserRouter>
         </AppWrapper>
       </Provider>
