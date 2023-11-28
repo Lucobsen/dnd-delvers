@@ -5,11 +5,6 @@ export type SpellInfo = {
   spells: string[];
 };
 
-export type Spells = {
-  cantrips: string[];
-  spellList: SpellInfo[];
-};
-
 export type Stats = Record<string, string>;
 
 type Currency = "cp" | "sp" | "gp" | "pp";
@@ -37,7 +32,8 @@ export interface Hero {
   classId?: string;
   race?: string;
   feats?: string;
-  spells: Spells;
+  spellInfo: SpellInfo[];
+  cantrips: string[];
   coin: Coin;
   weapons: Weapon[];
   equipment: string[];

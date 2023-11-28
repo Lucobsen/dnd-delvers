@@ -14,26 +14,26 @@ export const Cantrips = () => {
 
   if (!hero) return null;
 
-  const { spells } = hero;
+  const { cantrips } = hero;
 
   const handleDeleteCantrip = (index: number) => {
-    const tempCantrips = [...spells.cantrips];
+    const tempCantrips = [...cantrips];
     tempCantrips.splice(index, 1);
 
     const updatedHero: Hero = {
       ...hero,
-      spells: { ...spells, cantrips: [...tempCantrips] },
+      cantrips: [...tempCantrips],
     };
     dispatch(updateHero(updatedHero));
   };
 
   const handleUpdateCantrip = (value: string, index: number) => {
-    const tempCantrips = [...spells.cantrips];
+    const tempCantrips = [...cantrips];
     tempCantrips[index] = value;
 
     const updatedHero: Hero = {
       ...hero,
-      spells: { ...spells, cantrips: [...tempCantrips] },
+      cantrips: [...tempCantrips],
     };
     dispatch(updateHero(updatedHero));
   };
@@ -41,7 +41,7 @@ export const Cantrips = () => {
   const handleAddCantrip = (newCantrip: string) => {
     const updatedHero: Hero = {
       ...hero,
-      spells: { ...spells, cantrips: [...spells.cantrips, newCantrip] },
+      cantrips: [...cantrips, newCantrip],
     };
     dispatch(updateHero(updatedHero));
   };
@@ -53,7 +53,7 @@ export const Cantrips = () => {
       onAdd={handleAddCantrip}
       title="Cantrips"
       placeholder="Add Cantrip"
-      items={spells.cantrips}
+      items={cantrips}
     />
   );
 };

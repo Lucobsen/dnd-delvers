@@ -49,10 +49,8 @@ export const defaultHero: Hero = {
     wis: "10",
     cha: "10",
   },
-  spells: {
-    cantrips: [],
-    spellList: defaultSpells,
-  },
+  cantrips: [],
+  spellInfo: defaultSpells,
   coin: {
     cp: "",
     sp: "",

@@ -36,24 +36,21 @@ export const SpellModal = ({
 
   if (!hero || selectedSpellLevel === null) return null;
 
-  const { spellList } = hero.spells;
+  const { spellInfo } = hero;
 
   const selectedSpells =
-    spellList.find(({ id }) => id === selectedSpellLevel)?.spells ?? [];
+    spellInfo.find(({ id }) => id === selectedSpellLevel)?.spells ?? [];
 
   const handleDeleteSpell = (index: number) => {
     const tempSpells = [...selectedSpells];
     tempSpells.splice(index, 1);
 
-    const tempSpellList = [...spellList];
+    const tempSpellList = [...spellInfo];
     tempSpellList[index].spells = [...tempSpells];
 
     const updatedHero: Hero = {
       ...hero,
-      spells: {
-        ...hero.spells,
-        spellList: [...tempSpellList],
-      },
+      spellInfo: [...tempSpellList],
     };
     dispatch(updateHero(updatedHero));
   };
@@ -65,37 +62,37 @@ export const SpellModal = ({
     const tempSpells = [...selectedSpells];
     tempSpells[index] = target.value;
 
-    const tempSpellList = [...spellList];
+    const tempSpellList = [...spellInfo];
     tempSpellList[index].spells = [...tempSpells];
 
     const updatedHero: Hero = {
       ...hero,
-      spells: {
-        ...hero.spells,
-        spellList: [...tempSpellList],
-      },
+      spellInfo: [...tempSpellList],
     };
     dispatch(updateHero(updatedHero));
   };
 
   const handleAddSpell = () => {
-    const tempSpellList = [...spellList];
-    const tempSpells = [...selectedSpells];
-    tempSpells.push(newSpell);
+    const tempSpellList = [...spellInfo];
 
     const index = tempSpellList.findIndex(
       (info) => info.id === selectedSpellLevel
     );
 
     if (index >= 0) {
-      tempSpellList[index].spells = [...tempSpells];
+      const lah = tempSpellList[index].spells.concat([
+        ...selectedSpells,
+        newSpell,
+      ]);
 
+      console.log(
+        "%cSpellModal.tsx line:91 tempSpellList",
+        "color: #007acc;",
+        tempSpellList
+      );
       const updatedHero: Hero = {
         ...hero,
-        spells: {
-          ...hero.spells,
-          spellList: [...tempSpellList],
-        },
+        spellInfo: [...tempSpellList],
       };
       dispatch(updateHero(updatedHero));
 
@@ -113,7 +110,7 @@ export const SpellModal = ({
           >
             {`Level ${selectedSpellLevel} Spells`}
           </ListSubheader>
-          {spellList.map((spell, index) => (
+          {selectedSpells.map((spell, index) => (
             <ListItem
               key={`${spell}-${index}`}
               dense

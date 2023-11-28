@@ -1,7 +1,6 @@
 import { Button, Container, Stack } from "@mui/material";
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
-import { NavLink } from "react-router-dom";
 import { addHero } from "../store/slices/HeroHoardSlice";
 import { HeroButton } from "../components/HeroButton/HeroButton";
 
@@ -16,7 +15,7 @@ const Hoard = () => {
         {hoardList.length > 0 &&
           hoardList.map((hero) => <HeroButton hero={hero} key={hero.id} />)}
 
-        {hoardList.length < 3 && (
+        {hoardList.length < 5 && (
           <Button
             fullWidth
             color="success"
