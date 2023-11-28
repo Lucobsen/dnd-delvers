@@ -2,23 +2,20 @@ import { Grid, Stack } from "@mui/material";
 import React, { useState } from "react";
 import { useRaces } from "../../services/races/races.services";
 import { useClasses } from "../../services/classes/classes.service";
-import { levels } from "../../models/levels.models";
+import { getProficiencyBonus, levels } from "../../models/levels.models";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
-import {
-  updateArmourClass,
-  updateClass,
-  updateLevel,
-  updateName,
-  updateRace,
-} from "../../store/slices/HeroSlice";
 import { SelectComponent } from "../shared/SelectComponent";
 import { TextBox } from "../shared/TextBox";
 import { DeathSaveModal } from "../modals/DeathSaves.modal";
 import { HpLogic } from "./HpLogic";
+import { useParams } from "react-router-dom";
+import { updateHero } from "../../store/slices/HeroHoardSlice";
+import { Hero } from "../../models/hero.models";
 
 export const Details = () => {
-  const { level, ac, proficiencyBonus, classId, race, name } = useAppSelector(
-    (state) => state.hero
+  const { id } = useParams();
+  const hero = useAppSelector((state) =>
+    state.heroHoard.find(({ id: heroId }) => heroId === id)
   );
   const dispatch = useAppDispatch();
 
@@ -26,6 +23,39 @@ export const Details = () => {
   const { classes, isLoading: isLoadingClasses } = useClasses();
 
   const [deathSaves, setDeathSaves] = useState(false);
+
+  if (!hero) return null;
+
+  const { level, ac, proficiencyBonus, classId, race, name } = hero;
+
+  const handleUpdateName = (newName: string) => {
+    const updatedHero: Hero = { ...hero, name: newName };
+    dispatch(updateHero(updatedHero));
+  };
+
+  const handleUpdateArmourClass = (newAc: string) => {
+    const updatedHero: Hero = { ...hero, ac: newAc };
+    dispatch(updateHero(updatedHero));
+  };
+
+  const handleUpdateClass = (newClassId: string) => {
+    const updatedHero: Hero = { ...hero, classId: newClassId };
+    dispatch(updateHero(updatedHero));
+  };
+
+  const handleUpdateLevel = (newLevel: string) => {
+    const updatedHero: Hero = {
+      ...hero,
+      level: newLevel,
+      proficiencyBonus: getProficiencyBonus(newLevel),
+    };
+    dispatch(updateHero(updatedHero));
+  };
+
+  const handleUpdateRace = (newRace: string) => {
+    const updatedHero: Hero = { ...hero, race: newRace };
+    dispatch(updateHero(updatedHero));
+  };
 
   return (
     <>
@@ -35,7 +65,7 @@ export const Details = () => {
             value={name}
             label="Name"
             placeholder="Enter Name"
-            onChange={(value) => dispatch(updateName(value))}
+            onChange={(value) => handleUpdateName(value)}
           />
         </Grid>
 
@@ -44,13 +74,13 @@ export const Details = () => {
             value={ac}
             label="AC"
             isNumber
-            onChange={(value) => dispatch(updateArmourClass(value))}
+            onChange={(value) => handleUpdateArmourClass(value)}
           />
         </Grid>
 
         <Grid item xs={3.5}>
           <SelectComponent
-            onValueChange={(value) => dispatch(updateLevel(value))}
+            onValueChange={(value) => handleUpdateLevel(value)}
             options={levels}
             label="Level"
             value={level}
@@ -76,7 +106,7 @@ export const Details = () => {
           isLoading={isLoadingRaces}
           label="Race"
           options={races.map((race) => race.name)}
-          onValueChange={(value) => dispatch(updateRace(value))}
+          onValueChange={(value) => handleUpdateRace(value)}
           value={race}
         />
 
@@ -84,7 +114,7 @@ export const Details = () => {
           isLoading={isLoadingClasses}
           label="Class"
           options={classes.map((classy) => classy.name)}
-          onValueChange={(value) => dispatch(updateClass(value))}
+          onValueChange={(value) => handleUpdateClass(value)}
           value={classId}
         />
       </Stack>

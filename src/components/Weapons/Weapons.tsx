@@ -12,8 +12,10 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useAppSelector, useAppDispatch } from "../../hooks/hooks";
-import { Weapon, updateWeapons } from "../../store/slices/HeroSlice";
+import { Hero, Weapon } from "../../models/hero.models";
 import { TextBox } from "../shared/TextBox";
+import { useParams } from "react-router-dom";
+import { updateHero } from "../../store/slices/HeroHoardSlice";
 
 const StyledTableCell = styled(TableCell)`
   padding: 0 4px;
@@ -21,8 +23,15 @@ const StyledTableCell = styled(TableCell)`
 `;
 
 export const Weapons = () => {
-  const { weapons } = useAppSelector((state) => state.hero);
+  const { id } = useParams();
+  const hero = useAppSelector((state) =>
+    state.heroHoard.find(({ id: heroId }) => heroId === id)
+  );
   const dispatch = useAppDispatch();
+
+  if (!hero) return null;
+
+  const { weapons } = hero;
 
   const handleUpdateWeapon = (updatedWeapon: Weapon) => {
     const tempWeapons = [...weapons];
@@ -33,7 +42,8 @@ export const Weapons = () => {
 
     tempWeapons[index] = updatedWeapon;
 
-    dispatch(updateWeapons(tempWeapons));
+    const updatedHero: Hero = { ...hero, weapons: tempWeapons };
+    dispatch(updateHero(updatedHero));
   };
 
   return (

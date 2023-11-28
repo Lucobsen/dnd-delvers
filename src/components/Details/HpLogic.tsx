@@ -2,7 +2,9 @@ import { Grid, LinearProgress } from "@mui/material";
 import React from "react";
 import { TextBox } from "../shared/TextBox";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
-import { updateCurrentHp, updateMaxHp } from "../../store/slices/HeroSlice";
+import { Hero } from "../../models/hero.models";
+import { useParams } from "react-router-dom";
+import { updateHero } from "../../store/slices/HeroHoardSlice";
 
 const getBarColor = (hp: number) => {
   if (hp >= 50) return "success";
@@ -34,8 +36,15 @@ interface HpLogicProps {
 }
 
 export const HpLogic = ({ onDeathSaveChange }: HpLogicProps) => {
-  const { hp } = useAppSelector((state) => state.hero);
+  const { id } = useParams();
+  const hero = useAppSelector((state) =>
+    state.heroHoard.find(({ id: heroId }) => heroId === id)
+  );
   const dispatch = useAppDispatch();
+
+  if (!hero) return null;
+
+  const { hp } = hero;
 
   const onHpChange = (newValue: string) => {
     let newHpValue = "0";
@@ -46,12 +55,20 @@ export const HpLogic = ({ onDeathSaveChange }: HpLogicProps) => {
       onDeathSaveChange(true);
     }
 
-    dispatch(updateCurrentHp(newHpValue));
+    const updatedHero: Hero = {
+      ...hero,
+      hp: { ...hp, current: newHpValue },
+    };
+    dispatch(updateHero(updatedHero));
   };
 
   const onMaxHpChange = (newValue: string) => {
     const newHpValue = setHpValue(newValue, hp.max);
-    dispatch(updateMaxHp(newHpValue));
+    const updatedHero: Hero = {
+      ...hero,
+      hp: { ...hp, max: newHpValue },
+    };
+    dispatch(updateHero(updatedHero));
   };
 
   return (

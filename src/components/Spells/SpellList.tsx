@@ -14,25 +14,68 @@ import {
 import React, { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { SpellModal } from "./SpellModal";
-import { updateSpellSlots } from "../../store/slices/HeroSlice";
+import { Hero, SpellInfo } from "../../models/hero.models";
 import { StyledStepperButton } from "../shared/StepperButton";
 import ArrowDropUpRoundedIcon from "@mui/icons-material/ArrowDropUpRounded";
 import ArrowDropDownRoundedIcon from "@mui/icons-material/ArrowDropDownRounded";
+import { useParams } from "react-router-dom";
+import { updateHero } from "../../store/slices/HeroHoardSlice";
 
+// TODO: test and fix spell breaks
 export const SpellList = () => {
-  const { spells } = useAppSelector((state) => state.hero.spells);
+  const { id } = useParams();
+  const hero = useAppSelector((state) =>
+    state.heroHoard.find(({ id: heroId }) => heroId === id)
+  );
   const dispatch = useAppDispatch();
+
   const [openSpellDialog, setOpenSpellDialog] = useState(false);
   const [selectedSpellLevel, setSelectedSpellLevel] = useState<number | null>(
     null
   );
 
-  const handleSlotsChange = (
-    id: number,
-    type: "total" | "used",
-    slots: number | undefined
-  ) => {
-    dispatch(updateSpellSlots({ id, type, slots: slots ?? 0 }));
+  if (!hero) return null;
+
+  const { spellInfo } = hero;
+
+  const handleUsedSlotsChange = (id: number, slots: number | undefined) => {
+    const tempSpellInfo = [...spellInfo];
+    const index = tempSpellInfo.findIndex((info) => info.id === id);
+
+    if (index >= 0 && slots !== undefined) {
+      tempSpellInfo[index] = {
+        ...tempSpellInfo[index],
+        usedSlots: slots,
+      };
+
+      updateHeroSpellInfo(tempSpellInfo);
+    }
+  };
+
+  const handleTotalSlotsChange = (id: number, slots: number | undefined) => {
+    const tempSpellInfo = [...spellInfo];
+    const index = tempSpellInfo.findIndex((info) => info.id === id);
+
+    if (index >= 0 && slots !== undefined) {
+      tempSpellInfo[index] = {
+        ...tempSpellInfo[index],
+        totalSlots: slots,
+        usedSlots:
+          slots < tempSpellInfo[index].usedSlots
+            ? slots
+            : tempSpellInfo[index].usedSlots,
+      };
+
+      updateHeroSpellInfo(tempSpellInfo);
+    }
+  };
+
+  const updateHeroSpellInfo = (updatedSpellInfo: SpellInfo[]) => {
+    const updatedHero: Hero = {
+      ...hero,
+      spellInfo: updatedSpellInfo,
+    };
+    dispatch(updateHero(updatedHero));
   };
 
   return (
@@ -51,7 +94,7 @@ export const SpellList = () => {
           </TableHead>
 
           <TableBody>
-            {spells.map(({ id, totalSlots, usedSlots }) => (
+            {spellInfo.map(({ id, totalSlots, usedSlots }) => (
               <TableRow key={id}>
                 <TableCell sx={{ width: 80 }}>
                   <Button
@@ -67,9 +110,7 @@ export const SpellList = () => {
                   <Stack direction="row" spacing={1} alignItems="center">
                     <StyledStepperButton
                       disabled={totalSlots === 4}
-                      onClick={() => {
-                        handleSlotsChange(id, "total", ++totalSlots);
-                      }}
+                      onClick={() => handleTotalSlotsChange(id, ++totalSlots)}
                     >
                       <ArrowDropUpRoundedIcon />
                     </StyledStepperButton>
@@ -78,9 +119,7 @@ export const SpellList = () => {
 
                     <StyledStepperButton
                       disabled={totalSlots === 0}
-                      onClick={() => {
-                        handleSlotsChange(id, "total", --totalSlots);
-                      }}
+                      onClick={() => handleTotalSlotsChange(id, --totalSlots)}
                     >
                       <ArrowDropDownRoundedIcon />
                     </StyledStepperButton>
@@ -101,7 +140,7 @@ export const SpellList = () => {
                             ? ++usedSlots
                             : --usedSlots;
 
-                          handleSlotsChange(id, "used", newUsedCount);
+                          handleUsedSlotsChange(id, newUsedCount);
                         }}
                       />
                     ))}

@@ -2,14 +2,24 @@ import { Grid } from "@mui/material";
 import React from "react";
 import { abilityScores } from "../../models/abilities.models";
 import { useAppSelector, useAppDispatch } from "../../hooks/hooks";
-import { Stats, updateStats } from "../../store/slices/HeroSlice";
+import { Hero, Stats } from "../../models/hero.models";
 import { StatItem } from "./StatItem";
 import { useClassSavingThrows } from "../../services/classes/classes.service";
+import { useParams } from "react-router-dom";
+import { updateHero } from "../../store/slices/HeroHoardSlice";
 
 export const HeroStats = () => {
-  const { stats, classId } = useAppSelector((state) => state.hero);
+  const { id } = useParams();
+  const hero = useAppSelector((state) =>
+    state.heroHoard.find(({ id: heroId }) => heroId === id)
+  );
   const dispatch = useAppDispatch();
-  const { savingThrows } = useClassSavingThrows(classId);
+
+  const { savingThrows } = useClassSavingThrows(hero?.classId);
+
+  if (!hero) return null;
+
+  const { stats } = hero;
 
   const onStatsChange = (statId: string, value: string) => {
     const newStats: Stats = {
@@ -17,7 +27,8 @@ export const HeroStats = () => {
       [statId]: value,
     };
 
-    dispatch(updateStats(newStats));
+    const updatedHero: Hero = { ...hero, stats: newStats };
+    dispatch(updateHero(updatedHero));
   };
 
   return (

@@ -1,26 +1,43 @@
 import React from "react";
 import { TextList } from "../shared/TextList";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
-import { updateEquipment } from "../../store/slices/HeroSlice";
+import { useParams } from "react-router-dom";
+import { updateHero } from "../../store/slices/HeroHoardSlice";
+import { Hero } from "../../models/hero.models";
 
 export const Equipment = () => {
-  const { equipment } = useAppSelector((state) => state.hero);
+  const { id } = useParams();
+  const hero = useAppSelector((state) =>
+    state.heroHoard.find(({ id: heroId }) => heroId === id)
+  );
   const dispatch = useAppDispatch();
+
+  if (!hero) return null;
+
+  const { equipment } = hero;
 
   const handleDeleteEquipment = (index: number) => {
     const tempEquipment = [...equipment];
     tempEquipment.splice(index, 1);
-    dispatch(updateEquipment([...tempEquipment]));
+
+    const updatedHero: Hero = { ...hero, equipment: [...tempEquipment] };
+    dispatch(updateHero(updatedHero));
   };
 
   const handleUpdateEquipment = (value: string, index: number) => {
     const tempEquipment = [...equipment];
     tempEquipment[index] = value;
-    dispatch(updateEquipment([...tempEquipment]));
+
+    const updatedHero: Hero = { ...hero, equipment: [...tempEquipment] };
+    dispatch(updateHero(updatedHero));
   };
 
   const handleAddEquipment = (newEquipment: string) => {
-    dispatch(updateEquipment([...equipment, newEquipment]));
+    const updatedHero: Hero = {
+      ...hero,
+      equipment: [...equipment, newEquipment],
+    };
+    dispatch(updateHero(updatedHero));
   };
 
   return (
