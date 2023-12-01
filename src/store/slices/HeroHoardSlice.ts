@@ -84,10 +84,19 @@ export const heroHoardSlice = createSlice({
 
       localStorage.setItem("heroHoard", JSON.stringify(state));
     },
+    deleteHero: (state, action: PayloadAction<string>) => {
+      const index = state.findIndex(({ id }) => id === action.payload);
+
+      if (index < 0) return;
+
+      state.splice(index, 1);
+
+      localStorage.setItem("heroHoard", JSON.stringify(state));
+    },
   },
 });
 
-export const { addHero, updateHero } = heroHoardSlice.actions;
+export const { addHero, updateHero, deleteHero } = heroHoardSlice.actions;
 
 export const selectHeroHoard = (state: RootState) => state.heroHoard;
 
