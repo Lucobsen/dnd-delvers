@@ -38,7 +38,7 @@ export const TextList = ({
         </Typography>
         {items.map((item, index) => (
           <ListItem
-            key={`${item}-${index}`}
+            key={index}
             dense
             disableGutters
             secondaryAction={
