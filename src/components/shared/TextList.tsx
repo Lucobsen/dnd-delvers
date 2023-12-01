@@ -1,11 +1,9 @@
 import {
-  Container,
   IconButton,
   List,
   ListItem,
-  Paper,
+  ListSubheader,
   TextField,
-  Typography,
 } from "@mui/material";
 import React, { useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
@@ -18,6 +16,7 @@ interface TextListProps {
   title: string;
   items: string[];
   placeholder?: string;
+  disableGutters?: boolean;
 }
 
 export const TextList = ({
@@ -27,68 +26,72 @@ export const TextList = ({
   items,
   onUpdate,
   placeholder = "",
+  disableGutters = true,
 }: TextListProps) => {
   const [newItem, setNewItem] = useState("");
 
   return (
-    <Container component={Paper} sx={{ mb: 1 }}>
-      <List dense sx={{ pt: 0 }}>
-        <Typography variant="body2" color="rgb(25, 118, 210)">
-          {title}
-        </Typography>
-        {items.map((item, index) => (
-          <ListItem
-            key={index}
-            dense
-            disableGutters
-            secondaryAction={
-              <IconButton
-                edge="end"
-                aria-label="delete"
-                onClick={() => onDelete(index)}
-              >
-                <DeleteIcon />
-              </IconButton>
-            }
-          >
-            <TextField
-              fullWidth
-              variant="standard"
-              value={item}
-              placeholder={placeholder}
-              onBlur={(event) => {
-                if (event.target.value === "") onDelete(index);
-              }}
-              onChange={(event) => onUpdate(event.target.value, index)}
-            />
-          </ListItem>
-        ))}
+    <List dense sx={{ pt: 0 }}>
+      <ListSubheader
+        sx={{ height: 30, color: "rgb(25, 118, 210)" }}
+        disableGutters
+      >
+        {title}
+      </ListSubheader>
+      {items.map((item, index) => (
         <ListItem
+          key={index}
           dense
-          disableGutters
+          disableGutters={disableGutters}
           secondaryAction={
             <IconButton
-              disabled={newItem === ""}
               edge="end"
-              aria-label="add"
-              onClick={() => {
-                onAdd(newItem);
-                setNewItem("");
-              }}
+              aria-label="delete"
+              onClick={() => onDelete(index)}
+              color="error"
             >
-              <AddIcon />
+              <DeleteIcon />
             </IconButton>
           }
         >
           <TextField
             fullWidth
             variant="standard"
+            value={item}
             placeholder={placeholder}
-            value={newItem}
-            onChange={(event) => setNewItem(event.target.value)}
+            onBlur={(event) => {
+              if (event.target.value === "") onDelete(index);
+            }}
+            onChange={(event) => onUpdate(event.target.value, index)}
           />
         </ListItem>
-      </List>
-    </Container>
+      ))}
+      <ListItem
+        dense
+        disableGutters={disableGutters}
+        secondaryAction={
+          <IconButton
+            disabled={newItem === ""}
+            edge="end"
+            aria-label="add"
+            color="success"
+            onClick={() => {
+              onAdd(newItem);
+              setNewItem("");
+            }}
+          >
+            <AddIcon />
+          </IconButton>
+        }
+      >
+        <TextField
+          fullWidth
+          variant="standard"
+          placeholder={placeholder}
+          value={newItem}
+          onChange={(event) => setNewItem(event.target.value)}
+        />
+      </ListItem>
+    </List>
   );
 };

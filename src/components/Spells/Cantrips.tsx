@@ -4,6 +4,7 @@ import { Hero } from "../../models/hero.models";
 import { TextList } from "../shared/TextList";
 import { useParams } from "react-router-dom";
 import { updateHero } from "../../store/slices/HeroHoardSlice";
+import { Container, Paper } from "@mui/material";
 
 export const Cantrips = () => {
   const { id } = useParams();
@@ -47,13 +48,15 @@ export const Cantrips = () => {
   };
 
   return (
-    <TextList
-      onDelete={handleDeleteCantrip}
-      onUpdate={handleUpdateCantrip}
-      onAdd={handleAddCantrip}
-      title="Cantrips"
-      placeholder="Add Cantrip"
-      items={cantrips}
-    />
+    <Container component={Paper} sx={{ mb: 1 }}>
+      <TextList
+        onDelete={handleDeleteCantrip}
+        onUpdate={handleUpdateCantrip}
+        onAdd={handleAddCantrip}
+        title="Cantrips"
+        placeholder="Add Cantrip"
+        items={cantrips}
+      />
+    </Container>
   );
 };

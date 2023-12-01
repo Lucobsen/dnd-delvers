@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { useParams } from "react-router-dom";
 import { updateHero } from "../../store/slices/HeroHoardSlice";
 import { Hero } from "../../models/hero.models";
+import { Container, Paper } from "@mui/material";
 
 export const Equipment = () => {
   const { id } = useParams();
@@ -41,13 +42,15 @@ export const Equipment = () => {
   };
 
   return (
-    <TextList
-      onDelete={handleDeleteEquipment}
-      onUpdate={handleUpdateEquipment}
-      onAdd={handleAddEquipment}
-      title="Equipment"
-      placeholder="Add equipment"
-      items={equipment}
-    />
+    <Container component={Paper} sx={{ mb: 1 }}>
+      <TextList
+        onDelete={handleDeleteEquipment}
+        onUpdate={handleUpdateEquipment}
+        onAdd={handleAddEquipment}
+        title="Equipment"
+        placeholder="Add equipment"
+        items={equipment}
+      />
+    </Container>
   );
 };
