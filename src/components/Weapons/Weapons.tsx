@@ -52,7 +52,10 @@ export const Weapons = () => {
         Weapons
       </Typography>
 
-      <TableContainer component={Paper} sx={{ width: "unset", p: 1 }}>
+      <TableContainer
+        component={Paper}
+        sx={{ width: "unset", p: 1, border: "1px solid rgba(0, 0, 0, 0.23)" }}
+      >
         <Table size="small" padding="none">
           <TableHead>
             <TableRow>

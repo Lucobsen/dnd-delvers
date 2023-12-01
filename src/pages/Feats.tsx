@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { useParams } from "react-router-dom";
 import { updateHero } from "../store/slices/HeroHoardSlice";
 import { Hero } from "../models/hero.models";
+import { Languages } from "../components/Languages/Languages";
 
 const Feats = () => {
   const { id } = useParams();
@@ -33,6 +34,7 @@ const Feats = () => {
         defaultValue={feats}
         style={{ width: "100%" }}
       />
+      <Languages />
     </Container>
   );
 };

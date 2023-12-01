@@ -60,11 +60,18 @@ export const defaultHero: Hero = {
   weapons: defaultWeapons,
   equipment: [],
   proficientSkills: [],
+  languages: [],
 };
 
 const getInitalState = (): Hero[] => {
   const storedHoard = localStorage.getItem("heroHoard");
-  return storedHoard ? JSON.parse(storedHoard) : [];
+  let parsedHoard: Hero[] = storedHoard ? JSON.parse(storedHoard) : [];
+
+  return parsedHoard.map((hero) => {
+    // * Added to account for old versions
+    if (hero.languages === undefined) hero.languages = [];
+    return hero;
+  });
 };
 
 export const heroHoardSlice = createSlice({
