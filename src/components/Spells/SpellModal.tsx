@@ -1,19 +1,10 @@
-import {
-  Box,
-  Dialog,
-  IconButton,
-  List,
-  ListItem,
-  ListSubheader,
-  TextField,
-} from "@mui/material";
-import React, { useState } from "react";
+import { Dialog } from "@mui/material";
+import React from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
-import AddIcon from "@mui/icons-material/Add";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { Hero } from "../../models/hero.models";
 import { useParams } from "react-router-dom";
 import { updateHero } from "../../store/slices/HeroHoardSlice";
+import { TextList } from "../shared/TextList";
 
 interface SpellModalProps {
   open: boolean;
@@ -31,8 +22,6 @@ export const SpellModal = ({
     state.heroHoard.find(({ id: heroId }) => heroId === id)
   );
   const dispatch = useAppDispatch();
-
-  const [newSpell, setNewSpell] = useState("");
 
   if (!hero || selectedSpellLevel === null) return null;
 
@@ -68,14 +57,14 @@ export const SpellModal = ({
     handleUpdateSpells(tempSpells);
   };
 
-  const handleUpdateSpell = ({ value }: { value: string }, index: number) => {
+  const handleUpdateSpell = (value: string, index: number) => {
     const tempSpells = [...selectedSpells];
     tempSpells[index] = value;
 
     handleUpdateSpells(tempSpells);
   };
 
-  const handleAddSpell = () => {
+  const handleAddSpell = (newSpell: string) => {
     const tempSpellInfo = [...spellInfo];
 
     const index = tempSpellInfo.findIndex(
@@ -93,72 +82,25 @@ export const SpellModal = ({
         spellInfo: [...tempSpellInfo],
       };
       dispatch(updateHero(updatedHero));
-
-      setNewSpell("");
     }
   };
 
   return (
-    <Dialog onClose={onClose} open={open} fullWidth>
-      <Box minHeight={300} px={1} textAlign="center">
-        <List dense disablePadding>
-          <ListSubheader
-            sx={{ height: 30, color: "rgb(25, 118, 210)" }}
-            disableGutters
-          >
-            {`Level ${selectedSpellLevel} Spells`}
-          </ListSubheader>
-          {selectedSpells.map((spell, index) => (
-            <ListItem
-              key={index}
-              dense
-              disableGutters
-              secondaryAction={
-                <IconButton
-                  edge="end"
-                  aria-label="delete"
-                  onClick={() => handleDeleteSpell(index)}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              }
-            >
-              <TextField
-                fullWidth
-                variant="standard"
-                value={spell}
-                placeholder="Add spell"
-                onBlur={(event) => {
-                  if (event.target.value === "") handleDeleteSpell(index);
-                }}
-                onChange={({ target }) => handleUpdateSpell(target, index)}
-              />
-            </ListItem>
-          ))}
-          <ListItem
-            dense
-            disableGutters
-            secondaryAction={
-              <IconButton
-                disabled={newSpell === ""}
-                edge="end"
-                aria-label="add"
-                onClick={handleAddSpell}
-              >
-                <AddIcon />
-              </IconButton>
-            }
-          >
-            <TextField
-              fullWidth
-              variant="standard"
-              placeholder={`Add spell`}
-              value={newSpell}
-              onChange={(event) => setNewSpell(event.target.value)}
-            />
-          </ListItem>
-        </List>
-      </Box>
+    <Dialog
+      onClose={onClose}
+      open={open}
+      fullWidth
+      sx={{ textAlign: "center" }}
+    >
+      <TextList
+        disableGutters={false}
+        onDelete={handleDeleteSpell}
+        onUpdate={handleUpdateSpell}
+        onAdd={handleAddSpell}
+        title={`Level ${selectedSpellLevel} Spells`}
+        items={selectedSpells}
+        placeholder="Add spell"
+      />
     </Dialog>
   );
 };
