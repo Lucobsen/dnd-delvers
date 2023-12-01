@@ -48,7 +48,10 @@ export const Cantrips = () => {
   };
 
   return (
-    <Container component={Paper} sx={{ mb: 1 }}>
+    <Container
+      component={Paper}
+      sx={{ mb: 1, border: "1px solid rgba(0, 0, 0, 0.23)" }}
+    >
       <TextList
         onDelete={handleDeleteCantrip}
         onUpdate={handleUpdateCantrip}

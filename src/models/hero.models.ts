@@ -38,4 +38,5 @@ export interface Hero {
   weapons: Weapon[];
   equipment: string[];
   proficientSkills: string[];
+  languages: string[];
 }

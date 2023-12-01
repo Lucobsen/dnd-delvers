@@ -21,7 +21,6 @@ import ArrowDropDownRoundedIcon from "@mui/icons-material/ArrowDropDownRounded";
 import { useParams } from "react-router-dom";
 import { updateHero } from "../../store/slices/HeroHoardSlice";
 
-// TODO: test and fix spell breaks
 export const SpellList = () => {
   const { id } = useParams();
   const hero = useAppSelector((state) =>
@@ -80,7 +79,10 @@ export const SpellList = () => {
 
   return (
     <>
-      <TableContainer component={Paper}>
+      <TableContainer
+        component={Paper}
+        sx={{ border: "1px solid rgba(0, 0, 0, 0.23)" }}
+      >
         <Typography variant="body2" color="rgb(25, 118, 210)">
           Spell List
         </Typography>
