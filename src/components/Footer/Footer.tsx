@@ -19,10 +19,10 @@ export const Footer = () => {
   const isMobile = useMediaQuery(breakpoints.down("sm"));
   const { id } = useParams();
 
-  if (id === undefined) return null;
+  if (!isMobile || id === undefined) return null;
 
   return (
-    <Box sx={{ flexGrow: 1 }} width="100%" mb={isMobile ? 6 : 9}>
+    <Box sx={{ flexGrow: 1 }} width="100%" mb={6}>
       <AppBar position="fixed" color="primary" sx={{ top: "auto", bottom: 0 }}>
         <Toolbar sx={{ justifyContent: "space-around", minHeight: 40 }}>
           <NavLink to="details">
