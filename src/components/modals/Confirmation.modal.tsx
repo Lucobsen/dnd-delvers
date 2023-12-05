@@ -1,5 +1,15 @@
 import { Box, Button, Dialog, Stack, Typography } from "@mui/material";
+import { styled } from "@mui/system";
 import React from "react";
+
+const StyledBox = styled(Box)({
+  display: "flex",
+  flexDirection: "column",
+  textAlign: "center",
+  justifyContent: "center",
+  padding: "8px",
+  minHeight: "100px",
+});
 
 interface ConfirmationModalProps {
   open: boolean;
@@ -16,7 +26,7 @@ export const ConfirmationModal = ({
 }: ConfirmationModalProps) => {
   return (
     <Dialog onClose={onCancel} open={open} fullWidth>
-      <Box minHeight={100} p={1} textAlign="center">
+      <StyledBox>
         <Typography fontWeight="bold" mb={1}>
           {content}
         </Typography>
@@ -45,7 +55,7 @@ export const ConfirmationModal = ({
             Confirm
           </Button>
         </Stack>
-      </Box>
+      </StyledBox>
     </Dialog>
   );
 };

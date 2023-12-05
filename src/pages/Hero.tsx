@@ -5,7 +5,7 @@ import { HeroStats } from "../components/Stats/Stats";
 import { DeleteHeroButton } from "../components/Buttons/DeleteHero";
 
 const Hero = () => (
-  <Container sx={{ mt: 7 }}>
+  <Container sx={{ mt: 2 }}>
     <Details />
     <HeroStats />
     <DeleteHeroButton />

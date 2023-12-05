@@ -9,7 +9,7 @@ const Hoard = () => {
   const dispatch = useAppDispatch();
 
   return (
-    <Container sx={{ mt: 10 }}>
+    <Container sx={{ mt: 2 }}>
       <Stack spacing={4}>
         {hoard.length > 0 &&
           hoard.map(({ id, name }) => (
