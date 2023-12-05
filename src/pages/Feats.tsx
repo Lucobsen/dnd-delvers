@@ -23,7 +23,7 @@ const Feats = () => {
   };
 
   return (
-    <Container sx={{ my: 6 }}>
+    <Container sx={{ mb: 6 }}>
       <Typography color="rgb(25, 118, 210)" variant="h6" align="left">
         Features & Traits
       </Typography>

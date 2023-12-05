@@ -53,7 +53,7 @@ const Skills = () => {
   };
 
   return (
-    <Container sx={{ my: 6 }}>
+    <Container>
       {isLoading ? (
         <Box
           sx={{

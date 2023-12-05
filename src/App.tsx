@@ -2,11 +2,12 @@ import React, { lazy } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
-import { styled } from "@mui/material";
+import { ThemeProvider, styled } from "@mui/material";
 import { NavBar } from "./components/Navbar/Navbar";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { HeroEditor } from "./pages/HeroEditor";
 import { Analytics } from "@vercel/analytics/react";
+import { theme } from "./theme";
 
 const HoardPage = lazy(() => import("./pages/Hoard"));
 const HeroPage = lazy(() => import("./pages/Hero"));
@@ -30,24 +31,26 @@ const queryClient = new QueryClient();
 export const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <Provider store={store}>
-        <AppWrapper>
-          <BrowserRouter future={{ v7_startTransition: true }}>
-            <NavBar />
-            <Routes>
-              <Route path="/" element={<HoardPage />} />
-              <Route path="/:id" element={<HeroEditor />}>
-                <Route path="details" element={<HeroPage />} />
-                <Route path="skills" element={<SkillPage />} />
-                <Route path="inventory" element={<InventoryPage />} />
-                <Route path="feats" element={<FeatsPage />} />
-                <Route path="spells" element={<SpellsPage />} />
-              </Route>
-            </Routes>
-          </BrowserRouter>
-          <Analytics />
-        </AppWrapper>
-      </Provider>
+      <ThemeProvider theme={theme}>
+        <Provider store={store}>
+          <AppWrapper>
+            <BrowserRouter future={{ v7_startTransition: true }}>
+              <NavBar />
+              <Routes>
+                <Route path="/" element={<HoardPage />} />
+                <Route path="/:id" element={<HeroEditor />}>
+                  <Route path="details" element={<HeroPage />} />
+                  <Route path="skills" element={<SkillPage />} />
+                  <Route path="inventory" element={<InventoryPage />} />
+                  <Route path="feats" element={<FeatsPage />} />
+                  <Route path="spells" element={<SpellsPage />} />
+                </Route>
+              </Routes>
+            </BrowserRouter>
+            <Analytics />
+          </AppWrapper>
+        </Provider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 };
