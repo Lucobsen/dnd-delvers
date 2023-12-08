@@ -25,8 +25,15 @@ const Hoard = () => {
       <Container sx={{ mt: 2 }}>
         <Stack spacing={4}>
           {hoard.length > 0 &&
-            hoard.map(({ id, name }) => (
-              <HeroButton id={id} name={name} key={id} />
+            hoard.map(({ id, name, classId, level, race }) => (
+              <HeroButton
+                id={id}
+                name={name}
+                key={id}
+                classId={classId}
+                level={level}
+                race={race}
+              />
             ))}
         </Stack>
         <Button
