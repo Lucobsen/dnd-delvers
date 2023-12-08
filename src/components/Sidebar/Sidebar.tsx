@@ -1,12 +1,4 @@
-import {
-  AppBar,
-  Toolbar,
-  IconButton,
-  Box,
-  styled,
-  Typography,
-  Stack,
-} from "@mui/material";
+import { AppBar, Toolbar, Box, styled, Typography, Stack } from "@mui/material";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import React from "react";
 import ListAltIcon from "@mui/icons-material/ListAlt";
@@ -14,18 +6,11 @@ import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
 import { NavLink, useParams } from "react-router-dom";
 import PersonIcon from "@mui/icons-material/Person";
 import InventoryIcon from "@mui/icons-material/Inventory";
+import { NavIconLink } from "../Buttons/NavIconLink";
 
 const StyledNavLink = styled(NavLink)`
   color: white;
   text-decoration: none;
-
-  &:focus,
-  &:hover,
-  &:visited,
-  &:link,
-  &:active {
-    text-decoration: none;
-  }
 `;
 
 export const Sidebar = () => {
@@ -36,7 +21,7 @@ export const Sidebar = () => {
       <AppBar
         position="fixed"
         color="primary"
-        sx={{ left: 0, height: "100%", width: 100 }}
+        sx={{ left: 0, height: "100%", width: 60 }}
       >
         <Toolbar
           sx={{
@@ -54,55 +39,11 @@ export const Sidebar = () => {
 
             {id !== undefined && (
               <>
-                <NavLink to="details">
-                  <IconButton
-                    color="inherit"
-                    aria-label="details"
-                    title="details"
-                  >
-                    <PersonIcon sx={{ color: "white" }} />
-                  </IconButton>
-                </NavLink>
-
-                <NavLink to="skills">
-                  <IconButton
-                    color="inherit"
-                    aria-label="skills"
-                    title="skills"
-                  >
-                    <ListAltIcon sx={{ color: "white" }} />
-                  </IconButton>
-                </NavLink>
-
-                <NavLink to="inventory">
-                  <IconButton
-                    color="inherit"
-                    aria-label="inventory"
-                    title="inventory"
-                  >
-                    <InventoryIcon sx={{ color: "white" }} />
-                  </IconButton>
-                </NavLink>
-
-                <NavLink to="feats">
-                  <IconButton
-                    color="inherit"
-                    aria-label="features and traits"
-                    title="features and traits"
-                  >
-                    <AutoAwesomeIcon sx={{ color: "white" }} />
-                  </IconButton>
-                </NavLink>
-
-                <NavLink to="spells">
-                  <IconButton
-                    color="inherit"
-                    aria-label="spells"
-                    title="spells"
-                  >
-                    <AutoFixHighIcon sx={{ color: "white" }} />
-                  </IconButton>
-                </NavLink>
+                <NavIconLink to="details" icon={<PersonIcon />} />
+                <NavIconLink to="skills" icon={<ListAltIcon />} />
+                <NavIconLink to="inventory" icon={<InventoryIcon />} />
+                <NavIconLink to="feats" icon={<AutoAwesomeIcon />} />
+                <NavIconLink to="spells" icon={<AutoFixHighIcon />} />
               </>
             )}
           </Stack>
