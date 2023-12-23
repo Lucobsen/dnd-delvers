@@ -7,6 +7,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { HeroEditor } from "./pages/HeroEditor";
 import { Analytics } from "@vercel/analytics/react";
 import { theme } from "./theme";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const HoardPage = lazy(() => import("./pages/Hoard"));
 const HeroPage = lazy(() => import("./pages/Hero"));
@@ -45,6 +46,7 @@ export const App = () => (
             </Routes>
           </BrowserRouter>
           <Analytics />
+          <SpeedInsights />
         </AppWrapper>
       </Provider>
     </ThemeProvider>
